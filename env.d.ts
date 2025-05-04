@@ -1,7 +1,9 @@
 /// <reference types="vinxi/types/client" />
 
 // CLIENT ENVIRONMENT
-interface ImportMetaEnv {}
+type ImportMetaEnv = {
+	BASE_URL: string;
+};
 
 interface ImportMeta {
 	readonly env: ImportMetaEnv;
@@ -11,6 +13,7 @@ interface ImportMeta {
 
 // SERVER ENVIRONMENT
 declare namespace NodeJS {
-	interface ProcessEnv {
-	}
+	type ProcessEnv = {
+		BASE_URL: string;
+	};
 }

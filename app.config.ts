@@ -10,7 +10,7 @@ export default defineConfig({
 				"127.0.0.1",
 				"localhost",
 				"0.0.0.0",
-				import.meta.env.BASE_URL,
+				// import.meta.env.BASE_URL,
 			],
 		},
 		test: {
