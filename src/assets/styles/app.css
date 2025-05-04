@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+	--breakpoint-hd: 1280px;
+	--breakpoint-fhd: 1920px;
+	--breakpoint-qhd: 2560px;
+	--breakpoint-uhd: 4096px;
+}
+
+/* global css */
+@layer base {
+	@media (prefers-reduced-motion: no-preference) {
+		html,
+		body {
+			scroll-behavior: smooth;
+		}
+	}
+}
+
+/* plugins */
+@plugin "tailwindcss-motion";
