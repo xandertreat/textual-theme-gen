@@ -1,26 +1,142 @@
+@import url("@fontsource-variable/roboto");
+@import url("@fontsource-variable/roboto-mono");
 @import "tailwindcss";
-
-@plugin "daisyui";
 @plugin "tailwindcss-motion";
 
 @theme {
-	--breakpoint-hd: 1280px;
-	--breakpoint-fhd: 1920px;
-	--breakpoint-qhd: 2560px;
-	--breakpoint-uhd: 4096px;
+  --font-sans: "Roboto Variable", "Roboto", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", "Helvetica Neue", Arial, "Liberation Sans", "Nimbus Sans L",
+    sans-serif;
+  --font-mono: "Roboto Mono Variable", "Roboto Mono", "SFMono-Regular", Menlo,
+    Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --breakpoint-hd: 1280px;
+  --breakpoint-fhd: 1920px;
+  --breakpoint-qhd: 2560px;
+  --breakpoint-uhd: 4096px;
 }
 
 /* global css */
 @layer base {
-	@media (prefers-reduced-motion: no-preference) {
-		html,
-		body {
-			scroll-behavior: smooth;
-		}
-	}
+  @media (prefers-reduced-motion: no-preference) {
+    html,
+    body {
+      scroll-behavior: smooth;
+    }
+  }
 
-	.hljs {
-		@apply !bg-blue-400/5
-	}
+  .hljs {
+    @apply !bg-blue-400/5 !font-mono;
+  }
 }
 
+@plugin "daisyui" {
+  themes: false;
+}
+
+@plugin "daisyui/theme" {
+  name: "light";
+  color-scheme: "light";
+  default: true;
+
+  --color-base-100: oklch(95.1% 0 260.7deg);
+  --color-base-200: oklch(90.8% 0 260.7deg);
+  --color-base-300: oklch(86.5% 0 260.7deg);
+  --color-base-content: oklch(28% 0.022 264.2deg);
+  --color-primary: oklch(59.4% 0.035 254deg);
+  --color-primary-content: oklch(14% 0.015 254deg);
+  --color-secondary: oklch(69.6% 0.028 248.7deg);
+  --color-secondary-content: oklch(15% 0.012 248.7deg);
+  --color-accent: oklch(77.4% 0.03 217.5deg);
+  --color-accent-content: oklch(17% 0.013 217.5deg);
+  --color-neutral: oklch(47% 0.012 264.1deg);
+  --color-neutral-content: oklch(92% 0.016 262.7deg);
+  --color-info: oklch(72% 0.14 206deg);
+  --color-info-content: oklch(16% 0.03 206deg);
+  --color-success: oklch(82% 0.19 165deg);
+  --color-success-content: oklch(18% 0.035 165deg);
+  --color-warning: oklch(80% 0.17 80deg);
+  --color-warning-content: oklch(18% 0.033 80deg);
+  --color-error: oklch(70% 0.19 28deg);
+  --color-error-content: oklch(16% 0.035 28deg);
+  --radius-selector: 2rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+@plugin "daisyui/theme" {
+  name: "dark";
+  color-scheme: "dark";
+
+  --color-base-100: oklch(18% 0.018 264deg);
+  --color-base-200: oklch(13% 0.016 264deg);
+  --color-base-300: oklch(9% 0.014 264deg);
+  --color-base-content: oklch(88% 0.02 223deg);
+  --color-primary: oklch(36% 0.06 257.4deg);
+  --color-primary-content: oklch(92% 0.02 223deg);
+  --color-secondary: oklch(29% 0.06 257.4deg);
+  --color-secondary-content: oklch(92% 0.02 223deg);
+  --color-accent: oklch(45% 0.06 257.4deg);
+  --color-accent-content: oklch(92% 0.02 223deg);
+  --color-neutral: oklch(40% 0.012 264.1deg);
+  --color-neutral-content: oklch(92% 0.02 223deg);
+  --color-info: oklch(60% 0.14 206deg);
+  --color-info-content: oklch(94% 0.02 206deg);
+  --color-success: oklch(62% 0.19 165deg);
+  --color-success-content: oklch(96% 0.03 165deg);
+  --color-warning: oklch(68% 0.17 80deg);
+  --color-warning-content: oklch(96% 0.03 80deg);
+  --color-error: oklch(55% 0.19 28deg);
+  --color-error-content: oklch(96% 0.03 28deg);
+  --radius-selector: 2rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+/* daisyUI 'system theme' fix */
+
+/* I don't know how this works, sorry. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]),
+  :root[data-theme="system"] {
+    color-scheme: dark;
+
+    --color-base-100: oklch(18% 0.018 264deg);
+    --color-base-200: oklch(13% 0.016 264deg);
+    --color-base-300: oklch(9% 0.014 264deg);
+    --color-base-content: oklch(88% 0.02 223deg);
+    --color-primary: oklch(36% 0.06 257.4deg);
+    --color-primary-content: oklch(92% 0.02 223deg);
+    --color-secondary: oklch(29% 0.06 257.4deg);
+    --color-secondary-content: oklch(92% 0.02 223deg);
+    --color-accent: oklch(45% 0.06 257.4deg);
+    --color-accent-content: oklch(92% 0.02 223deg);
+    --color-neutral: oklch(40% 0.012 264.1deg);
+    --color-neutral-content: oklch(92% 0.02 223deg);
+    --color-info: oklch(60% 0.14 206deg);
+    --color-info-content: oklch(94% 0.02 206deg);
+    --color-success: oklch(62% 0.19 165deg);
+    --color-success-content: oklch(96% 0.03 165deg);
+    --color-warning: oklch(68% 0.17 80deg);
+    --color-warning-content: oklch(96% 0.03 80deg);
+    --color-error: oklch(55% 0.19 28deg);
+    --color-error-content: oklch(96% 0.03 28deg);
+    --radius-selector: 2rem;
+    --radius-field: 0.25rem;
+    --radius-box: 0.5rem;
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+    --border: 1px;
+    --depth: 0;
+    --noise: 0;
+  }
+}
