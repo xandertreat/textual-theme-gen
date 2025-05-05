@@ -14,7 +14,8 @@
 		"isolatedModules": true,
 		"paths": {
 			"~/*": ["./src/*"],
-			"@components/*": ["./src/components/*"],
+			"@ui/*": ["./src/components/ui/*"],
+			"@util": ["./src/lib/util.ts"]
 		}
 	}
 }

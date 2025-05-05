@@ -1,17 +1,24 @@
+import { fileURLToPath } from "node:url";
+import path from "path";
 import { defineConfig } from "@solidjs/start/config";
-import tsconfigPaths from "vite-tsconfig-paths";
+
+// Plugins
+import tailwindcss from "@tailwindcss/vite";
+// import tsconfigPaths from "vite-tsconfig-paths";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export default defineConfig({
+	// server: {
+	// 	prerender: {
+	// 		crawlLinks: true,
+	// 	},
+	// },
 	vite: {
-		plugins: [tsconfigPaths()],
-		ssr: { external: ["drizzle-orm"] },
+		plugins: [tailwindcss()],
 		server: {
-			allowedHosts: [
-				"127.0.0.1",
-				"localhost",
-				"0.0.0.0",
-				// import.meta.env.BASE_URL,
-			],
+			allowedHosts: ["127.0.0.1", "localhost", "0.0.0.0"],
 		},
 		test: {
 			include: ["./tests/**/*.{test,spec}.?(c|m)[jt]s?(x)"],
@@ -19,6 +26,15 @@ export default defineConfig({
 			globals: true,
 			environment: "jsdom",
 		},
+		resolve: {
+			alias: {
+				// "~/*" → "./src/*"
+				"~": path.resolve(__dirname, "src"),
+				// "@ui/*" → "./src/components/ui/*"
+				"@ui": path.resolve(__dirname, "src/components/ui"),
+				// "@util" → "./src/lib/util.ts"
+				"@util": path.resolve(__dirname, "src/lib/util.ts"),
+			},
+		},
 	},
-	middleware: "./src/middleware.ts",
 });

@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@plugin "daisyui";
+@plugin "tailwindcss-motion";
+
 @theme {
 	--breakpoint-hd: 1280px;
 	--breakpoint-fhd: 1920px;
@@ -15,7 +18,9 @@
 			scroll-behavior: smooth;
 		}
 	}
+
+	.hljs {
+		@apply !bg-blue-400/5
+	}
 }
 
-/* plugins */
-@plugin "tailwindcss-motion";

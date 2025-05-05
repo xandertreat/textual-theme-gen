@@ -7,10 +7,7 @@ export default createHandler(() => (
 			<html lang="en-US">
 				<head>
 					<meta charset="UTF-8" />
-					<meta
-						name="description"
-						content={process.env.SITE_DESCRIPTION ?? ""}
-					/>
+					<meta name="description" />
 					<meta
 						name="viewport"
 						content="width=device-width, viewport-fit=cover, initial-scale=1.0"
