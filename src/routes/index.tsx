@@ -23,7 +23,7 @@ const Index = () => {
 					<p class="font-semibold">#1.</p>
 					Import required dependencies
 				</h3>
-				{/* <CodeBlock lang="python" code={"from textual import theme"} /> */}
+				<CodeBlock lang="python" code={"from textual import theme"} />
 				<Preview />
 			</span>
 		</div>

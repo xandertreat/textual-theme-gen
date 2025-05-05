@@ -1,5 +1,5 @@
 import { cn } from "@util";
-import { animate, stagger, svg } from "animejs";
+import { animate, svg } from "animejs";
 import rehypeHighlight from "rehype-highlight";
 import type { JSX } from "solid-js";
 import { type Component, Show, createSignal, splitProps } from "solid-js";
@@ -38,7 +38,7 @@ const CopyButton: Component<CopyButtonProps> = (props) => {
 	return (
 		<button
 			type="button"
-			class="text-zinc-300 h-6 w-fit tooltip tooltip-right tooltip-info hover:cursor-pointer absolute right-2 translate-y-1/4 transition ease-in-out duration-200 opacity-10 group-hover:opacity-70 hover:opacity-100 hover:text-info"
+			class="h-6 w-fit tooltip tooltip-right tooltip-info hover:cursor-pointer absolute right-2 translate-y-1/4 transition ease-in-out duration-200 opacity-10 group-hover:opacity-70 hover:opacity-100 hover:text-info"
 			onClick={handleClick}
 			data-tip={label()}
 			{...rest}
