@@ -1,4 +1,4 @@
-import Icon from "./ui/icon";
+import Icon from "../ui/icon";
 
 const Preview = () => {
 	return <>Preview here</>;

@@ -26,6 +26,7 @@
 		"vitest": "^3.1.2"
 	},
 	"dependencies": {
+		"@corvu/popover": "^0.2.0",
 		"@fontsource-variable/roboto": "^5.2.5",
 		"@fontsource-variable/roboto-mono": "^5.2.5",
 		"@kobalte/core": "^0.13.9",
