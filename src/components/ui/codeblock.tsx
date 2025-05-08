@@ -1,10 +1,35 @@
-import { cn } from "@util";
-import { animate, svg } from "animejs";
-import rehypeHighlight from "rehype-highlight";
 import type { JSX } from "solid-js";
 import { type Component, Show, createSignal, splitProps } from "solid-js";
 import { SolidMarkdown, type SolidMarkdownOptions } from "solid-markdown";
+import rehypeHighlight from "rehype-highlight";
+import { gsap } from "gsap";
+import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
+import { cn } from "@util";
 import Icon from "./icon";
+gsap.registerPlugin(MorphSVGPlugin);
+
+type CopyStatus = "ready" | "success" | "error";
+
+enum CopyStatusLabel {
+	ready = "Copy",
+	success = "Copied!",
+	error = "Failed.",
+}
+
+const COPY_ICON = "pixelarticons:section-copy";
+const COPY_SUCCESS_ICON = "material-symbols:check-rounded";
+const COPY_ERROR_ICON = "charm:cross";
+
+const COPY_ICON_PROPS: Partial<JSX.SvgSVGAttributes<SVGSVGElement>> = {
+	viewBox: "0 0 24 24",
+	stroke: "currentColor",
+	fill: "none",
+	"stroke-width": "1",
+	"stroke-linecap": "round",
+	"stroke-linejoin": "round",
+};
+
+const QUERY_SELECTOR = "path";
 
 interface CopyButtonProps extends JSX.HTMLAttributes<HTMLButtonElement> {
 	code: string;
@@ -12,42 +37,76 @@ interface CopyButtonProps extends JSX.HTMLAttributes<HTMLButtonElement> {
 
 const CopyButton: Component<CopyButtonProps> = (props) => {
 	const [local, rest] = splitProps(props, ["code"]);
-	const [label, setLabel] = createSignal("Copy");
-	let svgCopy!: SVGSVGElement;
-	let svgCheck!: SVGSVGElement;
+	const [status, setStatus] = createSignal<CopyStatus>("ready");
+	let curPath!: SVGPathElement;
+	let successPath!: SVGPathElement;
+	let errorPath!: SVGPathElement;
+	let copyPath!: SVGPathElement;
 
 	const handleClick = async () => {
-		if (label() === "Copied") return;
-		await navigator.clipboard.writeText(local.code);
-		setLabel("Copied");
-
-		const pathCopy = svgCopy.querySelector<SVGPathElement>("path")!;
-		const pathCheck = svgCheck.querySelector<SVGPathElement>("path")!;
-
-		const toCheck = svg.morphTo(pathCheck);
-		const toCopy = svg.morphTo(pathCopy);
-
-		animate(pathCopy, { d: toCheck, duration: 300, ease: "inOutQuad" });
-
-		setTimeout(() => {
-			animate(pathCopy, { d: toCopy, duration: 300, ease: "inOutQuad" });
-			setLabel("Copy");
-		}, 2000);
+		if (status() !== "ready") return;
+		try {
+			await navigator.clipboard.writeText(local.code);
+			setStatus("success");
+			gsap.to(curPath, { duration: 0.2, morphSVG: successPath });
+		} catch {
+			setStatus("error");
+			gsap.to(curPath, { duration: 0.2, morphSVG: errorPath });
+		} finally {
+			setTimeout(() => {
+				gsap.to(curPath, { duration: 0.2, morphSVG: copyPath });
+				setStatus("ready");
+			}, 1500);
+		}
 	};
 
 	return (
 		<button
 			type="button"
-			class="h-6 w-fit tooltip tooltip-right tooltip-info hover:cursor-pointer absolute right-2 translate-y-1/4 transition ease-in-out duration-200 opacity-10 group-hover:opacity-70 hover:opacity-100 hover:text-info"
+			class="h-6 w-fit tooltip tooltip-right tooltip-info hover:cursor-pointer absolute right-2 translate-y-1/4 transition ease-in-out duration-200 "
+			classList={{
+				"tooltip-info hover:text-info opacity-10 group-hover:opacity-70 hover:opacity-100":
+					status() === "ready",
+				"tooltip-open tooltip-success text-success": status() === "success",
+				"tooltip-open tooltip-error text-error": status() === "error",
+			}}
 			onClick={handleClick}
-			data-tip={label()}
+			data-tip={CopyStatusLabel[status()]}
 			{...rest}
 		>
-			<Icon ref={svgCheck} icon="mdi:check" class="size-full" />
+			{/* Button icon */}
 			<Icon
-				ref={svgCopy}
-				icon="mdi:clipboard-multiple-outline"
-				class="size-full transition-[scale] ease-in-out duration-150 active:scale-90 motion-duration-300 motion-ease-in motion-opacity-out-100 opacity-0"
+				{...COPY_ICON_PROPS}
+				ref={(el) => {
+					curPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
+				}}
+				icon={COPY_ICON}
+				class="-scale-100 rotate-180 size-full transition-[scale] ease-in-out duration-150 active:-scale-90 motion-duration-300 motion-ease-in motion-opacity-out-100 opacity-0"
+			/>
+			{/* Morph targets */}
+			<Icon
+				{...COPY_ICON_PROPS}
+				style="display: none"
+				ref={(el) => {
+					copyPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
+				}}
+				icon={COPY_ICON}
+			/>
+			<Icon
+				{...COPY_ICON_PROPS}
+				style="display: none"
+				ref={(el) => {
+					successPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
+				}}
+				icon={COPY_SUCCESS_ICON}
+			/>
+			<Icon
+				{...COPY_ICON_PROPS}
+				style="display: none"
+				ref={(el) => {
+					errorPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
+				}}
+				icon={COPY_ERROR_ICON}
 			/>
 		</button>
 	);
@@ -76,7 +135,7 @@ const CodeBlock: Component<CodeBlockProps> = (props) => {
 	// DEFAULTS
 	local.copy ??= true;
 	local.details ??= true;
-	local.langIcon ??= `devicon:${local.lang}`;
+	local.langIcon ??= `logos:${local.lang}`;
 	const raw = `\`\`\`${local.lang}\n${local.code}\n\`\`\``;
 
 	const Markdown = () => (
@@ -100,7 +159,7 @@ const CodeBlock: Component<CodeBlockProps> = (props) => {
 		<Show when={local.details} fallback={<Markdown />}>
 			<div
 				class={cn(
-					"bg-zinc-800 border-zinc-900/80 border-2 rounded-md text-left text-base-300 relative group",
+					"bg-neutral text-neutral-content border-transparent border-2 rounded-md text-left relative group",
 					local.class,
 					local.classList,
 				)}
@@ -109,7 +168,7 @@ const CodeBlock: Component<CodeBlockProps> = (props) => {
 				<Show when={local.copy}>
 					<CopyButton code={local.code} />
 				</Show>
-				<span class="inline-flex items-center justify-center text-center align-middle gap-1 p-2">
+				<span class="inline-flex items-center justify-center text-center align-middle gap-1.5 p-2">
 					<Icon class="size-6" icon={local.langIcon} />
 					<p aria-label={`Language: ${local.lang}`}>{local.lang}</p>
 				</span>

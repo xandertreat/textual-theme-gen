@@ -442,7 +442,7 @@ const ErrorFallback: Component<
 
 export const Icon: Component<IconifyIconProps> = (raw) => {
 	const props = mergeProps(
-		{ showLoading: false, showError: true } as const,
+		{ showLoading: false, showError: false } as const,
 		raw,
 	);
 	const [events, rest] = splitProps(props, [

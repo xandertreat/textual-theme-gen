@@ -18,7 +18,7 @@ const Index = () => {
 				</sub>
 			</span>
 			<h2 class="text-4xl font-bold">How-to</h2>
-			<span class="flex flex-col gap-2 w-1/3">
+			<span class="flex flex-col gap-2">
 				<h3 class="text-3xl inline-flex gap-2">
 					<p class="font-semibold">#1.</p>
 					Import required dependencies
