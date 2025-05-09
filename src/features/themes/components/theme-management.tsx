@@ -1,7 +1,8 @@
 import type { Component, JSX } from "solid-js";
-import ThemeList from "./theme-list";
+import { ThemeProvider } from "../context/theme";
 import Preview from "./preview";
 import ThemeCreation from "./theme-creation";
+import ThemeList from "./theme-list";
 
 const ThemeManagement: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	passed,

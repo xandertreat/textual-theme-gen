@@ -1,10 +1,10 @@
+import { cn } from "@util";
+import { gsap } from "gsap";
+import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
+import rehypeHighlight from "rehype-highlight";
 import type { JSX } from "solid-js";
 import { type Component, Show, createSignal, splitProps } from "solid-js";
 import { SolidMarkdown, type SolidMarkdownOptions } from "solid-markdown";
-import rehypeHighlight from "rehype-highlight";
-import { gsap } from "gsap";
-import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
-import { cn } from "@util";
 import Icon from "./icon";
 gsap.registerPlugin(MorphSVGPlugin);
 

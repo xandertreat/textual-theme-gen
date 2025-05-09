@@ -1,5 +1,5 @@
 import type { Component, JSX } from "solid-js";
-import Icon from "../ui/icon";
+import Icon from "../../../components/ui/icon";
 
 const ThemeCreation: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	passed,
