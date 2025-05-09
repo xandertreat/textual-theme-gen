@@ -1,7 +1,15 @@
 import { getColorData } from "../lib/utils";
 import type { TextualTheme } from "../types";
 
-export const VER_KEY = "0.0.1";
+const VERSION = 1;
+export const VERSION_KEY = () => {
+	let key = (VERSION ^ (VERSION >>> 16)) * 0x45d9f3b;
+	key = (key ^ (key >>> 16)) * 0x45d9f3b;
+	key = key ^ (key >>> 16);
+	return key >>> 0;
+};
+
+export const DEFAULT_THEME = "textual-light";
 export const STARTING_THEMES: TextualTheme[] = [
 	// BUILT IN THEMES FROM TEXTUAL
 	{

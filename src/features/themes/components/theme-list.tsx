@@ -27,7 +27,7 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 			<a
 				type="button"
 				class="btn btn-ghost h-fit p-0 px-1 py-0 rounded-sm font-light flex gap-1 justify-between"
-				classList={{ "btn-active": currentTheme.name === props.label }}
+				classList={{ "btn-active": props.label === currentTheme.name }}
 				// biome-ignore lint/a11y/useValidAnchor: <explanation>
 				onClick={() => setCurrentTheme(props.label)}
 			>
