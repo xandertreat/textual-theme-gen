@@ -6,13 +6,6 @@ import type {
 	TextualTheme,
 } from "~/features/themes/types";
 
-export const cleanThemeName = (name: string) => {
-	return name
-		.replace(/[^a-zA-Z0-9]/g, "_")
-		.trim()
-		.toLowerCase();
-};
-
 export const getTextualColor = (hex: HexColorCode): TextualColor => {
 	const color = Color(hex);
 	const textHex = color.isLight() ? "#000000" : "#ffffff";
@@ -36,6 +29,18 @@ export const getColorData = (hex: HexColorCode): TextualGeneratedColor => {
 		"darken-2": getTextualColor(color.darken(0.2).hex() as HexColorCode),
 		"darken-3": getTextualColor(color.darken(0.3).hex() as HexColorCode),
 	};
+};
+export const getPaletteColor = (
+	theme: TextualTheme,
+	color: string,
+): HexColorCode => {
+	if (
+		!theme ||
+		!theme.palette ||
+		!theme.palette[color as keyof typeof theme.palette]
+	)
+		return "#000000";
+	return theme.palette[color as keyof typeof theme.palette].base.color;
 };
 
 export const getThemeCode = (theme: TextualTheme) => {

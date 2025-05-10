@@ -1,0 +1,50 @@
+import type { Component, JSX } from "solid-js";
+import { useTheme } from "../context/theme";
+import { action, useSubmission, useAction } from "@solidjs/router";
+import ActionDialog from "~/components/ui/action-dialog";
+import Icon from "~/components/ui/icon";
+
+const ThemeReset: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
+	props,
+) => {
+	const { resetData } = useTheme();
+	const resetAction = action(async () => {
+		return await Promise.resolve(resetData());
+	}, "deleteAction");
+	const submission = useSubmission(resetAction);
+
+	return (
+		<ActionDialog>
+			<ActionDialog.Trigger class="inline-flex items-center" {...props}>
+				<Icon class="size-full" icon="mdi:alert" />
+				Reset data
+			</ActionDialog.Trigger>
+			<ActionDialog.Portal>
+				<ActionDialog.Overlay class="absolute inset-0 w-screen h-screen bg-black opacity-50 motion-duration-200 motion-ease-in-out motion-opacity-in-0" />
+				<ActionDialog.Content class="flex flex-col items-center text-center">
+					<ActionDialog.Close />
+					<span class="flex flex-col gap-2">
+						<h2 class="text-3xl font-bold">Reset Data</h2>
+						<span>
+							<p>Are you sure you want to reset your data to default?</p>
+							<p class="text-error text-xs">
+								This action is <b>PERMANENT</b> and cannot be undone.
+							</p>
+						</span>
+						<ActionDialog.Close tabIndex={-1} class="">
+							<button
+								onClick={useAction(resetAction)}
+								type="button"
+								class="size-full btn btn-error"
+							>
+								{submission.pending ? "..." : "RESET"}
+							</button>
+						</ActionDialog.Close>
+					</span>
+				</ActionDialog.Content>
+			</ActionDialog.Portal>
+		</ActionDialog>
+	);
+};
+
+export default ThemeReset;

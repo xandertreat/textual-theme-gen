@@ -1,10 +1,11 @@
 // @refresh reload
 import { StartServer, createHandler } from "@solidjs/start/server";
+import { DEFAULT_THEME } from "./context/app-theme";
 
 export default createHandler(() => (
 	<StartServer
 		document={({ assets, children, scripts }) => (
-			<html lang="en-US">
+			<html lang="en-US" data-theme={DEFAULT_THEME}>
 				<head>
 					<meta charset="UTF-8" />
 					<meta name="description" />
@@ -31,6 +32,10 @@ export default createHandler(() => (
 					<meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
 					<meta name="theme-color" content="#ffffff" />
 					{assets}
+					<script>
+						` const localData = localStorage.getItem("theme"); if (localData)
+						document.documentElement.dataset.theme = localData; `
+					</script>
 				</head>
 				<body>
 					<div id="app">{children}</div>
