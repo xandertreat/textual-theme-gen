@@ -15,31 +15,7 @@ const RandomTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 	props,
 ) => {
 	let die!: SVGSVGElement;
-	const timingFunctions = [
-		"ease",
-		"ease-linear",
-		"ease-in",
-		"ease-out",
-		"ease-in-out",
-		"ease-spring-smooth",
-		"ease-spring-snappy",
-		"ease-spring-bouncy",
-		"ease-spring-bouncier",
-		"ease-spring-bounciest",
-		"ease-bounce",
-		"ease-in-quad",
-		"ease-in-cubic",
-		"ease-in-quart",
-		"ease-in-back",
-		"ease-out-quad",
-		"ease-out-cubic",
-		"ease-out-quart",
-		"ease-out-back",
-		"ease-in-out-quad",
-		"ease-in-out-cubic",
-		"ease-in-out-quart",
-		"ease-in-out-back",
-	];
+	let rotating = false;
 
 	return (
 		<button
@@ -47,28 +23,22 @@ const RandomTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 			data-tip="Random"
 			class="btn btn-circle tooltip tooltip-top"
 			onClick={() => {
-				if (die.classList.contains("motion-running")) return;
-				const randomTimingFunction =
-					timingFunctions[Math.floor(Math.random() * timingFunctions.length)];
-				const timingClass = `motion-${randomTimingFunction}`;
-				die.classList.toggle(timingClass);
-				die.classList.toggle("motion-paused");
-				die.classList.toggle("motion-running");
-				setTimeout(
-					() => {
-						die.classList.toggle("motion-paused");
-						die.classList.toggle("motion-running");
-						die.classList.toggle(timingClass);
-					},
-					Math.random() * 100 * Math.random() * 10 + 200,
+				if (rotating) return;
+				rotating = true;
+				const rotations = Math.round(
+					(Math.random() + 1) * (Math.random() * 10),
 				);
+				const dur = Math.round((Math.random() + 0.15) * 2000);
+				die.classList.toggle(`motion-rotate-out-[${rotations}turn]`);
+				die.classList.toggle(`motion-duration-${dur}ms`);
+				setTimeout(() => {
+					die.classList.toggle(`motion-duration-${dur}ms`);
+					die.classList.toggle(`motion-rotate-out-[${rotations}turn]`);
+					rotating = false;
+				}, dur);
 			}}
 		>
-			<Icon
-				ref={die}
-				class="size-6 motion-duration-200 motion-rotate-loop-[1turn] motion-ease-in-out motion-paused"
-				icon="mdi:dice"
-			/>
+			<Icon ref={die} class="size-6 motion-ease-out-cubic" icon="mdi:dice" />
 		</button>
 	);
 };
