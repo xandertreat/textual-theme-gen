@@ -1,15 +1,15 @@
+import { action, useAction, useSubmission } from "@solidjs/router";
 import type { Component, JSX } from "solid-js";
+import ActionDialog from "~/components/ui/action-dialog";
 import Icon from "~/components/ui/icon";
 import { useTheme } from "../context/theme";
-import { action, useSubmission, useAction } from "@solidjs/router";
-import ActionDialog from "~/components/ui/action-dialog";
 
 interface DeleteThemeProps extends JSX.HTMLAttributes<HTMLButtonElement> {
 	theme: string;
 }
 
 const DeleteTheme: Component<DeleteThemeProps> = (props) => {
-	const { themeData: data, currentTheme, updateCurrentTheme } = useTheme();
+	const { deleteTheme } = useTheme();
 
 	return (
 		<ActionDialog>
@@ -38,9 +38,7 @@ const DeleteTheme: Component<DeleteThemeProps> = (props) => {
 									el.classList.add("motion-opacity-out-0");
 									el.classList.add("motion-translate-x-out-50");
 									setTimeout(() => {
-										if (currentTheme.name === props.theme && data.size >= 1)
-											updateCurrentTheme(data.get([...data.keys()][0])!);
-										data.delete(props.theme);
+										deleteTheme(props.theme);
 									}, 300);
 								}}
 								type="submit"

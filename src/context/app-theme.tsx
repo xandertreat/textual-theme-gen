@@ -1,20 +1,20 @@
-import Icon from "~/components/ui/icon";
+import Popover, { useDialogContext } from "@corvu/popover";
+import { makePersisted } from "@solid-primitives/storage";
 import {
-	createSignal,
-	createContext,
-	type Component,
-	type JSX,
 	type Accessor,
+	type Component,
+	For,
+	type JSX,
+	Match,
 	type Setter,
-	useContext,
+	Switch,
+	createContext,
 	createEffect,
 	createMemo,
-	For,
-	Switch,
-	Match,
+	createSignal,
+	useContext,
 } from "solid-js";
-import { makePersisted } from "@solid-primitives/storage";
-import Popover, { useDialogContext } from "@corvu/popover";
+import Icon from "~/components/ui/icon";
 
 type AppTheme = "system" | "light" | "dark";
 export const DEFAULT_APP_THEME: AppTheme = "system";

@@ -30,6 +30,72 @@ export const getColorData = (hex: HexColorCode): TextualGeneratedColor => {
 		"darken-3": getTextualColor(color.darken(0.3).hex() as HexColorCode),
 	};
 };
+
+export const genRandomTheme = (): TextualTheme => {
+	const randomName = () => {
+		const chars = [
+			"b",
+			"c",
+			"d",
+			"e",
+			"f",
+			"g",
+			"h",
+			"i",
+			"j",
+			"k",
+			"l",
+			"m",
+			"n",
+			"o",
+			"p",
+			"q",
+			"r",
+			"s",
+			"t",
+			"u",
+			"v",
+			"w",
+			"x",
+			"y",
+		];
+		return chars
+			.map(() => {
+				const char = chars[Math.floor(Math.random() * chars.length)];
+				if (Math.random() > 0.5) return char.toUpperCase();
+				return char;
+			})
+			.splice(0, 5)
+			.join("");
+	};
+	const randomLCH = () =>
+		Color().lch(Math.random() * 100, Math.random() * 100, Math.random() * 360);
+	const randomHex = () => {
+		return randomLCH().hex() as HexColorCode;
+	};
+	const bg = randomLCH();
+	const darkTheme = bg.isDark();
+	return {
+		name: `random-${randomName()}`,
+		palette: {
+			primary: getColorData(randomHex()),
+			secondary: getColorData(randomHex()),
+			accent: getColorData(randomHex()),
+			background: getColorData(bg.hex() as HexColorCode),
+			foreground: getColorData(randomHex()),
+			surface: getColorData(randomHex()),
+			panel: getColorData(randomHex()),
+			success: getColorData(randomHex()),
+			warning: getColorData(randomHex()),
+			error: getColorData(randomHex()),
+			boost: getColorData(randomHex()),
+		},
+		dark: darkTheme,
+		variables: {},
+		source: "user",
+	};
+};
+
 export const getPaletteColor = (
 	theme: TextualTheme,
 	color: string,

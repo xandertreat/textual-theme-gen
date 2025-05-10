@@ -1,19 +1,22 @@
 import { ReactiveMap } from "@solid-primitives/map";
+import { makePersisted } from "@solid-primitives/storage";
 import type { Component, JSX } from "solid-js";
 import { createContext, createEffect, onMount, useContext } from "solid-js";
-import { createStore, type SetStoreFunction } from "solid-js/store";
-import { STARTING_THEMES, VERSION_KEY } from "../data/themes";
+import { type SetStoreFunction, createStore } from "solid-js/store";
+import { GET_DEFAULT_THEMES, VERSION_KEY } from "../data/themes";
 import type { TextualTheme } from "../types";
-import { makePersisted } from "@solid-primitives/storage";
 
-const STORAGE_KEY = `themes-${VERSION_KEY()}`;
+const STORAGE_KEY = `saved-${VERSION_KEY()}`;
+const LAST_SELECTED_KEY = `last-selected-${VERSION_KEY()}`;
 
 type ThemeStorage = ReactiveMap<string, TextualTheme>;
 
 export interface ThemeContext {
-	themeData: ThemeStorage;
-	currentTheme: TextualTheme;
-	updateCurrentTheme: SetStoreFunction<TextualTheme>;
+	data: ThemeStorage;
+	selectedTheme: TextualTheme;
+	addTheme: (theme: TextualTheme) => void;
+	deleteTheme: (theme: TextualTheme) => boolean;
+	modifyTheme: SetStoreFunction<TextualTheme>;
 	resetData: () => void;
 }
 
@@ -28,46 +31,71 @@ export const useTheme = () => {
 
 export const ThemeProvider: Component<{ children: JSX.Element }> = (props) => {
 	// all stored theme data
-	const themeData = new ReactiveMap<string, TextualTheme>(
-		STARTING_THEMES.map((t) => [t.name, t]),
+	const data = new ReactiveMap<string, TextualTheme>(
+		GET_DEFAULT_THEMES().map((t) => [t.name, t]),
 	);
-	const INITIAL_THEME = STARTING_THEMES[0];
+	const getFirstTheme = () => data.get([...data.keys()][0])!;
 
 	// current theme data
-	const [currentTheme, updateCurrentTheme] = makePersisted(
-		createStore<TextualTheme>(INITIAL_THEME),
-		{ name: `theme-${VERSION_KEY()}-current` },
+	const [selectedTheme, modifyTheme] = createStore<TextualTheme>(
+		getFirstTheme(),
 	);
 
 	onMount(() => {
 		// load from local storage (if any)
 		const localData = localStorage.getItem(STORAGE_KEY);
 		if (localData) {
-			themeData.clear();
+			data.clear();
 			for (const t of JSON.parse(localData))
-				themeData.set(t.name, t as TextualTheme);
+				data.set(t.name, t as TextualTheme);
+		}
+		const lastSelected = localStorage.getItem(LAST_SELECTED_KEY);
+		if (lastSelected) {
+			const lastSelectedTheme = JSON.parse(lastSelected);
+			if (data.has(lastSelectedTheme.name))
+				modifyTheme(JSON.parse(lastSelected));
 		}
 
 		// sync local storage from now on
 		createEffect(() => {
 			localStorage.setItem(
 				STORAGE_KEY,
-				JSON.stringify(Array.from(themeData.values())),
+				JSON.stringify(Array.from(data.values())),
 			);
+		});
+		createEffect(() => {
+			localStorage.setItem(LAST_SELECTED_KEY, JSON.stringify(selectedTheme));
 		});
 	});
 
+	const addTheme = (theme: TextualTheme) => {
+		const clone = JSON.parse(JSON.stringify(theme));
+		clone.source = "user";
+		modifyTheme(clone);
+		data.set(theme.name, clone);
+	};
+
+	const deleteTheme = (theme: TextualTheme | string) => {
+		const name = typeof theme === "string" ? theme : theme.name;
+		const success = data.delete(name);
+		if (success && selectedTheme.name === name) modifyTheme(getFirstTheme());
+		return success;
+	};
+
 	const resetData = () => {
-		themeData.clear();
-		for (const t of STARTING_THEMES) themeData.set(t.name, t as TextualTheme);
+		data.clear();
+		for (const t of GET_DEFAULT_THEMES()) data.set(t.name, t);
+		modifyTheme(getFirstTheme());
 	};
 
 	return (
 		<ThemeContext.Provider
 			value={{
-				themeData,
-				currentTheme,
-				updateCurrentTheme,
+				data,
+				selectedTheme,
+				addTheme,
+				deleteTheme,
+				modifyTheme,
 				resetData,
 			}}
 		>

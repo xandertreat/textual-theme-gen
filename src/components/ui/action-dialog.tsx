@@ -1,21 +1,21 @@
 import Dialog from "@corvu/dialog";
 import type {
+	CloseProps,
+	ContentProps,
+	OverlayProps,
+	PortalProps,
 	RootProps,
 	TriggerProps,
-	PortalProps,
-	OverlayProps,
-	ContentProps,
-	CloseProps,
 } from "@corvu/dialog";
 import {
 	type Component,
-	type JSX,
 	type ComponentProps,
+	type JSX,
 	mergeProps,
 } from "solid-js";
 import type { Portal } from "solid-js/web";
-import Icon from "./icon";
 import { cn } from "~/lib/util";
+import Icon from "./icon";
 
 const Root: Component<RootProps> = (props) => <Dialog {...props} />;
 

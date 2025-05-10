@@ -1,14 +1,14 @@
 import Dialog from "@corvu/dialog";
 import { action, useAction, useSubmission } from "@solidjs/router";
 import type { Component, JSX } from "solid-js";
+import ActionDialog from "~/components/ui/action-dialog";
 import Icon from "../../../components/ui/icon";
 import { useTheme } from "../context/theme";
-import ActionDialog from "~/components/ui/action-dialog";
 
 const SaveTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 	props,
 ) => {
-	const { themeData, currentTheme, updateCurrentTheme } = useTheme();
+	const { data, selectedTheme, modifyTheme } = useTheme();
 
 	const saveAction = action(async (formData: FormData) => {
 		try {
@@ -22,8 +22,8 @@ const SaveTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 				.toArray()
 				.join("-");
 			console.log(`Saving theme "${name}"`);
-			updateCurrentTheme("name", name);
-			themeData.set(name, JSON.parse(JSON.stringify(currentTheme)));
+			modifyTheme("name", name);
+			data.set(name, JSON.parse(JSON.stringify(selectedTheme)));
 		} catch (error) {
 			console.error(error);
 			return { error: true };
@@ -62,7 +62,7 @@ const SaveTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 								<input
 									type="text"
 									name="name"
-									value={currentTheme.name}
+									value={selectedTheme.name}
 									placeholder="Theme name"
 									class="peer"
 									pattern="[a-zA-Z]+(?:-[a-zA-Z]+)*"

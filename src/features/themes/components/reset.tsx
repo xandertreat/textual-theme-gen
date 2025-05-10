@@ -1,8 +1,8 @@
+import { action, useAction, useSubmission } from "@solidjs/router";
 import type { Component, JSX } from "solid-js";
-import { useTheme } from "../context/theme";
-import { action, useSubmission, useAction } from "@solidjs/router";
 import ActionDialog from "~/components/ui/action-dialog";
 import Icon from "~/components/ui/icon";
+import { useTheme } from "../context/theme";
 
 const ThemeReset: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 	props,

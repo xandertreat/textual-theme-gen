@@ -3,9 +3,11 @@ import type { Component, JSX } from "solid-js";
 import { For, Show, createMemo, mergeProps } from "solid-js";
 import Icon from "../../../components/ui/icon";
 import { useTheme } from "../context/theme";
-import SaveTheme from "./save";
+import { genRandomTheme } from "../lib/utils";
+import type { TextualTheme } from "../types";
 import ThemeOption from "./option";
 import ThemeReset from "./reset";
+import SaveTheme from "./save";
 
 interface DeleteThemeProps extends JSX.HTMLAttributes<HTMLButtonElement> {
 	theme: string;
@@ -14,9 +16,9 @@ interface DeleteThemeProps extends JSX.HTMLAttributes<HTMLButtonElement> {
 const RandomTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 	props,
 ) => {
+	const { addTheme } = useTheme();
 	let die!: SVGSVGElement;
 	let rotating = false;
-
 	return (
 		<button
 			type="button"
@@ -31,6 +33,7 @@ const RandomTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 				const dur = Math.round((Math.random() + 0.15) * 2000);
 				die.classList.toggle(`motion-rotate-out-[${rotations}turn]`);
 				die.classList.toggle(`motion-duration-${dur}ms`);
+				addTheme(genRandomTheme());
 				setTimeout(() => {
 					die.classList.toggle(`motion-duration-${dur}ms`);
 					die.classList.toggle(`motion-rotate-out-[${rotations}turn]`);
@@ -81,7 +84,7 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 	const props = mergeProps({ showOptions: true }, passed);
 
 	// state
-	const { themeData: data } = useTheme();
+	const { data } = useTheme();
 	const userThemes = createMemo(() =>
 		Array.from(data.values().filter((t) => t.source === "user")),
 	);

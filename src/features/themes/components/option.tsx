@@ -1,18 +1,18 @@
 import Dialog from "@corvu/dialog";
 import { action, useSubmission } from "@solidjs/router";
 import type { Component, JSX } from "solid-js";
-import { createMemo, Show } from "solid-js";
+import { Show, createMemo } from "solid-js";
 import Icon from "../../../components/ui/icon";
 import { useTheme } from "../context/theme";
-import DeleteTheme from "./delete";
 import { getPaletteColor } from "../lib/utils";
+import DeleteTheme from "./delete";
 
 interface ThemeOptionPreviewProps extends JSX.HTMLAttributes<HTMLDivElement> {
 	theme: string;
 }
 
 const ThemeOptionPreview: Component<ThemeOptionPreviewProps> = (props) => {
-	const { themeData: data } = useTheme();
+	const { data } = useTheme();
 	const theme = createMemo(() => data.get(props.theme)!);
 
 	return (
@@ -34,7 +34,7 @@ interface ThemeOptionProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const ThemeOption: Component<ThemeOptionProps> = (props) => {
-	const { themeData, currentTheme, updateCurrentTheme } = useTheme();
+	const { data, selectedTheme, modifyTheme } = useTheme();
 
 	return (
 		<li
@@ -44,16 +44,16 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 			<a
 				type="button"
 				class="btn btn-ghost h-fit p-0 px-1 py-0 rounded-sm font-light flex gap-1 justify-between"
-				classList={{ "btn-active": props.theme === currentTheme.name }}
+				classList={{ "btn-active": props.theme === selectedTheme.name }}
 				// biome-ignore lint/a11y/useValidAnchor: <explanation>
-				onClick={() => updateCurrentTheme(themeData.get(props.theme)!)}
+				onClick={() => modifyTheme(data.get(props.theme)!)}
 			>
 				<span class="inline-flex items-center gap-2">
 					<ThemeOptionPreview
 						class="ml-0 size-6 grid grid-cols-2 grid-rows-2 gap-0.75 p-1 rounded *:rounded shadow col-span-1 row-span-1"
 						theme={props.theme}
 					/>
-					{props.theme.toLocaleLowerCase()}
+					{props.theme}
 				</span>
 				<Show when={props.showDelete}>
 					<DeleteTheme

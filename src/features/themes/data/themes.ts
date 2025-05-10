@@ -10,7 +10,7 @@ export const VERSION_KEY = () => {
 };
 
 export const DEFAULT_THEME = "textual-light";
-export const STARTING_THEMES: TextualTheme[] = [
+const STARTING_THEMES: TextualTheme[] = [
 	// BUILT IN THEMES FROM TEXTUAL
 	{
 		name: "textual-light",
@@ -1393,3 +1393,6 @@ export const STARTING_THEMES: TextualTheme[] = [
 		source: "preset",
 	},
 ];
+
+export const GET_DEFAULT_THEMES = () =>
+	JSON.parse(JSON.stringify(STARTING_THEMES)) as TextualTheme[];
