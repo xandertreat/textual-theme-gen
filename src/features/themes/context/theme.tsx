@@ -15,7 +15,7 @@ export interface ThemeContext {
 	data: ThemeStorage;
 	selectedTheme: TextualTheme;
 	addTheme: (theme: TextualTheme) => void;
-	deleteTheme: (theme: TextualTheme) => boolean;
+	deleteTheme: (theme: TextualTheme | string) => boolean;
 	modifyTheme: SetStoreFunction<TextualTheme>;
 	resetData: () => void;
 }
