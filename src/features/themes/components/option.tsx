@@ -1,8 +1,5 @@
-import Dialog from "@corvu/dialog";
-import { action, useSubmission } from "@solidjs/router";
 import type { Component, JSX } from "solid-js";
 import { Show, createMemo } from "solid-js";
-import Icon from "../../../components/ui/icon";
 import { useTheme } from "../context/theme";
 import { getPaletteColor } from "../lib/utils";
 import DeleteTheme from "./delete";

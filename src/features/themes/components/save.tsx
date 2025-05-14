@@ -1,6 +1,5 @@
-import Dialog from "@corvu/dialog";
-import { action, useAction, useSubmission } from "@solidjs/router";
-import { createSignal, type Component, type JSX } from "solid-js";
+import { action, useSubmission } from "@solidjs/router";
+import { type Component, type JSX, createSignal } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import Icon from "../../../components/ui/icon";
 import { useTheme } from "../context/theme";

@@ -1,5 +1,4 @@
 import Color, { type ColorInstance } from "color";
-import { C } from "vitest/dist/chunks/reporters.d.DG9VKi4m.js";
 import type {
 	HexColorCode,
 	TextualColor,
@@ -7,6 +6,11 @@ import type {
 	TextualTheme,
 } from "~/features/themes/types";
 
+/**
+ * Generates a TextualColor object with base, text, muted, and disabled colors from a base ColorInstance.
+ * @param base The base color instance.
+ * @returns A TextualColor object.
+ */
 export const getTextualColor = (base: ColorInstance): TextualColor => {
 	const textColor = Color(base.isLight() ? "#000000" : "#FFFFFF");
 	return {
@@ -17,6 +21,11 @@ export const getTextualColor = (base: ColorInstance): TextualColor => {
 	};
 };
 
+/**
+ * Generates a TextualGeneratedColor object with various shades of a base color.
+ * @param hex The base color in hex format.
+ * @returns A TextualGeneratedColor object.
+ */
 export const getColorData = (hex: HexColorCode): TextualGeneratedColor => {
 	const color = Color(hex);
 	return {
@@ -30,6 +39,10 @@ export const getColorData = (hex: HexColorCode): TextualGeneratedColor => {
 	};
 };
 
+/**
+ * Generates a random theme object.
+ * @returns A random TextualTheme object.
+ */
 export const genRandomTheme = (): TextualTheme => {
 	const randomName = () => {
 		const chars = [
@@ -106,6 +119,12 @@ export const genRandomTheme = (): TextualTheme => {
 	};
 };
 
+/**
+ * Retrieves the base color hex code for a specific color key from a theme's palette.
+ * @param theme The TextualTheme object.
+ * @param color The key of the color in the palette.
+ * @returns The hex color code.
+ */
 export const getPaletteColor = (
 	theme: TextualTheme,
 	color: string,
@@ -119,6 +138,11 @@ export const getPaletteColor = (
 	return theme.palette[color as keyof typeof theme.palette].base.color;
 };
 
+/**
+ * Generates a Python code string for defining a Textual Theme object.
+ * @param theme The TextualTheme object.
+ * @returns A string containing the Python code.
+ */
 export const getThemeCode = (theme: TextualTheme) => {
 	return `
 ${theme.name}_theme = Theme(
@@ -139,6 +163,11 @@ ${theme.name}_theme = Theme(
 `;
 };
 
+/**
+ * Generates a Python code string for registering and setting a theme in a Textual App.
+ * @param theme The TextualTheme object.
+ * @returns A string containing the Python code.
+ */
 export const getThemeRegistrationCode = (theme: TextualTheme) => {
 	return `
 from textual.app import App

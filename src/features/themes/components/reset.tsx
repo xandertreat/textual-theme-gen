@@ -1,4 +1,3 @@
-import { action, useAction, useSubmission } from "@solidjs/router";
 import type { Component, JSX } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import Icon from "~/components/ui/icon";
@@ -8,10 +7,6 @@ const ThemeReset: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 	props,
 ) => {
 	const { resetData } = useTheme();
-	const resetAction = action(async () => {
-		return await Promise.resolve(resetData());
-	}, "deleteAction");
-	const submission = useSubmission(resetAction);
 
 	return (
 		<ActionDialog>
@@ -33,12 +28,11 @@ const ThemeReset: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 						</span>
 						<ActionDialog.Close tabIndex={-1} class="">
 							<button
-								onClick={useAction(resetAction)}
-								disabled={submission.pending}
+								onClick={() => resetData()}
 								type="button"
 								class="size-full btn btn-error"
 							>
-								{submission.pending ? "..." : "RESET"}
+								RESET
 							</button>
 						</ActionDialog.Close>
 					</span>
