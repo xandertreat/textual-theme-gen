@@ -123,7 +123,7 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 					fallback={<li>No themes found</li>}
 				>
 					<For each={textualThemes()}>
-						{(theme) => <ThemeOption theme={theme.name} showDelete />}
+						{(theme) => <ThemeOption theme={theme.name} />}
 					</For>
 				</Show>
 				<li class="menu-title py-0 p text-left mt-5">Presets</li>

@@ -1,4 +1,5 @@
-import Color from "color";
+import Color, { type ColorInstance } from "color";
+import { C } from "vitest/dist/chunks/reporters.d.DG9VKi4m.js";
 import type {
 	HexColorCode,
 	TextualColor,
@@ -6,34 +7,33 @@ import type {
 	TextualTheme,
 } from "~/features/themes/types";
 
-export const getTextualColor = (hex: HexColorCode): TextualColor => {
-	const color = Color(hex);
-	const textHex = color.isLight() ? "#000000" : "#ffffff";
-	const text = Color(textHex);
+export const getTextualColor = (base: ColorInstance): TextualColor => {
+	const textColor = Color(base.isLight() ? "#000000" : "#FFFFFF");
 	return {
-		color: hex,
-		text: textHex as HexColorCode,
-		muted: text.mix(Color(color).fade(0.3)).hex() as HexColorCode,
-		disabled: text.mix(Color(color).fade(0.5)).hex() as HexColorCode,
+		color: base.hex() as HexColorCode,
+		text: textColor.hex() as HexColorCode,
+		muted: textColor.mix(base.fade(0.3)).hex() as HexColorCode,
+		disabled: textColor.mix(base.fade(0.5)).hex() as HexColorCode,
 	};
 };
 
 export const getColorData = (hex: HexColorCode): TextualGeneratedColor => {
 	const color = Color(hex);
 	return {
-		base: getTextualColor(hex),
-		"lighten-1": getTextualColor(color.lighten(0.1).hex() as HexColorCode),
-		"lighten-2": getTextualColor(color.lighten(0.2).hex() as HexColorCode),
-		"lighten-3": getTextualColor(color.lighten(0.3).hex() as HexColorCode),
-		"darken-1": getTextualColor(color.darken(0.1).hex() as HexColorCode),
-		"darken-2": getTextualColor(color.darken(0.2).hex() as HexColorCode),
-		"darken-3": getTextualColor(color.darken(0.3).hex() as HexColorCode),
+		base: getTextualColor(color),
+		"lighten-1": getTextualColor(color.lighten(0.1)),
+		"lighten-2": getTextualColor(color.lighten(0.2)),
+		"lighten-3": getTextualColor(color.lighten(0.3)),
+		"darken-1": getTextualColor(color.darken(0.1)),
+		"darken-2": getTextualColor(color.darken(0.2)),
+		"darken-3": getTextualColor(color.darken(0.3)),
 	};
 };
 
 export const genRandomTheme = (): TextualTheme => {
 	const randomName = () => {
 		const chars = [
+			"a",
 			"b",
 			"c",
 			"d",
@@ -58,6 +58,16 @@ export const genRandomTheme = (): TextualTheme => {
 			"w",
 			"x",
 			"y",
+			"1",
+			"2",
+			"3",
+			"4",
+			"5",
+			"6",
+			"7",
+			"8",
+			"9",
+			"0",
 		];
 		return chars
 			.map(() => {
@@ -65,11 +75,11 @@ export const genRandomTheme = (): TextualTheme => {
 				if (Math.random() > 0.5) return char.toUpperCase();
 				return char;
 			})
-			.splice(0, 5)
+			.splice(0, 8)
 			.join("");
 	};
 	const randomLCH = () =>
-		Color().lch(Math.random() * 100, Math.random() * 100, Math.random() * 360);
+		Color().lch(Math.random() * 100, Math.random() * 130, Math.random() * 360);
 	const randomHex = () => {
 		return randomLCH().hex() as HexColorCode;
 	};

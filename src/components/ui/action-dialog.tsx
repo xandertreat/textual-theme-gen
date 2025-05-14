@@ -41,7 +41,7 @@ const Overlay: Component<ActionOverlayProps> = (props) => (
 		{...mergeProps(
 			{
 				class:
-					"fixed inset-0 z-50 bg-black opacity-50 h-screen w-screen motion-duration-200 motion-ease-in-out motion-opacity-in-0",
+					"fixed inset-0 z-50 bg-black opacity-50 h-full w-full motion-duration-200 motion-ease-in-out motion-opacity-in-0",
 			},
 			props,
 		)}

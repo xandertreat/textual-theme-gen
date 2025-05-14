@@ -17,7 +17,7 @@ const DeleteTheme: Component<DeleteThemeProps> = (props) => {
 				<Icon class="size-full" icon="mdi:trash-can-outline" />
 			</ActionDialog.Trigger>
 			<ActionDialog.Portal>
-				<ActionDialog.Overlay class="absolute inset-0 w-screen h-screen bg-black opacity-50 motion-duration-200 motion-ease-in-out motion-opacity-in-0" />
+				<ActionDialog.Overlay />
 				<ActionDialog.Content class="flex flex-col items-center text-center">
 					<ActionDialog.Close />
 					<span class="flex flex-col gap-2">

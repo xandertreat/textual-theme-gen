@@ -20,7 +20,7 @@ const ThemeReset: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 				Reset data
 			</ActionDialog.Trigger>
 			<ActionDialog.Portal>
-				<ActionDialog.Overlay class="absolute inset-0 w-screen h-screen bg-black opacity-50 motion-duration-200 motion-ease-in-out motion-opacity-in-0" />
+				<ActionDialog.Overlay />
 				<ActionDialog.Content class="flex flex-col items-center text-center">
 					<ActionDialog.Close />
 					<span class="flex flex-col gap-2">
@@ -34,6 +34,7 @@ const ThemeReset: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 						<ActionDialog.Close tabIndex={-1} class="">
 							<button
 								onClick={useAction(resetAction)}
+								disabled={submission.pending}
 								type="button"
 								class="size-full btn btn-error"
 							>

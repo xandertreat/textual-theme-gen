@@ -3,7 +3,7 @@ import { makePersisted } from "@solid-primitives/storage";
 import type { Component, JSX } from "solid-js";
 import { createContext, createEffect, onMount, useContext } from "solid-js";
 import { type SetStoreFunction, createStore } from "solid-js/store";
-import { GET_DEFAULT_THEMES, VERSION_KEY } from "../data/themes";
+import { DEFAULT_THEMES, VERSION_KEY } from "../data/themes";
 import type { TextualTheme } from "../types";
 
 const STORAGE_KEY = `saved-${VERSION_KEY()}`;
@@ -32,7 +32,7 @@ export const useTheme = () => {
 export const ThemeProvider: Component<{ children: JSX.Element }> = (props) => {
 	// all stored theme data
 	const data = new ReactiveMap<string, TextualTheme>(
-		GET_DEFAULT_THEMES().map((t) => [t.name, t]),
+		DEFAULT_THEMES().map((t) => [t.name, t]),
 	);
 	const getFirstTheme = () => data.get([...data.keys()][0])!;
 
@@ -84,7 +84,7 @@ export const ThemeProvider: Component<{ children: JSX.Element }> = (props) => {
 
 	const resetData = () => {
 		data.clear();
-		for (const t of GET_DEFAULT_THEMES()) data.set(t.name, t);
+		for (const t of DEFAULT_THEMES()) data.set(t.name, t);
 		modifyTheme(getFirstTheme());
 	};
 

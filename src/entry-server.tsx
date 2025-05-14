@@ -1,11 +1,11 @@
 // @refresh reload
 import { StartServer, createHandler } from "@solidjs/start/server";
-import { DEFAULT_THEME } from "./context/app-theme";
+import { DEFAULT_APP_THEME } from "./context/app-theme";
 
 export default createHandler(() => (
 	<StartServer
 		document={({ assets, children, scripts }) => (
-			<html lang="en-US" data-theme={DEFAULT_THEME}>
+			<html lang="en-US" data-theme={DEFAULT_APP_THEME}>
 				<head>
 					<meta charset="UTF-8" />
 					<meta name="description" />
