@@ -33,6 +33,7 @@ const DeleteTheme: Component<DeleteThemeProps> = (props) => {
 									const el = document.querySelector(
 										`#theme-${props.theme}-option`,
 									)!;
+									el.classList.add("pointer-events-none");
 									el.classList.remove("motion-duration-1000/opacity");
 									el.classList.add("motion-opacity-out-0");
 									el.classList.add("motion-translate-x-out-50");

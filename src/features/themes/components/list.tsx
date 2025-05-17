@@ -11,8 +11,7 @@ import SaveTheme from "./save";
 
 interface DeleteThemeProps extends JSX.HTMLAttributes<HTMLButtonElement> {
 	theme: string;
-}
-
+} // TODO: refactor into own file + make responsive (i.e. spammable no delay etc)
 const RandomTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 	props,
 ) => {

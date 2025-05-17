@@ -41,7 +41,10 @@ const APP_THEME_TRANSITION_STYLES = `
 }
 `;
 
-type ThemeContextValue = [Accessor<AppTheme>, Setter<AppTheme>];
+type ThemeContextValue = {
+	appTheme: Accessor<AppTheme>;
+	setAppTheme: Setter<AppTheme>;
+};
 const ThemeContext = createContext<ThemeContextValue>();
 
 export const useAppTheme = () => {
@@ -89,16 +92,17 @@ export const AppThemeProvider: Component<{ children: JSX.Element }> = (
 	});
 
 	return (
-		<ThemeContext.Provider value={[appTheme, setAppTheme]}>
+		<ThemeContext.Provider value={{ appTheme, setAppTheme }}>
 			{props.children}
 		</ThemeContext.Provider>
 	);
 };
 
+// TODO: fix weird bug where starting theme icon disappears? (sometimes) and it is always set to system icon? (context / storage off)
 const AppThemeController: Component<
 	JSX.ButtonHTMLAttributes<HTMLButtonElement>
 > = (props) => {
-	const [appTheme, setAppTheme] = useAppTheme();
+	const { appTheme, setAppTheme } = useAppTheme();
 	const cycle = ["system", "light", "dark"] as const;
 	const nextThemeIdx = createMemo(
 		() => (cycle.indexOf(appTheme()) + 1) % cycle.length,

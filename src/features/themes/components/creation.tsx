@@ -1,5 +1,6 @@
 import type { Component, JSX } from "solid-js";
 import Icon from "../../../components/ui/icon";
+import EditColor from "./color";
 
 const ThemeCreation: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	passed,
@@ -10,6 +11,9 @@ const ThemeCreation: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 				<Icon class="size-9" icon="mdi:palette" />{" "}
 				<h2 class="text-3xl font-bold">Colors</h2>
 			</span>
+			<div>
+				<EditColor color="primary" />
+			</div>
 		</div>
 	);
 };

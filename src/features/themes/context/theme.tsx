@@ -17,6 +17,7 @@ export interface ThemeContext {
 	addTheme: (theme: TextualTheme) => void;
 	deleteTheme: (theme: TextualTheme | string) => boolean;
 	modifyTheme: SetStoreFunction<TextualTheme>;
+	getFirstTheme: () => TextualTheme;
 	resetData: () => void;
 }
 
@@ -96,6 +97,7 @@ export const ThemeProvider: Component<{ children: JSX.Element }> = (props) => {
 				addTheme,
 				deleteTheme,
 				modifyTheme,
+				getFirstTheme,
 				resetData,
 			}}
 		>
