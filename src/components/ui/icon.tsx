@@ -1,4 +1,5 @@
 import { createAsync } from "@solidjs/router";
+import type { IOptions } from "sanitize-html";
 import type { Component, JSX } from "solid-js";
 import {
 	ErrorBoundary,
@@ -7,7 +8,6 @@ import {
 	mergeProps,
 	splitProps,
 } from "solid-js";
-import type { IOptions } from "sanitize-html";
 import LRUCache from "~/lib/lru";
 
 /* ────────────────────────────── Types ─────────────────────────── */

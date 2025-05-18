@@ -1,4 +1,4 @@
-import Dialog from "@corvu/dialog";
+import Dialog, { useContext } from "@corvu/dialog";
 import type {
 	CloseProps,
 	ContentProps,
@@ -18,7 +18,6 @@ import { cn } from "~/lib/util";
 import Icon from "./icon";
 
 const Root: Component<RootProps> = (props) => <Dialog {...props} />;
-
 interface ActionTriggerProps
 	extends TriggerProps,
 		JSX.HTMLAttributes<HTMLButtonElement> {
@@ -84,6 +83,7 @@ const ActionDialog = Object.assign(Root, {
 	Overlay,
 	Content,
 	Close,
+	useContext,
 });
 
 export default ActionDialog;
