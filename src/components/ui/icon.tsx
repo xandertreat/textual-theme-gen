@@ -1,5 +1,4 @@
 import { createAsync } from "@solidjs/router";
-import type { IOptions } from "sanitize-html";
 import type { Component, JSX } from "solid-js";
 import {
 	ErrorBoundary,
@@ -11,6 +10,7 @@ import {
 import LRUCache from "~/lib/lru";
 
 /* ────────────────────────────── Types ─────────────────────────── */
+import type { IFilterXSSOptions } from "xss";
 
 export type IconifySpecifier = `${Lowercase<string>}:${Lowercase<string>}`;
 export type IconifySize = number | "auto" | "unset" | "none";
@@ -43,8 +43,14 @@ export interface IconData {
 export type NonEmptyArray<T> = readonly [T, ...T[]];
 
 export type IconifySanitizeToggle =
-	| { readonly SANITIZE: false; readonly SANITIZE_OPTIONS?: never }
-	| { readonly SANITIZE?: true; readonly SANITIZE_OPTIONS?: IOptions };
+	| {
+			readonly SANITIZE: true;
+			readonly SANITIZE_OPTIONS?: Partial<IFilterXSSOptions>;
+	  }
+	| {
+			readonly SANITIZE?: false | null | undefined;
+			readonly SANITIZE_OPTIONS?: never;
+	  };
 
 export type IconifyConfiguration = Readonly<{
 	DEFAULT_SVG_ATTRIBUTES?: Partial<JSX.SvgSVGAttributes<SVGSVGElement>>;
@@ -73,214 +79,137 @@ const DEFAULTS: Required<IconifyConfiguration> = {
 		fill: "currentColor",
 	},
 	SANITIZE: true,
-	SANITIZE_OPTIONS: {
-		allowedTags: [
-			"svg",
-			"g",
-			"defs",
-			"use",
-			"symbol",
-			"path",
-			"rect",
-			"circle",
-			"ellipse",
-			"line",
-			"polyline",
-			"polygon",
-			"title",
-			"desc",
-			"linearGradient",
-			"radialGradient",
-			"stop",
-			"clipPath",
-			"mask",
-			"filter",
-			"animate",
-			"animateTransform",
-			"set",
-		],
-		allowedAttributes: {
-			"*": [
-				// presentation & geometry
-				"id",
-				"class",
-				"fill",
-				"stroke",
-				"stroke-width",
-				"stroke-linecap",
-				"stroke-linejoin",
-				"stroke-miterlimit",
-				"stroke-dasharray",
-				"stroke-dashoffset",
-				"fill-rule",
-				"fill-opacity",
-				"stroke-opacity",
-				"opacity",
-				"vector-effect",
-				"x",
-				"y",
-				"cx",
-				"cy",
-				"r",
-				"rx",
-				"ry",
-				"x1",
-				"y1",
-				"x2",
-				"y2",
-				"width",
-				"height",
-				"viewBox",
-				"preserveAspectRatio",
-				"d",
-				"points",
-			],
-		},
-		allowedSchemes: ["https"],
-		parser: {
-			xmlMode: true,
-			lowerCaseAttributeNames: false,
-		},
-		allowProtocolRelative: true,
-		allowVulnerableTags: false,
-	} as IOptions,
+	SANITIZE_OPTIONS: {} as Partial<IFilterXSSOptions>,
 };
 
 let CONFIGURATION: Required<IconifyConfiguration> = DEFAULTS;
 let FALLBACKS = Array.isArray(CONFIGURATION.ICONIFY_API);
 
 /* ─────────────────────────── DOM Management ────────────────────── */
-let parser: DOMParser;
-let serializer: XMLSerializer;
+let domParser: DOMParser;
 let domReady: Promise<void>;
 
 async function ensureDOM(): Promise<void> {
-	if (parser) return;
-	if (!domReady) {
-		domReady = import("@xmldom/xmldom").then(({ DOMParser, XMLSerializer }) => {
-			parser = new DOMParser();
-			serializer = new XMLSerializer();
-		});
-	}
+	if (domParser) return Promise.resolve();
+	if (!domReady)
+		if (typeof DOMParser === "undefined")
+			domReady = import("@xmldom/xmldom")
+				.then(({ DOMParser, XMLSerializer }) => {
+					domParser = new DOMParser();
+				})
+				.catch((e) => Promise.reject(e));
+		else
+			domReady = Promise.resolve()
+				.then(() => {
+					domParser = new DOMParser();
+				})
+				.catch((e) => Promise.reject(e));
 	await domReady;
 }
 
-let sanitizeHtml: (dirty: string, options: IOptions) => string;
 let sanitizeReady: Promise<void>;
 async function ensureSanitize(): Promise<void> {
-	if (!CONFIGURATION.SANITIZE || typeof sanitizeHtml === "function") return;
-	if (!sanitizeReady) {
-		sanitizeReady = import("sanitize-html").then(({ default: sanitize }) => {
-			sanitizeHtml = sanitize;
-		});
-	}
+	if (typeof sanitizeHtml === "function") return Promise.resolve();
+	if (!sanitizeReady)
+		sanitizeReady = import("xss")
+			.then(({ default: xss }) => {
+				sanitizeHtml = (html: string) =>
+					xss(html, CONFIGURATION.SANITIZE_OPTIONS);
+			})
+			.catch((e) => Promise.reject(e));
 	await sanitizeReady;
 }
 
 /* ───────────────────────── Data ───────────────────────── */
-let cache: LRUCache<string, Promise<IconData>> | undefined;
+let cache: LRUCache<string, Promise<IconData>> | undefined = new LRUCache<
+	string,
+	Promise<IconData>
+>(DEFAULTS.CACHE_SIZE as number);
+
+const normalizeAttributes = (
+	attrs: NamedNodeMap | object,
+): Partial<JSX.SvgSVGAttributes<SVGSVGElement>> => {
+	const out: Record<string, string> = {};
+	for (const attr of Object.values(attrs)) out[attr.name] = attr.value;
+	return out;
+};
+
+const buildURL = (
+	{ icon, ...rest }: IconifyApiParameters,
+	api: string,
+): [string, URL] => {
+	const spec = validate(icon) ? icon : "material-symbols:error";
+	const [collection, name] = spec.split(":");
+	if (!collection || !name) throw Error("Iconify: bad specifier");
+
+	const url = new URL(`${collection}/${name}.svg`, `https://${api}/`);
+	for (const [k, v] of Object.entries(rest))
+		v != null && url.searchParams.set(k, String(v));
+	url.searchParams.sort();
+	return [spec, url];
+};
+
+let sanitizeHtml: (html: string) => string;
+
+const escapeHTML = (html: string): string =>
+	html?.replace(/&lt;/g, "<").replace(/&gt;/g, ">").trim();
+
+const getInnerHtml = (html: string): string =>
+	html?.replace(/^<svg[^>]*>/, "").replace(/<\/svg>$/, "");
 
 const fetchIconifyIcon = (
 	params: IconifyApiParameters,
 	apiUri: string,
+	attempt = 0,
 ): Promise<IconData> => {
-	const iconSpecifier = validate(params.icon)
-		? params.icon
-		: "material-symbols:error";
-	const [collection, name] = iconSpecifier.split(":");
-
-	if (!collection || !name)
-		throw new Error("Iconify Icon: Invalid icon specifier");
-
-	// Construct the URL for the API request
-	const url = new URL(`${collection}/${name}.svg`, `https://${apiUri}/`);
-	for (const [k, v] of Object.entries(params))
-		if (k !== "icon" && v != null) url.searchParams.set(k, String(v));
-	url.searchParams.sort();
-
-	// Check if the icon is already in the cache
-	const cacheKey = `${collection}:${name} [${url.searchParams.toString()}]`;
+	const [spec, url] = buildURL(params, apiUri);
+	const cacheKey = `${spec} [${url.searchParams.toString() ?? "-"}]`;
 	const hit = cache?.get(cacheKey);
 	if (hit) return hit;
 
-	// If not, fetch the icon from the API
-	const call = fetch(url, CONFIGURATION.REQUEST_OPTIONS)
+	const task = fetch(url, CONFIGURATION.REQUEST_OPTIONS)
 		.then(async (res) => {
-			if (!res.ok) throw new Error(`Iconify API ${res.status}`);
-			const svgText = await res.text();
+			if (!res.ok) throw Error(`Iconify ${res.status}`);
 
-			if (!parser || !serializer) await ensureDOM();
-			const svg = parser.parseFromString(
-				svgText,
+			let raw = await res.text();
+			if (!raw || raw.length === 0) throw Error("Iconify: empty SVG");
+			if (CONFIGURATION.SANITIZE) {
+				if (!sanitizeHtml) await ensureSanitize();
+				raw = escapeHTML(sanitizeHtml(raw));
+				if (!raw || raw.length === 0) throw Error("Iconify: empty SVG");
+			}
+
+			if (!domParser) await ensureDOM();
+			const svgEl = domParser.parseFromString(
+				raw,
 				"image/svg+xml",
 			).documentElement;
-			if (!svg || svg.nodeName !== "svg")
-				throw new Error("Iconify Icon: Invalid SVG");
+			if (svgEl.nodeName !== "svg") throw Error("Iconify: invalid SVG");
 
-			const outer = serializer.serializeToString(svg).replace(/^\s+|\s+$/g, "");
-			const vector = outer.replace(/^<svg[^>]*>/, "").replace(/<\/svg>$/, "");
-			let data: IconData;
-
-			if (CONFIGURATION.SANITIZE) {
-				await ensureSanitize();
-				const sanitized = sanitizeHtml(vector, CONFIGURATION.SANITIZE_OPTIONS);
-				if (!sanitized)
-					throw new Error("Iconify Icon: Invalid SVG (sanitization failed)");
-
-				const safeAttrs = Array.from(svg.attributes)
-					.filter(
-						(a) =>
-							!/^on/i.test(a.name) && a.name !== "style" && a.name !== "href",
-					)
-					// biome-ignore lint/performance/noAccumulatingSpread: <explanation>
-					.reduce((acc, a) => ({ ...acc, [a.name]: a.value }), {});
-
-				data = {
-					attributes: {
-						...CONFIGURATION.DEFAULT_SVG_ATTRIBUTES,
-						...safeAttrs,
-					},
-					vector: sanitized,
-				};
-			} else {
-				data = {
-					attributes: {
-						...CONFIGURATION.DEFAULT_SVG_ATTRIBUTES,
-						...svg.attributes,
-					},
-					vector: vector,
-				};
-			}
-
-			// Cache the icon data
-			cache?.set(cacheKey, Promise.resolve(data));
-			return data;
+			return {
+				attributes: {
+					...CONFIGURATION.DEFAULT_SVG_ATTRIBUTES,
+					...normalizeAttributes(svgEl.attributes),
+				},
+				vector: getInnerHtml(raw),
+			} as IconData;
 		})
-		.catch((err) => {
-			// see if list or string
-			if (FALLBACKS) {
-				const cur = CONFIGURATION.ICONIFY_API.indexOf(apiUri);
-				const next = (cur + 1) % CONFIGURATION.ICONIFY_API.length;
-
-				// No more URIs to try
-				if (next === cur || next < cur) {
-					cache?.delete(cacheKey);
-					console.error("Iconify API error:", err);
-					throw err;
-				}
-
-				// Try next URI after a delay
-				return new Promise((resolve) => setTimeout(resolve, 500)).then(() =>
-					fetchIconifyIcon(params, CONFIGURATION.ICONIFY_API[next]),
+		.finally(() => cache?.set(cacheKey, task))
+		.catch((e) => {
+			if (FALLBACKS && attempt + 1 < CONFIGURATION.ICONIFY_API.length) {
+				const nextApi =
+					CONFIGURATION.ICONIFY_API[
+						(attempt + 1) % CONFIGURATION.ICONIFY_API.length
+					];
+				return new Promise((r) => setTimeout(r, 500)).then(() =>
+					fetchIconifyIcon(params, nextApi, attempt + 1),
 				);
 			}
-
-			// If we reach here, it means all URIs have failed
 			cache?.delete(cacheKey);
-			throw new Error("Iconify API: All URIs failed");
+			return Promise.reject(e);
 		});
-	cache?.set(cacheKey, call);
-	return call;
+
+	return task;
 };
 
 /* ───────────────────────── Components ─────────────────────── */
@@ -347,7 +276,7 @@ const ErrorFallback: Component<
 );
 
 export const Icon: Component<IconifyIconProps> = (raw) => {
-	const props = mergeProps({ showLoading: false, showError: false }, raw);
+	const props = mergeProps({ showLoading: true, showError: true }, raw);
 	const [visibility, _] = splitProps(props, ["showLoading", "showError"]);
 	const [apiParams, rest]: [
 		IconifyApiParameters,
@@ -379,13 +308,13 @@ export const Icon: Component<IconifyIconProps> = (raw) => {
 	});
 
 	return (
-		<ErrorBoundary
-			fallback={<ErrorFallback errorIcon={visibility.showError} {...rest} />}
+		<Suspense
+			fallback={
+				<LoadingFallback loadingIcon={visibility.showLoading} {...rest} />
+			}
 		>
-			<Suspense
-				fallback={
-					<LoadingFallback loadingIcon={visibility.showLoading} {...rest} />
-				}
+			<ErrorBoundary
+				fallback={<ErrorFallback errorIcon={visibility.showError} {...rest} />}
 			>
 				<Show
 					when={data()}
@@ -394,11 +323,11 @@ export const Icon: Component<IconifyIconProps> = (raw) => {
 					}
 				>
 					{(data) => (
-						<svg {...rest} {...data().attributes} innerHTML={data().vector} />
+						<svg {...data().attributes} {...rest} innerHTML={data().vector} />
 					)}
 				</Show>
-			</Suspense>
-		</ErrorBoundary>
+			</ErrorBoundary>
+		</Suspense>
 	);
 };
 
@@ -423,8 +352,8 @@ export function configureIconify(
 	FALLBACKS = Array.isArray(CONFIGURATION.ICONIFY_API);
 	return CONFIGURATION;
 }
+
 export default Icon;
 
 // TODO: shrink size down further, use json API + allow params but do it in JS (not a req)
 // TODO: better host list handling (i.e. multiple attempts for 1, managing their status, delays between errors etc, as well as parsing)
-// TODO: make into actual package with actual structure

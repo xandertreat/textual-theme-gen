@@ -1,5 +1,7 @@
-import type { Component, JSX } from "solid-js";
-import { Show, createMemo } from "solid-js";
+import Popover from "@corvu/popover";
+import type { Accessor, Component, JSX } from "solid-js";
+import { For, Show, createMemo, splitProps } from "solid-js";
+import Icon from "../../../components/ui/icon";
 import { useTheme } from "../context/theme";
 import { getPaletteColor } from "../lib/utils";
 import DeleteTheme from "./delete";
@@ -25,38 +27,84 @@ const ThemeOptionPreview: Component<ThemeOptionPreviewProps> = (props) => {
 	);
 };
 
-interface ThemeOptionProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
+interface ThemeOptionMenuProps extends JSX.HTMLAttributes<HTMLDivElement> {
+	isOptionSelected: Accessor<boolean>;
+}
+
+const ThemeOptionMenu: Component<ThemeOptionMenuProps> = (props) => {
+	const [local, rest] = splitProps(props, ["children", "isOptionSelected"]);
+
+	return (
+		<Popover>
+			<Popover.Anchor class="size-full">
+				<Popover.Trigger
+					type="button"
+					data-tip={"Options"}
+					class="tooltip tooltip-right h-full cursor-pointer group-hover:opacity-100 transition-opacity duration-200"
+					classList={{
+						"opacity-0": !local.isOptionSelected(),
+						"opacity-20": local.isOptionSelected(),
+					}}
+				>
+					<Icon
+						aria-label="Theme Options"
+						class="size-full"
+						icon="mdi:dots-horizontal"
+					/>
+				</Popover.Trigger>
+			</Popover.Anchor>
+			<Popover.Portal>
+				<Popover.Content
+					class="mt-1 w-40 bg-base-200 motion-duration-150 motion-scale-in-95 motion-opacity-in-0 data-closed:motion-scale-out-95 data-closed:motion-opacity-out-0 rounded-md border border-neutral-content/20"
+					{...rest}
+				>
+					<ul class="menu size-full">{local.children}</ul>
+				</Popover.Content>
+			</Popover.Portal>
+		</Popover>
+	);
+};
+
+interface ThemeOptionProps extends JSX.HTMLAttributes<HTMLLIElement> {
 	theme: string;
 	showDelete?: boolean;
 }
 
 const ThemeOption: Component<ThemeOptionProps> = (props) => {
+	const [local, rest] = splitProps(props, ["theme", "showDelete"]);
 	const { data, selectedTheme, modifyTheme } = useTheme();
+	const isOptionSelected = createMemo(() => local.theme === selectedTheme.name);
 
 	return (
 		<li
-			id={`theme-${props.theme}-option`}
+			id={`theme-${local.theme}-option`}
 			class="motion-duration-1000/opacity motion-ease-in-out motion-duration-300 motion-opacity-in-0 -motion-translate-x-in-50"
+			{...rest}
 		>
 			<a
 				type="button"
-				class="btn btn-ghost h-fit p-0 px-1 py-0 rounded-sm font-light flex gap-1 justify-between"
-				classList={{ "btn-active": props.theme === selectedTheme.name }}
+				class="btn btn-ghost h-fit p-0 px-1 py-0 rounded-sm font-light flex gap-1 justify-between group"
+				classList={{ "btn-active": isOptionSelected() }}
 				// biome-ignore lint/a11y/useValidAnchor: <explanation>
-				onClick={() => modifyTheme(data.get(props.theme)!)}
+				onClick={() => modifyTheme(data.get(local.theme)!)}
 			>
 				<span class="inline-flex items-center gap-2">
 					<ThemeOptionPreview
 						class="ml-0 size-6 grid grid-cols-2 grid-rows-2 gap-0.75 p-1 rounded *:rounded shadow col-span-1 row-span-1"
-						theme={props.theme}
+						theme={local.theme}
 					/>
-					{props.theme}
+					<p class="grow-0 w-36 text-left overflow-ellipsis overflow-hidden text-nowrap whitespace-nowrap flex-nowrap">
+						{local.theme}
+					</p>
 				</span>
-				<Show when={props.showDelete}>
-					<DeleteTheme
-						class="tooltip tooltip-right tooltip-error h-5/6 cursor-pointer text-error"
-						theme={props.theme}
-					/>
+				<Show when={local.showDelete}>
+					<ThemeOptionMenu isOptionSelected={isOptionSelected}>
+						<Show when={local.showDelete}>
+							<li>
+								<DeleteTheme theme={local.theme} />
+							</li>
+						</Show>
+					</ThemeOptionMenu>
 				</Show>
 			</a>
 		</li>

@@ -10,7 +10,10 @@ const ThemeReset: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 
 	return (
 		<ActionDialog>
-			<ActionDialog.Trigger class="inline-flex items-center" {...props}>
+			<ActionDialog.Trigger
+				class="inline-flex items-center text-center size-full text-error font-bold rounded"
+				{...props}
+			>
 				<Icon icon="mdi:alert" />
 				Reset data
 			</ActionDialog.Trigger>

@@ -7,6 +7,7 @@ import {
 	type JSX,
 	Match,
 	type Setter,
+	Show,
 	Switch,
 	createContext,
 	createEffect,
@@ -110,12 +111,13 @@ const AppThemeController: Component<
 
 	return (
 		<button
+			{...props}
 			type="button"
 			class="btn btn-ghost btn-circle size-8 p-0.5 fixed inset-1"
 			onClick={() => setAppTheme(cycle[nextThemeIdx()])}
-			{...props}
 		>
-			<Switch
+			<Show
+				when={appTheme()}
 				fallback={
 					<Icon
 						class="size-full motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out"
@@ -123,25 +125,36 @@ const AppThemeController: Component<
 					/>
 				}
 			>
-				<Match when={appTheme() === "system"}>
-					<Icon
-						class="size-full motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out"
-						icon="mdi:theme-light-dark"
-					/>
-				</Match>
-				<Match when={appTheme() === "light"}>
-					<Icon
-						class="size-full motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out"
-						icon="tabler:sun-filled"
-					/>
-				</Match>
-				<Match when={appTheme() === "dark"}>
-					<Icon
-						class="size-full motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out"
-						icon="tabler:moon-filled"
-					/>
-				</Match>
-			</Switch>
+				{(theme) => (
+					<Switch
+						fallback={
+							<Icon
+								class="size-full motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out"
+								icon="mdi:theme-light-dark"
+							/>
+						}
+					>
+						<Match when={theme() === "system"}>
+							<Icon
+								class="size-full motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out"
+								icon="mdi:theme-light-dark"
+							/>
+						</Match>
+						<Match when={theme() === "light"}>
+							<Icon
+								class="size-full motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out"
+								icon="tabler:sun-filled"
+							/>
+						</Match>
+						<Match when={theme() === "dark"}>
+							<Icon
+								class="size-full motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out"
+								icon="tabler:moon-filled"
+							/>
+						</Match>
+					</Switch>
+				)}
+			</Show>
 		</button>
 	);
 };

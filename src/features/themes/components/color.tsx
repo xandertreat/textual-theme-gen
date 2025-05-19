@@ -1,18 +1,18 @@
+import Dialog from "@corvu/dialog";
+import { ColorArea } from "@kobalte/core/color-area";
+import { type Color, parseColor } from "@kobalte/core/colors";
 import {
 	type Component,
+	type JSX,
 	createEffect,
 	createMemo,
 	createSignal,
-	type JSX,
 	splitProps,
 } from "solid-js";
-import { ColorArea } from "@kobalte/core/color-area";
 import ActionDialog from "~/components/ui/action-dialog";
 import { useTheme } from "../context/theme";
-import { type Color, parseColor } from "@kobalte/core/colors";
-import Dialog from "@corvu/dialog";
-import type { HexColorCode } from "../types";
 import { getColorData } from "../lib/utils";
+import type { HexColorCode } from "../types";
 
 const ColorSwatch: Component<
 	JSX.ButtonHTMLAttributes<HTMLButtonElement> & { color: string }
@@ -22,8 +22,9 @@ const ColorSwatch: Component<
 	return (
 		<span class="flex flex-col items-center gap-1">
 			<ActionDialog.Trigger
+				disabled={selectedTheme.source !== "user"}
 				class={
-					"size-12 aspect-square rounded-full shadow-md hover:scale-105 transition-[scale] duration-200 font-black text-2xl"
+					"size-12 aspect-square rounded-full shadow-md not-disabled:hover:scale-105 transition-[scale] duration-200 font-black text-2xl"
 				}
 				style={{
 					"background-color":
@@ -53,15 +54,18 @@ const ColorPicker: Component<
 > = (props) => {
 	const [local, rest] = splitProps(props, ["color"]);
 	const { selectedTheme, modifyTheme } = useTheme();
+	const color = createMemo(() =>
+		parseColor(
+			selectedTheme.palette[local.color as keyof typeof selectedTheme.palette]
+				.base.color,
+		),
+	);
 
 	return (
 		<ColorArea
 			class="w-full h-36 mt-5 touch-none select-none flex flex-col items-center "
 			colorSpace="rgb"
-			value={parseColor(
-				selectedTheme.palette[local.color as keyof typeof selectedTheme.palette]
-					.base.color,
-			)}
+			value={color()}
 			onChange={(val: Color) => {
 				modifyTheme("palette", {
 					primary: getColorData(val.toString() as HexColorCode),

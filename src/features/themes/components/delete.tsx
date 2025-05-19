@@ -1,4 +1,5 @@
-import type { Component, JSX } from "solid-js";
+import { useDialogContext } from "@corvu/popover";
+import { type Component, type JSX, createEffect } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import Icon from "~/components/ui/icon";
 import { useTheme } from "../context/theme";
@@ -9,11 +10,16 @@ interface DeleteThemeProps extends JSX.HTMLAttributes<HTMLButtonElement> {
 
 const DeleteTheme: Component<DeleteThemeProps> = (props) => {
 	const { deleteTheme } = useTheme();
+	const { contentRef } = useDialogContext();
 
 	return (
 		<ActionDialog>
-			<ActionDialog.Trigger data-tip="Delete" {...props}>
-				<Icon class="size-full" icon="mdi:trash-can-outline" />
+			<ActionDialog.Trigger
+				class="inline-flex items-center text-center size-full text-error font-bold rounded text-sm"
+				{...props}
+			>
+				<Icon class="size-4" icon="mdi:trash-can-outline" />
+				Delete theme
 			</ActionDialog.Trigger>
 			<ActionDialog.Portal>
 				<ActionDialog.Overlay />
@@ -30,6 +36,7 @@ const DeleteTheme: Component<DeleteThemeProps> = (props) => {
 						<ActionDialog.Close tabIndex={-1} class="">
 							<button
 								onClick={() => {
+									contentRef()?.classList.add("opacity-0");
 									const el = document.querySelector(
 										`#theme-${props.theme}-option`,
 									)!;

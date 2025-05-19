@@ -63,10 +63,13 @@ const ThemeListOptions: Component<ThemeListOptionsProps> = (passed) => {
 				</Popover.Trigger>
 			</Popover.Anchor>
 			<Popover.Portal>
-				<Popover.Content class="mt-1 w-36 bg-base-200 motion-duration-150 motion-scale-in-95 motion-opacity-in-0 data-closed:motion-scale-out-95 data-closed:motion-opacity-out-0 rounded-md border border-neutral-content/20">
+				<Popover.Content
+					class="mt-1 w-36 bg-base-200 motion-duration-150 motion-scale-in-95 motion-opacity-in-0 data-closed:motion-scale-out-95 data-closed:motion-opacity-out-0 rounded-md border border-neutral-content/20"
+					{...passed}
+				>
 					<ul class="menu size-full">
 						<li>
-							<ThemeReset class="size-full text-error font-bold rounded" />
+							<ThemeReset />
 						</li>
 					</ul>
 				</Popover.Content>
