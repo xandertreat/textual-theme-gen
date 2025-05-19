@@ -1,5 +1,5 @@
 import Popover, { useDialogContext } from "@corvu/popover";
-import { makePersisted } from "@solid-primitives/storage";
+import { cookieStorage, makePersisted } from "@solid-primitives/storage";
 import {
 	type Accessor,
 	type Component,
@@ -13,6 +13,7 @@ import {
 	createEffect,
 	createMemo,
 	createSignal,
+	onMount,
 	useContext,
 } from "solid-js";
 import Icon from "~/components/ui/icon";
@@ -21,6 +22,7 @@ type AppTheme = "system" | "light" | "dark";
 export const DEFAULT_APP_THEME: AppTheme = "system";
 const PERSISTENCE_OPTIONS = {
 	name: "theme",
+	storage: cookieStorage,
 };
 
 const APP_THEME_TRANSITION_DURATION = 200;
@@ -105,9 +107,10 @@ const AppThemeController: Component<
 > = (props) => {
 	const { appTheme, setAppTheme } = useAppTheme();
 	const cycle = ["system", "light", "dark"] as const;
-	const nextThemeIdx = createMemo(
-		() => (cycle.indexOf(appTheme()) + 1) % cycle.length,
-	);
+	const nextThemeIdx = createMemo(() => {
+		const current = cycle.indexOf(appTheme());
+		return (current + 1) % cycle.length;
+	});
 
 	return (
 		<button

@@ -1,5 +1,4 @@
 import { createAsync } from "@solidjs/router";
-import type { Component, JSX } from "solid-js";
 import {
 	ErrorBoundary,
 	Show,
@@ -10,6 +9,7 @@ import {
 import LRUCache from "~/lib/lru";
 
 /* ────────────────────────────── Types ─────────────────────────── */
+import type { Component, JSX } from "solid-js";
 import type { IFilterXSSOptions } from "xss";
 
 export type IconifySpecifier = `${Lowercase<string>}:${Lowercase<string>}`;
@@ -54,6 +54,8 @@ export type IconifySanitizeToggle =
 
 export type IconifyConfiguration = Readonly<{
 	DEFAULT_SVG_ATTRIBUTES?: Partial<JSX.SvgSVGAttributes<SVGSVGElement>>;
+	SHOW_LOADING_DEFAULT?: boolean;
+	SHOW_ERROR_DEFAULT?: boolean;
 	REQUEST_OPTIONS?: RequestInit;
 	CACHE_SIZE?: number | "unlimited" | "no-cache";
 	ICONIFY_API: string | NonEmptyArray<string>;
@@ -78,6 +80,8 @@ const DEFAULTS: Required<IconifyConfiguration> = {
 		viewBox: "0 0 24 24",
 		fill: "currentColor",
 	},
+	SHOW_LOADING_DEFAULT: false,
+	SHOW_ERROR_DEFAULT: true,
 	SANITIZE: true,
 	SANITIZE_OPTIONS: {} as Partial<IFilterXSSOptions>,
 };
@@ -176,6 +180,7 @@ const fetchIconifyIcon = (
 			if (CONFIGURATION.SANITIZE) {
 				if (!sanitizeHtml) await ensureSanitize();
 				raw = escapeHTML(sanitizeHtml(raw));
+				console.log("here");
 				if (!raw || raw.length === 0) throw Error("Iconify: empty SVG");
 			}
 
@@ -276,7 +281,13 @@ const ErrorFallback: Component<
 );
 
 export const Icon: Component<IconifyIconProps> = (raw) => {
-	const props = mergeProps({ showLoading: true, showError: true }, raw);
+	const props = mergeProps(
+		{
+			showLoading: CONFIGURATION.SHOW_LOADING_DEFAULT,
+			showError: CONFIGURATION.SHOW_ERROR_DEFAULT,
+		},
+		raw,
+	);
 	const [visibility, _] = splitProps(props, ["showLoading", "showError"]);
 	const [apiParams, rest]: [
 		IconifyApiParameters,
@@ -333,7 +344,7 @@ export const Icon: Component<IconifyIconProps> = (raw) => {
 
 export function configureIconify(
 	patch: Partial<IconifyConfiguration>,
-): IconifyConfiguration {
+): Required<IconifyConfiguration> {
 	CONFIGURATION = {
 		...CONFIGURATION,
 		...patch,
@@ -353,7 +364,12 @@ export function configureIconify(
 	return CONFIGURATION;
 }
 
+export function getIconifyConfiguration(): Required<IconifyConfiguration> {
+	return CONFIGURATION;
+}
+
 export default Icon;
 
 // TODO: shrink size down further, use json API + allow params but do it in JS (not a req)
 // TODO: better host list handling (i.e. multiple attempts for 1, managing their status, delays between errors etc, as well as parsing)
+// TODO: configuration consistent / stable (i.e. configuration always runs before any rendering / reading of config)
