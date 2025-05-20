@@ -10,6 +10,7 @@ import {
 } from "solid-js";
 import { DEFAULT_THEMES, VERSION_KEY } from "../data/themes";
 import type { TextualTheme } from "../types";
+import { createStore, type SetStoreFunction } from "solid-js/store";
 
 const STORAGE_KEY = `saved-${VERSION_KEY()}`;
 const LAST_SELECTED_KEY = `last-selected-${VERSION_KEY()}`;
@@ -18,11 +19,10 @@ type ThemeStorage = ReactiveMap<string, TextualTheme>;
 
 export interface ThemeContext {
 	data: ThemeStorage;
-	selectedTheme: Accessor<TextualTheme>;
-	selectTheme: Setter<string>;
-	firstDefaultTheme: () => string;
 	getFirstThemeName: Accessor<string>;
-	getFirstTheme: Accessor<TextualTheme>;
+	selectedTheme: Accessor<TextualTheme>;
+	selectedThemeName: Accessor<string>;
+	selectTheme: Setter<string>;
 }
 
 const ThemeContext = createContext<ThemeContext>();
@@ -34,18 +34,15 @@ export const useTheme = () => {
 	return context;
 };
 
+// TODO: refactor for stores
 export const ThemeProvider: Component<{ children: JSX.Element }> = (props) => {
 	// all stored theme data
-	const data = new ReactiveMap<string, TextualTheme>(
-		DEFAULT_THEMES().map((t) => [t.name, t]),
-	);
+	const data = new ReactiveMap<
+		string,
+		[get: TextualTheme, set: SetStoreFunction<TextualTheme>]
+	>(DEFAULT_THEMES().map((t) => [t.name, createStore(t)]));
 
 	const getFirstThemeName = createMemo<string>(() => [...data.keys()][0]!);
-	const getFirstTheme = createMemo<TextualTheme>(
-		() => data.get(getFirstThemeName())!,
-	);
-
-	const firstDefaultTheme = () => DEFAULT_THEMES()[0].name;
 
 	// current theme data
 	const [selectedName, selectTheme] = createSignal<string>(getFirstThemeName());
@@ -81,10 +78,9 @@ export const ThemeProvider: Component<{ children: JSX.Element }> = (props) => {
 			value={{
 				data,
 				selectedTheme,
+				selectedThemeName: selectedName,
 				selectTheme,
-				firstDefaultTheme,
 				getFirstThemeName,
-				getFirstTheme,
 			}}
 		>
 			{props.children}

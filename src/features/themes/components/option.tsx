@@ -18,12 +18,30 @@ const ThemeOptionPreview: Component<ThemeOptionPreviewProps> = (props) => {
 	return (
 		<div
 			{...props}
-			style={{ background: getPaletteColor(theme(), "background") }}
+			style={{
+				background: getPaletteColor(theme(), "background"),
+			}}
 		>
-			<div style={{ background: getPaletteColor(theme(), "primary") }} />
-			<div style={{ background: getPaletteColor(theme(), "secondary") }} />
-			<div style={{ background: getPaletteColor(theme(), "accent") }} />
-			<div style={{ background: getPaletteColor(theme(), "foreground") }} />
+			<div
+				style={{
+					background: getPaletteColor(theme(), "primary"),
+				}}
+			/>
+			<div
+				style={{
+					background: getPaletteColor(theme(), "secondary"),
+				}}
+			/>
+			<div
+				style={{
+					background: getPaletteColor(theme(), "accent"),
+				}}
+			/>
+			<div
+				style={{
+					background: getPaletteColor(theme(), "foreground"),
+				}}
+			/>
 		</div>
 	);
 };
@@ -73,9 +91,9 @@ interface ThemeOptionProps extends JSX.HTMLAttributes<HTMLLIElement> {
 
 const ThemeOption: Component<ThemeOptionProps> = (props) => {
 	const [local, rest] = splitProps(props, ["theme", "showDelete"]);
-	const { data, selectedTheme, selectTheme } = useTheme();
+	const { data, selectedThemeName, selectTheme } = useTheme();
 	const isOptionSelected = createMemo(
-		() => local.theme === selectedTheme().name,
+		() => local.theme === selectedThemeName(),
 	);
 
 	return (

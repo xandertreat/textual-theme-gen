@@ -45,20 +45,21 @@ const ColorPicker: Component<
 > = (props) => {
 	const [local, rest] = splitProps(props, ["color"]);
 	const { selectedTheme } = useTheme();
-	const color = createMemo(() =>
+	const [color, setColor] = createSignal<Color>(
 		parseColor(selectedTheme().palette[local.color].base.color),
 	);
+	createEffect(() => {
+		selectedTheme().palette[local.color] = getColorData(
+			color().toString() as HexColorCode,
+		);
+	});
 
 	return (
 		<ColorArea
 			class="w-full h-36 mt-5 touch-none select-none flex flex-col items-center "
 			colorSpace="rgb"
 			value={color()}
-			onChange={(val: Color) => {
-				selectedTheme().palette[local.color] = getColorData(
-					val.toString() as HexColorCode,
-				);
-			}}
+			onChange={setColor}
 		>
 			<ColorArea.Background class="size-full rounded-md relative">
 				<ColorArea.Thumb

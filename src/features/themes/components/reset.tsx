@@ -8,10 +8,10 @@ import { DEFAULT_THEMES } from "../data/themes";
 const ThemeReset: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 	props,
 ) => {
-	const { data, selectTheme, firstDefaultTheme } = useTheme();
+	const { data, selectTheme, getFirstThemeName } = useTheme();
 	const resetData = action(async () => {
 		for (const t of DEFAULT_THEMES()) data.set(t.name, t);
-		await Promise.resolve(selectTheme(firstDefaultTheme()));
+		await Promise.resolve(selectTheme(getFirstThemeName()));
 		for (const [name, t] of data.entries())
 			if (t.source === "user") data.delete(name);
 	}, "resetThemeData");
