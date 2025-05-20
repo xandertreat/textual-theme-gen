@@ -1,10 +1,10 @@
 import { useDialogContext } from "@corvu/popover";
+import { action } from "@solidjs/router";
 import type { Component, JSX } from "solid-js";
 import { batch, splitProps } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import Icon from "~/components/ui/icon";
 import { useTheme } from "../context/theme";
-import { action } from "@solidjs/router";
 import type { TextualTheme } from "../types";
 
 interface DeleteThemeProps extends JSX.HTMLAttributes<HTMLButtonElement> {

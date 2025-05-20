@@ -62,7 +62,7 @@ const SaveTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 								<input
 									type="text"
 									name="name"
-									value={selectedTheme().name}
+									value={selectedTheme.name}
 									onInput={(e) => {
 										setIsValid(
 											e.target.validity.valid && e.target.value !== "",

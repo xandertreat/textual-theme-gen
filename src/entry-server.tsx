@@ -32,10 +32,10 @@ export default createHandler(() => (
 					<meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
 					<meta name="theme-color" content="#ffffff" />
 					{assets}
-					<script>
-						` const localData = localStorage.getItem("theme"); if (localData)
-						document.documentElement.dataset.theme = localData; `
-					</script>
+					<script
+						innerText={`document.documentElement.dataset.theme =
+							localStorage.getItem("theme") ?? "${DEFAULT_APP_THEME}"`}
+					/>
 				</head>
 				<body>
 					<div id="app">{children}</div>

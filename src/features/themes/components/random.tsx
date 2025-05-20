@@ -1,13 +1,9 @@
-import Popover from "@corvu/popover";
+import gsap from "gsap";
 import type { Component, JSX } from "solid-js";
-import { For, Show, batch, createMemo, mergeProps, onMount } from "solid-js";
+import { batch } from "solid-js";
 import Icon from "../../../components/ui/icon";
 import { useTheme } from "../context/theme";
-import ThemeOption from "./option";
-import ThemeReset from "./reset";
-import SaveTheme from "./save";
 import { genRandomTheme } from "../lib/utils";
-import gsap from "gsap";
 
 const RandomTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 	props,

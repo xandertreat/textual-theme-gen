@@ -16,6 +16,7 @@ import {
 	onMount,
 	useContext,
 } from "solid-js";
+import { isServer } from "solid-js/web";
 import Icon from "~/components/ui/icon";
 
 type AppTheme = "system" | "light" | "dark";
@@ -64,9 +65,14 @@ export const AppThemeProvider: Component<{ children: JSX.Element }> = (
 ) => {
 	let transitioningTheme = false;
 	const [appTheme, setAppTheme] = makePersisted(
-		createSignal<AppTheme>(DEFAULT_APP_THEME),
+		createSignal<AppTheme>(
+			!isServer
+				? (localStorage.getItem("theme") as AppTheme)
+				: DEFAULT_APP_THEME,
+		),
 		PERSISTENCE_OPTIONS,
 	);
+	createEffect(() => localStorage.setItem("theme", appTheme()));
 
 	createEffect(async () => {
 		if (transitioningTheme) {

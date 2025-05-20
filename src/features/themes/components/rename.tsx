@@ -12,7 +12,6 @@ import {
 import ActionDialog from "~/components/ui/action-dialog";
 import Icon from "~/components/ui/icon";
 import { useTheme } from "../context/theme";
-import type { TextualTheme } from "../types";
 
 interface RenameThemeProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
 	theme: string;
@@ -37,10 +36,9 @@ const RenameTheme: Component<RenameThemeProps> = (props) => {
 				.toArray()
 				.join("-")!;
 			batch(() => {
-				selectedTheme().name = newName;
-				data.set(newName, selectedTheme());
-				data.delete(local.theme);
+				data.set(newName, { ...selectedTheme(), name: newName });
 				selectTheme(newName);
+				data.delete(local.theme);
 			});
 		} catch (error) {
 			console.error(error);
@@ -79,7 +77,7 @@ const RenameTheme: Component<RenameThemeProps> = (props) => {
 							action={renameAction}
 						>
 							<label
-								class="label input size-fit text-neutral"
+								class="label input size-fit text-base-content"
 								classList={{
 									"input-success": isValid(),
 									"input-error": !isValid(),

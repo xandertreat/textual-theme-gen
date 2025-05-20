@@ -1,18 +1,13 @@
-import { fileURLToPath } from "node:url";
-import path from "path";
 import { defineConfig } from "@solidjs/start/config";
 
 // Plugins
 import tailwindcss from "@tailwindcss/vite";
-import { configureIconify } from "~/components/ui/icon";
 // import tsconfigPaths from "vite-tsconfig-paths";
 
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-configureIconify({
-	SANITIZE: false,
-});
 
 export default defineConfig({
 	ssr: true,

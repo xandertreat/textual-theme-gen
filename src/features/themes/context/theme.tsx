@@ -3,14 +3,12 @@ import type { Accessor, Component, JSX, Setter } from "solid-js";
 import {
 	createContext,
 	createEffect,
-	createMemo,
 	createSignal,
 	onMount,
 	useContext,
 } from "solid-js";
 import { DEFAULT_THEMES, VERSION_KEY } from "../data/themes";
 import type { TextualTheme } from "../types";
-import { createStore, type SetStoreFunction } from "solid-js/store";
 
 const STORAGE_KEY = `saved-${VERSION_KEY()}`;
 const LAST_SELECTED_KEY = `last-selected-${VERSION_KEY()}`;
@@ -19,10 +17,11 @@ type ThemeStorage = ReactiveMap<string, TextualTheme>;
 
 export interface ThemeContext {
 	data: ThemeStorage;
-	getFirstThemeName: Accessor<string>;
-	selectedTheme: Accessor<TextualTheme>;
+	selectedTheme: () => TextualTheme;
+	modifySelected: (modified: TextualTheme) => ReactiveMap<string, TextualTheme>;
 	selectedThemeName: Accessor<string>;
 	selectTheme: Setter<string>;
+	firstThemeName: string;
 }
 
 const ThemeContext = createContext<ThemeContext>();
@@ -37,18 +36,17 @@ export const useTheme = () => {
 // TODO: refactor for stores
 export const ThemeProvider: Component<{ children: JSX.Element }> = (props) => {
 	// all stored theme data
-	const data = new ReactiveMap<
-		string,
-		[get: TextualTheme, set: SetStoreFunction<TextualTheme>]
-	>(DEFAULT_THEMES().map((t) => [t.name, createStore(t)]));
-
-	const getFirstThemeName = createMemo<string>(() => [...data.keys()][0]!);
+	const data = new ReactiveMap<string, TextualTheme>(
+		DEFAULT_THEMES().map((t) => [t.name, t]),
+	);
 
 	// current theme data
-	const [selectedName, selectTheme] = createSignal<string>(getFirstThemeName());
-	const selectedTheme = createMemo<TextualTheme>(
+	const firstThemeName = [...data.keys()][0];
+	const [selectedName, selectTheme] = createSignal<string>(firstThemeName);
+	const [selectedTheme, modifySelected] = [
 		() => data.get(selectedName())!,
-	);
+		(modified: TextualTheme) => data.set(selectedName(), modified),
+	];
 
 	onMount(() => {
 		// load from local storage (if any)
@@ -78,9 +76,10 @@ export const ThemeProvider: Component<{ children: JSX.Element }> = (props) => {
 			value={{
 				data,
 				selectedTheme,
+				modifySelected,
 				selectedThemeName: selectedName,
 				selectTheme,
-				getFirstThemeName,
+				firstThemeName,
 			}}
 		>
 			{props.children}

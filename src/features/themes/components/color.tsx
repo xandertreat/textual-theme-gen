@@ -1,4 +1,3 @@
-import Dialog from "@corvu/dialog";
 import { ColorArea } from "@kobalte/core/color-area";
 import { type Color, parseColor } from "@kobalte/core/colors";
 import {
@@ -44,22 +43,27 @@ const ColorPicker: Component<
 	JSX.HTMLAttributes<HTMLDivElement> & { color: string }
 > = (props) => {
 	const [local, rest] = splitProps(props, ["color"]);
-	const { selectedTheme } = useTheme();
+	const { selectedTheme, modifySelected } = useTheme();
 	const [color, setColor] = createSignal<Color>(
 		parseColor(selectedTheme().palette[local.color].base.color),
 	);
-	createEffect(() => {
-		selectedTheme().palette[local.color] = getColorData(
-			color().toString() as HexColorCode,
-		);
-	});
 
 	return (
 		<ColorArea
-			class="w-full h-36 mt-5 touch-none select-none flex flex-col items-center "
+			{...rest}
+			class="w-full h-36 mt-5 touch-none select-none flex flex-col items-center"
 			colorSpace="rgb"
 			value={color()}
-			onChange={setColor}
+			onChange={(color: Color) => {
+				setColor(color);
+				modifySelected({
+					...selectedTheme(),
+					palette: {
+						...selectedTheme().palette,
+						[local.color]: getColorData(color.toString() as HexColorCode),
+					},
+				});
+			}}
 		>
 			<ColorArea.Background class="size-full rounded-md relative">
 				<ColorArea.Thumb

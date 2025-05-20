@@ -4,9 +4,9 @@ import { For, Show, createMemo, mergeProps } from "solid-js";
 import Icon from "../../../components/ui/icon";
 import { useTheme } from "../context/theme";
 import ThemeOption from "./option";
+import RandomTheme from "./random";
 import ThemeReset from "./reset";
 import SaveTheme from "./save";
-import RandomTheme from "./random";
 
 interface ThemeListOptionsProps extends JSX.HTMLAttributes<HTMLDivElement> {}
 

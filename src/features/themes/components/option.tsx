@@ -1,6 +1,6 @@
 import Popover from "@corvu/popover";
 import type { Accessor, Component, JSX } from "solid-js";
-import { For, Show, createMemo, splitProps } from "solid-js";
+import { Show, createMemo, splitProps } from "solid-js";
 import Icon from "../../../components/ui/icon";
 import { useTheme } from "../context/theme";
 import { getPaletteColor } from "../lib/utils";

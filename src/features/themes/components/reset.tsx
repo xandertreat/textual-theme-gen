@@ -1,17 +1,17 @@
+import { action, useSubmission } from "@solidjs/router";
 import type { Component, JSX } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import Icon from "~/components/ui/icon";
 import { useTheme } from "../context/theme";
-import { action, useSubmission } from "@solidjs/router";
 import { DEFAULT_THEMES } from "../data/themes";
 
 const ThemeReset: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 	props,
 ) => {
-	const { data, selectTheme, getFirstThemeName } = useTheme();
+	const { data, selectTheme, firstThemeName } = useTheme();
 	const resetData = action(async () => {
 		for (const t of DEFAULT_THEMES()) data.set(t.name, t);
-		await Promise.resolve(selectTheme(getFirstThemeName()));
+		await Promise.resolve(selectTheme(firstThemeName));
 		for (const [name, t] of data.entries())
 			if (t.source === "user") data.delete(name);
 	}, "resetThemeData");
