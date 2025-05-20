@@ -22,23 +22,14 @@ const ColorSwatch: Component<
 	return (
 		<span class="flex flex-col items-center gap-1">
 			<ActionDialog.Trigger
-				disabled={selectedTheme.source !== "user"}
+				disabled={selectedTheme().source !== "user"}
 				class={
 					"size-12 aspect-square rounded-full shadow-md not-disabled:hover:scale-105 transition-[scale] duration-200 font-black text-2xl"
 				}
 				style={{
-					"background-color":
-						selectedTheme.palette[
-							props.color as keyof typeof selectedTheme.palette
-						].base.color,
-					color:
-						selectedTheme.palette[
-							props.color as keyof typeof selectedTheme.palette
-						].base.text,
-					"--tw-shadow-color":
-						selectedTheme.palette[
-							props.color as keyof typeof selectedTheme.palette
-						].base.color,
+					"background-color": selectedTheme().palette[props.color].base.color,
+					color: selectedTheme().palette[props.color].base.text,
+					"--tw-shadow-color": selectedTheme().palette[props.color].base.color,
 				}}
 				{...props}
 			>
@@ -53,12 +44,9 @@ const ColorPicker: Component<
 	JSX.HTMLAttributes<HTMLDivElement> & { color: string }
 > = (props) => {
 	const [local, rest] = splitProps(props, ["color"]);
-	const { selectedTheme, modifyTheme } = useTheme();
+	const { selectedTheme } = useTheme();
 	const color = createMemo(() =>
-		parseColor(
-			selectedTheme.palette[local.color as keyof typeof selectedTheme.palette]
-				.base.color,
-		),
+		parseColor(selectedTheme().palette[local.color].base.color),
 	);
 
 	return (
@@ -67,9 +55,9 @@ const ColorPicker: Component<
 			colorSpace="rgb"
 			value={color()}
 			onChange={(val: Color) => {
-				modifyTheme("palette", {
-					primary: getColorData(val.toString() as HexColorCode),
-				});
+				selectedTheme().palette[local.color] = getColorData(
+					val.toString() as HexColorCode,
+				);
 			}}
 		>
 			<ColorArea.Background class="size-full rounded-md relative">

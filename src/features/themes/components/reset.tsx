@@ -2,11 +2,20 @@ import type { Component, JSX } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import Icon from "~/components/ui/icon";
 import { useTheme } from "../context/theme";
+import { action, useSubmission } from "@solidjs/router";
+import { DEFAULT_THEMES } from "../data/themes";
 
 const ThemeReset: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 	props,
 ) => {
-	const { resetData } = useTheme();
+	const { data, selectTheme, firstDefaultTheme } = useTheme();
+	const resetData = action(async () => {
+		for (const t of DEFAULT_THEMES()) data.set(t.name, t);
+		await Promise.resolve(selectTheme(firstDefaultTheme()));
+		for (const [name, t] of data.entries())
+			if (t.source === "user") data.delete(name);
+	}, "resetThemeData");
+	const submission = useSubmission(resetData);
 
 	return (
 		<ActionDialog>
@@ -29,15 +38,17 @@ const ThemeReset: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 								This action is <b>PERMANENT</b> and cannot be undone.
 							</p>
 						</span>
-						<ActionDialog.Close tabIndex={-1} class="">
-							<button
-								onClick={() => resetData()}
-								type="button"
-								class="size-full btn btn-error"
-							>
-								RESET
-							</button>
-						</ActionDialog.Close>
+						<form action={resetData} method="post">
+							<ActionDialog.Close tabIndex={-1} class="">
+								<button
+									type="submit"
+									class="size-full btn btn-error btn-lg"
+									disabled={submission.pending}
+								>
+									{submission.pending ? "..." : "RESET"}
+								</button>
+							</ActionDialog.Close>
+						</form>
 					</span>
 				</ActionDialog.Content>
 			</ActionDialog.Portal>

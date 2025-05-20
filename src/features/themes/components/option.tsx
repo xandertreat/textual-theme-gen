@@ -5,6 +5,7 @@ import Icon from "../../../components/ui/icon";
 import { useTheme } from "../context/theme";
 import { getPaletteColor } from "../lib/utils";
 import DeleteTheme from "./delete";
+import RenameTheme from "./rename";
 
 interface ThemeOptionPreviewProps extends JSX.HTMLAttributes<HTMLDivElement> {
 	theme: string;
@@ -55,7 +56,7 @@ const ThemeOptionMenu: Component<ThemeOptionMenuProps> = (props) => {
 			</Popover.Anchor>
 			<Popover.Portal>
 				<Popover.Content
-					class="mt-1 w-40 bg-base-200 motion-duration-150 motion-scale-in-95 motion-opacity-in-0 data-closed:motion-scale-out-95 data-closed:motion-opacity-out-0 rounded-md border border-neutral-content/20"
+					class="mt-1 w-fit min-w-40 bg-base-200 motion-duration-150 motion-scale-in-95 motion-opacity-in-0 data-closed:motion-scale-out-95 data-closed:motion-opacity-out-0 rounded-md border border-neutral-content/20"
 					{...rest}
 				>
 					<ul class="menu size-full">{local.children}</ul>
@@ -72,8 +73,10 @@ interface ThemeOptionProps extends JSX.HTMLAttributes<HTMLLIElement> {
 
 const ThemeOption: Component<ThemeOptionProps> = (props) => {
 	const [local, rest] = splitProps(props, ["theme", "showDelete"]);
-	const { data, selectedTheme, modifyTheme } = useTheme();
-	const isOptionSelected = createMemo(() => local.theme === selectedTheme.name);
+	const { data, selectedTheme, selectTheme } = useTheme();
+	const isOptionSelected = createMemo(
+		() => local.theme === selectedTheme().name,
+	);
 
 	return (
 		<li
@@ -86,7 +89,7 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 				class="btn btn-ghost h-fit p-0 px-1 py-0 rounded-sm font-light flex gap-1 justify-between group"
 				classList={{ "btn-active": isOptionSelected() }}
 				// biome-ignore lint/a11y/useValidAnchor: <explanation>
-				onClick={() => modifyTheme(data.get(local.theme)!)}
+				onClick={() => selectTheme(local.theme)}
 			>
 				<span class="inline-flex items-center gap-2">
 					<ThemeOptionPreview
@@ -97,15 +100,17 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 						{local.theme}
 					</p>
 				</span>
-				<Show when={local.showDelete}>
-					<ThemeOptionMenu isOptionSelected={isOptionSelected}>
-						<Show when={local.showDelete}>
-							<li>
-								<DeleteTheme theme={local.theme} />
-							</li>
-						</Show>
-					</ThemeOptionMenu>
-				</Show>
+				<ThemeOptionMenu isOptionSelected={isOptionSelected}>
+					<Show when={data.get(local.theme)?.source === "user"}>
+						<li>
+							<RenameTheme theme={local.theme} />
+						</li>
+						<li>
+							<DeleteTheme theme={local.theme} />
+						</li>
+					</Show>
+					{/* clone button here */}
+				</ThemeOptionMenu>
 			</a>
 		</li>
 	);

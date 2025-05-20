@@ -7,7 +7,7 @@ import { useTheme } from "../context/theme";
 const SaveTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 	props,
 ) => {
-	const { data, selectedTheme, modifyTheme } = useTheme();
+	const { data, selectedTheme, selectTheme } = useTheme();
 	const [isValid, setIsValid] = createSignal(true);
 
 	const saveAction = action(async (formData: FormData) => {
@@ -17,14 +17,12 @@ const SaveTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 				.toString()
 				.normalize()
 				.trim()
-				.toLocaleLowerCase()
-				.matchAll(/[a-zA-Z]+/g)
+				.matchAll(/[a-zA-Z0-9]+/g)
 				.toArray()
 				.join("-");
 			console.log(`Saving theme "${name}"`);
-			modifyTheme("name", name);
-			modifyTheme("source", "user");
-			data.set(name, JSON.parse(JSON.stringify(selectedTheme)));
+			data.set(name, selectedTheme());
+			await Promise.resolve(selectTheme(name));
 			console.log(`Saved theme "${name}"!`);
 		} catch (error) {
 			console.error(error);
@@ -59,12 +57,12 @@ const SaveTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 							method="post"
 							action={saveAction}
 						>
-							<label class="label validator input input-bordered size-fit text-neutral-content">
+							<label class="label validator input input-bordered size-fit text-neutral">
 								<p class="cursor-default select-none opacity-50">Theme Name</p>
 								<input
 									type="text"
 									name="name"
-									value={selectedTheme.name}
+									value={selectedTheme().name}
 									onInput={(e) => {
 										setIsValid(
 											e.target.validity.valid && e.target.value !== "",
@@ -72,16 +70,16 @@ const SaveTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 									}}
 									placeholder="Theme name"
 									class="peer"
-									pattern="[a-zA-Z]+(?:-[a-zA-Z]+)*"
+									pattern="[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*"
 									title="Only letters, separated by single spaces, underscores or hyphens."
 									required
 								/>
 								<Icon
-									class="text-sm text-error hidden peer-invalid:block size-6"
+									class="text-sm text-error hidden peer-invalid:block size-6 cursor-default"
 									icon="mdi:alert"
 								/>
 								<Icon
-									class="text-sm text-success hidden peer-valid:block size-6"
+									class="text-sm text-success hidden peer-valid:block size-6 cursor-default"
 									icon="mdi:check"
 								/>
 							</label>

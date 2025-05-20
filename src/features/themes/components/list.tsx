@@ -3,47 +3,10 @@ import type { Component, JSX } from "solid-js";
 import { For, Show, createMemo, mergeProps } from "solid-js";
 import Icon from "../../../components/ui/icon";
 import { useTheme } from "../context/theme";
-import { genRandomTheme } from "../lib/utils";
-import type { TextualTheme } from "../types";
 import ThemeOption from "./option";
 import ThemeReset from "./reset";
 import SaveTheme from "./save";
-
-interface DeleteThemeProps extends JSX.HTMLAttributes<HTMLButtonElement> {
-	theme: string;
-} // TODO: refactor into own file + make responsive (i.e. spammable no delay etc)
-const RandomTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
-	props,
-) => {
-	const { addTheme } = useTheme();
-	let die!: SVGSVGElement;
-	let rotating = false;
-	return (
-		<button
-			type="button"
-			data-tip="Random"
-			class="btn btn-circle tooltip tooltip-top"
-			onClick={() => {
-				if (rotating) return;
-				rotating = true;
-				const rotations = Math.round(
-					(Math.random() + 1) * (Math.random() * 10),
-				);
-				const dur = Math.round((Math.random() + 0.15) * 2000);
-				die.classList.toggle(`motion-rotate-out-[${rotations}turn]`);
-				die.classList.toggle(`motion-duration-${dur}ms`);
-				addTheme(genRandomTheme());
-				setTimeout(() => {
-					die.classList.toggle(`motion-duration-${dur}ms`);
-					die.classList.toggle(`motion-rotate-out-[${rotations}turn]`);
-					rotating = false;
-				}, dur);
-			}}
-		>
-			<Icon ref={die} class="size-6 motion-ease-out-cubic" icon="mdi:dice" />
-		</button>
-	);
-};
+import RandomTheme from "./random";
 
 interface ThemeListOptionsProps extends JSX.HTMLAttributes<HTMLDivElement> {}
 
@@ -87,15 +50,24 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 
 	// state
 	const { data } = useTheme();
-	const userThemes = createMemo(() =>
-		Array.from(data.values().filter((t) => t.source === "user")),
-	);
-	const textualThemes = createMemo(() =>
-		Array.from(data.values().filter((t) => t.source === "textual")),
-	);
-	const presetThemes = createMemo(() =>
-		Array.from(data.values().filter((t) => t.source === "preset")),
-	);
+	const userThemes = createMemo(() => [
+		...data
+			.values()
+			.filter((t) => t.source === "user")
+			.map((t) => t.name),
+	]);
+	const textualThemes = createMemo(() => [
+		...data
+			.values()
+			.filter((t) => t.source === "textual")
+			.map((t) => t.name),
+	]);
+	const presetThemes = createMemo(() => [
+		...data
+			.values()
+			.filter((t) => t.source === "preset")
+			.map((t) => t.name),
+	]);
 
 	return (
 		<div class="flex flex-col">
@@ -112,30 +84,30 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 				<li class="mx-1" />
 				<Show
 					when={userThemes().length > 0}
-					fallback={<li>No themes found</li>}
+					fallback={<li>No themes made yet!</li>}
 				>
 					<For each={userThemes()}>
-						{(theme) => <ThemeOption theme={theme.name} showDelete />}
+						{(theme) => <ThemeOption theme={theme} showDelete />}
 					</For>
 				</Show>
 				<li class="menu-title py-0 p text-left mt-5">Included themes</li>
 				<li class="mx-1" />
 				<Show
 					when={textualThemes().length > 0}
-					fallback={<li>No themes found</li>}
+					fallback={<li>No textual themes found</li>}
 				>
 					<For each={textualThemes()}>
-						{(theme) => <ThemeOption theme={theme.name} />}
+						{(theme) => <ThemeOption theme={theme} />}
 					</For>
 				</Show>
 				<li class="menu-title py-0 p text-left mt-5">Presets</li>
 				<li class="mx-1" />
 				<Show
 					when={presetThemes().length > 0}
-					fallback={<li>No themes found</li>}
+					fallback={<li>No presets found</li>}
 				>
 					<For each={presetThemes()}>
-						{(theme) => <ThemeOption theme={theme.name} />}
+						{(theme) => <ThemeOption theme={theme} />}
 					</For>
 				</Show>
 			</ul>

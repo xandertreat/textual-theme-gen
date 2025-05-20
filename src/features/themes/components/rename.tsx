@@ -1,47 +1,66 @@
 import { action, useSubmission } from "@solidjs/router";
-import { type Component, type JSX, createSignal } from "solid-js";
+import {
+	type Component,
+	type JSX,
+	Match,
+	Show,
+	Switch,
+	batch,
+	createSignal,
+	splitProps,
+} from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import Icon from "~/components/ui/icon";
 import { useTheme } from "../context/theme";
+import type { TextualTheme } from "../types";
 
-const RenameTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
-	props,
-) => {
-	const { data, selectedTheme, modifyTheme } = useTheme();
-	const [isValid, setIsValid] = createSignal(true);
+interface RenameThemeProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
+	theme: string;
+}
 
-	const saveAction = action(async (formData: FormData) => {
+const RenameTheme: Component<RenameThemeProps> = (props) => {
+	const [local, rest] = splitProps(props, ["theme"]);
+	const { data, selectTheme, selectedTheme } = useTheme();
+	const [isValid, setIsValid] = createSignal(false);
+	const [invalidReason, setInvalidReason] = createSignal<
+		"malformed" | "source" | "nodiff"
+	>("nodiff");
+
+	const renameAction = action(async (formData: FormData) => {
 		try {
-			const name = formData
-				.get("name")!
-				.toString()
-				.normalize()
+			const newName = formData
+				?.get("name")
+				?.toString()
 				.trim()
-				.toLocaleLowerCase()
-				.matchAll(/[a-zA-Z]+/g)
+				.normalize()
+				.matchAll(/[a-zA-Z0-9]+/g)
 				.toArray()
-				.join("-");
-			console.log(`Saving theme "${name}"`);
-			modifyTheme("name", name);
-			modifyTheme("source", "user");
-			data.set(name, JSON.parse(JSON.stringify(selectedTheme)));
-			console.log(`Saved theme "${name}"!`);
+				.join("-")!;
+			batch(() => {
+				selectedTheme().name = newName;
+				data.set(newName, selectedTheme());
+				data.delete(local.theme);
+				selectTheme(newName);
+			});
 		} catch (error) {
 			console.error(error);
 			return { error: true };
 		}
 	}, "saveThemeAction");
-	const submission = useSubmission(saveAction);
+	const submission = useSubmission(renameAction);
 
 	return (
-		<ActionDialog>
+		<ActionDialog
+			onOpenChange={(open) => {
+				if (!open) setInvalidReason("nodiff");
+			}}
+		>
 			<ActionDialog.Trigger
-				type="button"
-				class="btn btn-success btn-sm m-2 mx-4"
+				class="inline-flex items-center text-center size-full font-bold rounded text-sm"
 				{...props}
 			>
-				<Icon class="size-6" icon="mdi:plus" />
-				Save Theme
+				<Icon class="size-4" icon="mdi:pencil-outline" />
+				Rename theme
 			</ActionDialog.Trigger>
 			<ActionDialog.Portal>
 				<ActionDialog.Overlay />
@@ -49,7 +68,7 @@ const RenameTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 					<ActionDialog.Close />
 					<span class="flex flex-col gap-2">
 						<span class="text-xs">
-							<h2 class="text-3xl font-bold">Save Theme</h2>
+							<h2 class="text-3xl font-bold">Rename Theme</h2>
 							<sub class="opacity-50">
 								(This will override any existing theme with the same name)
 							</sub>
@@ -57,41 +76,78 @@ const RenameTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 						<form
 							class="text-neutral flex flex-col gap-2"
 							method="post"
-							action={saveAction}
+							action={renameAction}
 						>
-							<label class="label validator input input-bordered size-fit text-neutral-content">
+							<label
+								class="label input size-fit text-neutral"
+								classList={{
+									"input-success": isValid(),
+									"input-error": !isValid(),
+								}}
+								aria-invalid={!isValid()}
+							>
 								<p class="cursor-default select-none opacity-50">Theme Name</p>
 								<input
 									type="text"
 									name="name"
-									value={selectedTheme.name}
 									onInput={(e) => {
-										setIsValid(
-											e.target.validity.valid && e.target.value !== "",
-										);
+										const input = e.target.value;
+										const validInput = e.target.validity.valid && input !== "";
+										const overwriting = data.get(input);
+										let reserved = false;
+										if (overwriting) reserved = overwriting.source !== "user";
+										const renaming = !(input === local.theme);
+										setIsValid(validInput && !reserved && renaming);
+										if (!renaming) setInvalidReason("nodiff");
+										else if (overwriting) setInvalidReason("source");
+										else setInvalidReason("malformed");
 									}}
+									value={local.theme}
 									placeholder="Theme name"
 									class="peer"
-									pattern="[a-zA-Z]+(?:-[a-zA-Z]+)*"
+									pattern="[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*"
 									title="Only letters, separated by single spaces, underscores or hyphens."
 									required
 								/>
 								<Icon
-									class="text-sm text-error hidden peer-invalid:block size-6"
+									class="text-sm text-error size-6 cursor-default"
+									classList={{
+										hidden: isValid(),
+										block: !isValid(),
+									}}
 									icon="mdi:alert"
 								/>
 								<Icon
-									class="text-sm text-success hidden peer-valid:block size-6"
+									class="text-sm text-success  size-6 cursor-default"
+									classList={{
+										hidden: !isValid(),
+										block: isValid(),
+									}}
 									icon="mdi:check"
 								/>
 							</label>
-							<p class="validator-hint hidden -mt-1.5">
-								Invalid format. Only letters & separators allowed.
-							</p>
+							<Show when={!isValid()}>
+								<Switch>
+									<Match when={invalidReason() === "nodiff"}>
+										<p class="text-error text-xs">New name isn't different</p>
+									</Match>
+									<Match when={invalidReason() === "source"}>
+										<p class="text-error text-xs">
+											No renaming included / preset themes.
+										</p>
+									</Match>
+									<Match when={invalidReason() === "malformed"}>
+										<p class="text-error text-xs">
+											Invalid format. Only letters & separators allowed.
+										</p>
+									</Match>
+								</Switch>
+							</Show>
 							<ActionDialog.Close
 								tabIndex={-1}
 								class=""
 								classList={{
+									"mt-1": isValid(),
 									"pointer-events-none": submission.pending || !isValid(),
 								}}
 							>
@@ -100,7 +156,7 @@ const RenameTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 									class="size-full btn btn-success"
 									disabled={submission.pending || !isValid()}
 								>
-									{submission.pending ? "..." : "Save"}
+									{submission.pending ? "..." : "Rename"}
 								</button>
 							</ActionDialog.Close>
 						</form>
