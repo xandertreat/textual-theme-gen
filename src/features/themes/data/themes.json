@@ -9,10 +9,10 @@
 			"background": "#E0E0E0",
 			"foreground": "#1F1F1F",
 			"surface": "#D8D8D8",
-			"panel": "#D0D0D0",
 			"success": "#4EBF71",
 			"warning": "#FEA62B",
 			"error": "#B93C5B",
+			"panel": "#D0D0D0",
 			"boost": "#0000000A"
 		},
 		"variables": {
@@ -84,10 +84,10 @@
 			"background": "#121212",
 			"foreground": "#E0E0E0",
 			"surface": "#1E1E1E",
-			"panel": "#242F38",
 			"success": "#4EBF71",
 			"warning": "#FEA62B",
 			"error": "#B93C5B",
+			"panel": "#242F38",
 			"boost": "#FFFFFF0A"
 		},
 		"variables": {
@@ -159,10 +159,10 @@
 			"background": "#2E3440",
 			"foreground": "#D8DEE9",
 			"surface": "#3B4252",
-			"panel": "#434C5E",
 			"success": "#A3BE8C",
 			"warning": "#EACB8B",
 			"error": "#BE616A",
+			"panel": "#434C5E",
 			"boost": "#FFFFFF0A"
 		},
 		"variables": {
@@ -234,10 +234,10 @@
 			"background": "#282828",
 			"foreground": "#FBF1C7",
 			"surface": "#3C3836",
-			"panel": "#504945",
 			"success": "#B7BB26",
 			"warning": "#FD8019",
 			"error": "#FA4934",
+			"panel": "#504945",
 			"boost": "#FFFFFF0A"
 		},
 		"variables": {
@@ -309,10 +309,10 @@
 			"background": "#181825",
 			"foreground": "#CDD6F4",
 			"surface": "#313244",
-			"panel": "#45475A",
 			"success": "#ABE9B3",
 			"warning": "#FAE3B0",
 			"error": "#F28FAD",
+			"panel": "#45475A",
 			"boost": "#FFFFFF0A"
 		},
 		"variables": {
@@ -384,10 +384,10 @@
 			"background": "#282A36",
 			"foreground": "#F8F8F2",
 			"surface": "#2B2E3B",
-			"panel": "#313442",
 			"success": "#50FA7B",
 			"warning": "#FEB86C",
 			"error": "#FE5555",
+			"panel": "#313442",
 			"boost": "#FFFFFF0A"
 		},
 		"variables": {
@@ -459,10 +459,10 @@
 			"background": "#1A1B26",
 			"foreground": "#A9B1D6",
 			"surface": "#24283B",
-			"panel": "#414868",
 			"success": "#9ECE6A",
 			"warning": "#DFAF68",
 			"error": "#F6768E",
+			"panel": "#414868",
 			"boost": "#FFFFFF0A"
 		},
 		"variables": {
@@ -534,10 +534,10 @@
 			"background": "#272822",
 			"foreground": "#D6D6D6",
 			"surface": "#2E2E2E",
-			"panel": "#3E3D32",
 			"success": "#A5E22E",
 			"warning": "#FC971F",
 			"error": "#F82672",
+			"panel": "#3E3D32",
 			"boost": "#FFFFFF0A"
 		},
 		"variables": {
@@ -609,10 +609,10 @@
 			"background": "#100F0F",
 			"foreground": "#FFFCF0",
 			"surface": "#1C1B1A",
-			"panel": "#282726",
 			"success": "#65800B",
 			"warning": "#AC8301",
 			"error": "#AE3029",
+			"panel": "#282726",
 			"boost": "#FFFFFF0A"
 		},
 		"variables": {
@@ -684,10 +684,10 @@
 			"background": "#EFF1F5",
 			"foreground": "#4C4F69",
 			"surface": "#E6E9EF",
-			"panel": "#CCD0DA",
 			"success": "#40A02B",
 			"warning": "#DE8E1D",
 			"error": "#D10F39",
+			"panel": "#CCD0DA",
 			"boost": "#0000000A"
 		},
 		"variables": {
@@ -759,10 +759,10 @@
 			"background": "#FDF6E3",
 			"foreground": "#586E75",
 			"surface": "#EEE8D5",
-			"panel": "#EEE8D5",
 			"success": "#849900",
 			"warning": "#CA4B16",
 			"error": "#DB322F",
+			"panel": "#EEE8D5",
 			"boost": "#0000000A"
 		},
 		"variables": {
@@ -834,10 +834,10 @@
 			"background": "#002B36",
 			"foreground": "#839496",
 			"surface": "#073642",
-			"panel": "#073642",
 			"success": "#859900",
 			"warning": "#CB4B16",
 			"error": "#DC322F",
+			"panel": "#073642",
 			"boost": "#07364299"
 		},
 		"variables": {
@@ -909,10 +909,10 @@
 			"background": "#FFFFFF",
 			"foreground": "#000000",
 			"surface": "#F3F3F3",
-			"panel": "#E7E7E7",
 			"success": "#1F7C34",
 			"warning": "#E9A700",
 			"error": "#A1260D",
+			"panel": "#E7E7E7",
 			"boost": "#0000000A"
 		},
 		"variables": {
@@ -984,10 +984,10 @@
 			"background": "#1E1E1E",
 			"foreground": "#D4D4D4",
 			"surface": "#252526",
-			"panel": "#333333",
 			"success": "#388A34",
 			"warning": "#FFCC00",
 			"error": "#F44747",
+			"panel": "#333333",
 			"boost": "#FFFFFF0F"
 		},
 		"variables": {
@@ -1059,10 +1059,10 @@
 			"background": "#FFFFFF",
 			"foreground": "#24292E",
 			"surface": "#F6F8FA",
-			"panel": "#F6F8FA",
 			"success": "#28A745",
 			"warning": "#DBAB09",
 			"error": "#D73A49",
+			"panel": "#F6F8FA",
 			"boost": "#0000000A"
 		},
 		"variables": {
@@ -1134,10 +1134,10 @@
 			"background": "#22272E",
 			"foreground": "#C9D1D9",
 			"surface": "#2D333B",
-			"panel": "#373E47",
 			"success": "#3FB950",
 			"warning": "#D29922",
 			"error": "#F85149",
+			"panel": "#373E47",
 			"boost": "#C9D1D91A"
 		},
 		"variables": {
@@ -1209,10 +1209,10 @@
 			"background": "#FFFBFE",
 			"foreground": "#1C1B1F",
 			"surface": "#FFFBFE",
-			"panel": "#E7E0EC",
 			"success": "#34A853",
 			"warning": "#FBBC05",
 			"error": "#B3261E",
+			"panel": "#E7E0EC",
 			"boost": "#00000014"
 		},
 		"variables": {
@@ -1284,10 +1284,10 @@
 			"background": "#1C1B1F",
 			"foreground": "#E6E1E5",
 			"surface": "#1C1B1F",
-			"panel": "#49454F",
 			"success": "#61BD84",
 			"warning": "#FDD663",
 			"error": "#F2B8B5",
+			"panel": "#49454F",
 			"boost": "#FFFFFF14"
 		},
 		"variables": {

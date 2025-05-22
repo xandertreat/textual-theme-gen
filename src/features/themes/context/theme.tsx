@@ -1,4 +1,3 @@
-import { ReactiveMap } from "@solid-primitives/map";
 import type { Accessor, Component, JSX, Setter } from "solid-js";
 import {
 	createContext,
@@ -7,18 +6,19 @@ import {
 	onMount,
 	useContext,
 } from "solid-js";
+import { ReactiveMap } from "@solid-primitives/map";
 import { DEFAULT_THEMES, VERSION_KEY } from "../data/themes";
 import type { TextualTheme } from "../types";
 
+const DEFAULTS = DEFAULT_THEMES();
 const STORAGE_KEY = `saved-${VERSION_KEY()}`;
 const LAST_SELECTED_KEY = `last-selected-${VERSION_KEY()}`;
 
 type ThemeStorage = ReactiveMap<string, TextualTheme>;
-
 export interface ThemeContext {
 	data: ThemeStorage;
 	selectedTheme: () => TextualTheme;
-	modifySelected: (modified: TextualTheme) => ReactiveMap<string, TextualTheme>;
+	modifySelected: (modified: Partial<TextualTheme>) => void;
 	selectedThemeName: Accessor<string>;
 	selectTheme: Setter<string>;
 	firstThemeName: string;
@@ -35,19 +35,19 @@ export const useTheme = () => {
 
 // TODO: refactor for stores
 export const ThemeProvider: Component<{ children: JSX.Element }> = (props) => {
-	// all stored theme data
+	// state
 	const data = new ReactiveMap<string, TextualTheme>(
-		DEFAULT_THEMES().map((t) => [t.name, t]),
+		DEFAULTS.map((t) => [t.name, t]),
 	);
-
-	// current theme data
 	const firstThemeName = [...data.keys()][0];
 	const [selectedName, selectTheme] = createSignal<string>(firstThemeName);
 	const [selectedTheme, modifySelected] = [
 		() => data.get(selectedName())!,
-		(modified: TextualTheme) => data.set(selectedName(), modified),
+		(modified: Partial<TextualTheme>) =>
+			data.set(selectedName(), { ...selectedTheme(), ...modified }),
 	];
 
+	// lifecycle
 	onMount(() => {
 		// load from local storage (if any)
 		const localData = localStorage.getItem(STORAGE_KEY);

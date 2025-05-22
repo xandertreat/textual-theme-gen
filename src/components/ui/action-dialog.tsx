@@ -18,11 +18,8 @@ import { cn } from "~/lib/util";
 import Icon from "./icon";
 
 const Root: Component<RootProps> = (props) => <Dialog {...props} />;
-interface ActionTriggerProps
-	extends TriggerProps,
-		JSX.HTMLAttributes<HTMLButtonElement> {
-	children?: JSX.Element;
-}
+type ActionTriggerProps = TriggerProps &
+	JSX.ButtonHTMLAttributes<HTMLButtonElement>;
 const Trigger: Component<ActionTriggerProps> = (props) => (
 	<Dialog.Trigger {...mergeProps({ "aria-label": "Open dialog" }, props)} />
 );
@@ -60,11 +57,7 @@ const Content: Component<ActionContentProps> = (props) => (
 	/>
 );
 
-interface ActionCloseProps
-	extends CloseProps,
-		JSX.HTMLAttributes<HTMLButtonElement> {
-	children?: JSX.Element;
-}
+type ActionCloseProps = CloseProps & JSX.HTMLAttributes<HTMLButtonElement>;
 const Close: Component<ActionCloseProps> = (props) => (
 	<Dialog.Close
 		{...mergeProps(

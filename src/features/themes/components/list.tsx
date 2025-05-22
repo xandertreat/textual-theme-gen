@@ -6,7 +6,6 @@ import { useTheme } from "../context/theme";
 import ThemeOption from "./option";
 import RandomTheme from "./random";
 import ThemeReset from "./reset";
-import SaveTheme from "./save";
 
 interface ThemeListOptionsProps extends JSX.HTMLAttributes<HTMLDivElement> {}
 
@@ -78,7 +77,6 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 					<RandomTheme />
 				</Show>
 			</div>
-			<SaveTheme />
 			<ul class="menu p-0 px-1 rounded-box space-y-1 w-56">
 				<li class="menu-title py-0 p text-left mt-2">My themes</li>
 				<li class="mx-1" />

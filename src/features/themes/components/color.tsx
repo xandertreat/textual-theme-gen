@@ -17,11 +17,12 @@ const ColorSwatch: Component<
 	JSX.ButtonHTMLAttributes<HTMLButtonElement> & { color: string }
 > = (props) => {
 	const { selectedTheme } = useTheme();
+	const canPick = createMemo(() => selectedTheme().source === "user");
 
 	return (
 		<span class="flex flex-col items-center gap-1">
 			<ActionDialog.Trigger
-				disabled={selectedTheme().source !== "user"}
+				disabled={!canPick()}
 				class={
 					"size-12 aspect-square rounded-full shadow-md not-disabled:hover:scale-105 transition-[scale] duration-200 font-black text-2xl"
 				}
@@ -39,6 +40,8 @@ const ColorSwatch: Component<
 	);
 };
 
+const DEBOUNCE_DELAY = 4.66; // ms (found through manual testing to be best responsive)
+
 const ColorPicker: Component<
 	JSX.HTMLAttributes<HTMLDivElement> & { color: string }
 > = (props) => {
@@ -47,6 +50,7 @@ const ColorPicker: Component<
 	const [color, setColor] = createSignal<Color>(
 		parseColor(selectedTheme().palette[local.color].base.color),
 	);
+	let debounce = false;
 
 	return (
 		<ColorArea
@@ -56,13 +60,18 @@ const ColorPicker: Component<
 			value={color()}
 			onChange={(color: Color) => {
 				setColor(color);
-				modifySelected({
-					...selectedTheme(),
-					palette: {
-						...selectedTheme().palette,
-						[local.color]: getColorData(color.toString() as HexColorCode),
-					},
-				});
+				if (!debounce) {
+					debounce = true;
+					setTimeout(() => {
+						modifySelected({
+							palette: {
+								...selectedTheme().palette,
+								[local.color]: getColorData(color.toString() as HexColorCode),
+							},
+						});
+						debounce = false;
+					}, DEBOUNCE_DELAY);
+				}
 			}}
 		>
 			<ColorArea.Background class="size-full rounded-md relative">
