@@ -8,6 +8,7 @@ import {
 } from "solid-js";
 import Icon from "~/components/ui/icon";
 import { useTheme } from "../context/theme";
+import { randomName } from "../lib/utils";
 
 interface CloneThemeOptionProps
 	extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {}
@@ -41,6 +42,19 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 	const { data, selectedTheme, selectTheme } = useTheme();
 	const [isHolding, setIsHolding] = createSignal(false);
 
+	const clone = () => {
+		const cur = { ...selectedTheme() };
+		if (cur.name.includes("-clone")) {
+			cur.name = cur.name.replace(/-clone(-\w+)?$/, "");
+			cur.name = `${cur.name}-clone-${randomName()}`;
+		} else cur.name = `${cur.name}-clone`;
+
+		batch(() => {
+			data.set(cur.name, cur);
+			selectTheme(cur.name);
+		});
+	};
+
 	const [isMobile, setIsMobile] = createSignal(false);
 	onMount(() => setIsMobile(window.matchMedia("(max-width: 1280px)").matches));
 
@@ -59,6 +73,9 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 					},
 					{ once: true },
 				);
+				setTimeout(() => {
+					if (isHolding()) clone();
+				}, CLONE_HOLD_TIME);
 			}}
 			style={{
 				"background-size": "100% 200%",
@@ -78,29 +95,10 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 	const MobileButton = () => (
 		<button
 			type="button"
-			class="btn btn-ghost btn-sm bg-bottom m-2 mx-4 tooltip"
-			classList={{ "after:opacity-0!": isHolding() }}
+			class="btn btn-primary btn-sm bg-bottom m-2 mx-4"
 			{...props}
-			onMouseDown={() => {
-				setIsHolding(true);
-				document.addEventListener(
-					"mouseup",
-					() => {
-						setIsHolding(false);
-					},
-					{ once: true },
-				);
-			}}
-			style={{
-				"background-size": "100% 200%",
-			}}
+			onClick={clone}
 		>
-			<span
-				class="tooltip-content text-xs motion-duration-200"
-				classList={{ "motion-opacity-out-0": isHolding() }}
-			>
-				(hold)
-			</span>
 			<Icon class="size-6" icon="mdi:content-copy" />
 			{!isHolding() ? "Clone Theme" : "Cloning..."}
 		</button>
