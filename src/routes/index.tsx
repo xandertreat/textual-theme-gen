@@ -2,6 +2,7 @@ import { A } from "@solidjs/router";
 import CodeBlock from "@ui/codeblock";
 import AppThemeController, { AppThemeProvider } from "~/context/app-theme";
 import ThemeManagement from "~/features/themes/components/management";
+import GitHub from "~/components/github";
 
 // State
 import { ThemeProvider } from "~/features/themes/context/theme";
@@ -22,6 +23,7 @@ const Index = () => {
 						</A>
 					</sub>
 					<AppThemeController />
+					<GitHub />
 				</span>
 				<h2 class="font-bold text-4xl">How-to</h2>
 				<span class="mb-10 flex flex-col gap-2">

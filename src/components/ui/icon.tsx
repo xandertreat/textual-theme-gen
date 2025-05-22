@@ -75,8 +75,8 @@ const DEFAULTS: Required<IconifyConfiguration> = {
 	CACHE_SIZE: 256,
 	DEFAULT_SVG_ATTRIBUTES: {
 		xmlns: "http://www.w3.org/2000/svg",
-		width: "1em",
-		height: "1em",
+		width: "2em",
+		height: "2em",
 		viewBox: "0 0 24 24",
 		fill: "currentColor",
 	},
@@ -159,7 +159,11 @@ const escapeHTML = (html: string): string =>
 	html?.replace(/&lt;/g, "<").replace(/&gt;/g, ">").trim();
 
 const getInnerHtml = (html: string): string =>
-	html?.replace(/^<svg[^>]*>/, "").replace(/<\/svg>$/, "");
+	html
+		?.replace(/^<svg[^>]*>/, "")
+		.replace(/<\/svg>$/, "")
+		?.replace(/^<g[^>]*>/, "") // TODO: make sure this is safe
+		.replace(/<\/g>$/, "");
 
 const fetchIconifyIcon = (
 	params: IconifyApiParameters,
@@ -303,8 +307,8 @@ export const Icon: Component<IconifyIconProps> = (raw) => {
 	]);
 
 	if (typeof apiParams.size === "number") {
-		rest.width = apiParams.size;
-		rest.height = apiParams.size;
+		rest.width = `${apiParams.size}em`;
+		rest.height = `${apiParams.size}em`;
 		apiParams.size = undefined;
 	}
 
