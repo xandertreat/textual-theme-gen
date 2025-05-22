@@ -1,6 +1,6 @@
 import Popover from "@corvu/popover";
 import type { Accessor, Component, JSX } from "solid-js";
-import { Show, createMemo, splitProps } from "solid-js";
+import { Show, createMemo, createSignal, onMount, splitProps } from "solid-js";
 import Icon from "../../../components/ui/icon";
 import { useTheme } from "../context/theme";
 import { getPaletteColor } from "../lib/utils";
@@ -97,10 +97,20 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 		() => local.theme === selectedThemeName(),
 	);
 
+	const [needsTooltip, setNeedsTooltip] = createSignal(false);
+	const [hoveringLabel, setHoveringLabel] = createSignal(false);
+	let label!: HTMLParagraphElement;
+
+	onMount(() => setNeedsTooltip(label.scrollWidth > label.clientWidth));
+
 	return (
 		<li
 			id={`theme-${local.theme}-option`}
 			class="motion-duration-1000/opacity motion-ease-in-out motion-duration-300 motion-opacity-in-0 -motion-translate-x-in-50"
+			classList={{
+				tooltip: hoveringLabel(),
+			}}
+			data-tip={needsTooltip() ? local.theme : undefined}
 			{...rest}
 		>
 			<a
@@ -115,7 +125,12 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 						class="ml-0 size-6 grid grid-cols-2 grid-rows-2 gap-0.75 p-1 rounded *:rounded shadow col-span-1 row-span-1"
 						theme={local.theme}
 					/>
-					<p class="grow-0 w-36 text-left overflow-ellipsis overflow-hidden text-nowrap whitespace-nowrap flex-nowrap">
+					<p
+						ref={label}
+						onMouseEnter={() => setHoveringLabel(true)}
+						onMouseLeave={() => setHoveringLabel(false)}
+						class="grow-0 w-36 text-left overflow-ellipsis overflow-hidden text-nowrap whitespace-nowrap flex-nowrap"
+					>
 						{local.theme}
 					</p>
 				</span>

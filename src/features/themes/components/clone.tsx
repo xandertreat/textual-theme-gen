@@ -10,6 +10,7 @@ import Icon from "~/components/ui/icon";
 import { useTheme } from "../context/theme";
 import { randomName } from "../lib/utils";
 
+// TODO: fix cloning bugs
 interface CloneThemeOptionProps
 	extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {}
 
