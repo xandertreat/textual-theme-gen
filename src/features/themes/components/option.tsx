@@ -6,6 +6,7 @@ import { useTheme } from "../context/theme";
 import { getPaletteColor } from "../lib/utils";
 import DeleteTheme from "./delete";
 import RenameTheme from "./rename";
+import { CloneThemeOption } from "./clone";
 
 interface ThemeOptionPreviewProps extends JSX.HTMLAttributes<HTMLDivElement> {
 	theme: string;
@@ -119,15 +120,24 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 					</p>
 				</span>
 				<ThemeOptionMenu isOptionSelected={isOptionSelected}>
-					<Show when={data.get(local.theme)?.source === "user"}>
+					<Show
+						when={data.get(local.theme)?.source === "user"}
+						fallback={
+							<li>
+								<CloneThemeOption />
+							</li>
+						}
+					>
 						<li>
 							<RenameTheme theme={local.theme} />
+						</li>
+						<li>
+							<CloneThemeOption />
 						</li>
 						<li>
 							<DeleteTheme theme={local.theme} />
 						</li>
 					</Show>
-					{/* clone button here */}
 				</ThemeOptionMenu>
 			</a>
 		</li>

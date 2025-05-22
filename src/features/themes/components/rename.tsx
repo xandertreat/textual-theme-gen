@@ -57,7 +57,7 @@ const RenameTheme: Component<RenameThemeProps> = (props) => {
 				class="inline-flex items-center text-center size-full font-bold rounded text-sm"
 				{...props}
 			>
-				<Icon class="size-4" icon="mdi:pencil-outline" />
+				<Icon icon="mdi:pencil-outline" />
 				Rename theme
 			</ActionDialog.Trigger>
 			<ActionDialog.Portal>

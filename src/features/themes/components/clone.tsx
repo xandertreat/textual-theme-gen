@@ -14,22 +14,28 @@ interface CloneThemeOptionProps
 	extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {}
 
 export const CloneThemeOption: Component<CloneThemeOptionProps> = (props) => {
-	const { data, selectTheme, selectedTheme } = useTheme();
+	const { data, selectedTheme, selectTheme } = useTheme();
+
+	const clone = () => {
+		const cur = { ...selectedTheme() };
+		cur.source = "user";
+		if (cur.name.includes("-clone")) {
+			cur.name = cur.name.replace(/-clone(-\w+)?$/, "");
+			cur.name = `${cur.name}-clone-${randomName()}`;
+		} else cur.name = `${cur.name}-clone`;
+
+		data.set(cur.name, cur);
+	};
 
 	return (
 		<button
 			type="button"
-			class="btn btn-circle tooltip tooltip-top"
-			data-tip="Clone"
-			onClick={() => {
-				const newName = `${selectedTheme().name}-cloned`;
-				batch(() => {
-					data.set(newName, { ...selectedTheme(), name: newName });
-					selectTheme(newName);
-				});
-			}}
+			class="inline-flex items-center text-center size-full font-bold rounded text-sm"
+			onClick={clone}
+			{...props}
 		>
-			<Icon class="size-6" icon="mdi:content-copy" />
+			<Icon icon="mdi:content-copy" />
+			Clone
 		</button>
 	);
 };

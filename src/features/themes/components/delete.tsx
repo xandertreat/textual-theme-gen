@@ -35,7 +35,7 @@ const DeleteTheme: Component<DeleteThemeProps> = (props) => {
 				class="inline-flex items-center text-center size-full text-error font-bold rounded text-sm"
 				{...props}
 			>
-				<Icon class="size-4" icon="mdi:trash-can-outline" />
+				<Icon icon="mdi:trash-can-outline" />
 				Delete theme
 			</ActionDialog.Trigger>
 			<ActionDialog.Portal>
