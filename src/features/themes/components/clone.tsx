@@ -44,6 +44,7 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 
 	const clone = () => {
 		const cur = { ...selectedTheme() };
+		cur.source = "user";
 		if (cur.name.includes("-clone")) {
 			cur.name = cur.name.replace(/-clone(-\w+)?$/, "");
 			cur.name = `${cur.name}-clone-${randomName()}`;
