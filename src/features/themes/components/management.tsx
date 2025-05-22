@@ -8,9 +8,9 @@ const ThemeManagement: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	passed,
 ) => {
 	return (
-		<div class="flex p-5 justify-between w-[80vw]" {...passed}>
+		<div class="flex w-[80vw] justify-between p-5 max-xl:flex-col" {...passed}>
 			<ThemeProvider>
-				<div class="grid grid-cols-2 col-span-1 justify-normal gap-3">
+				<div class="flex gap-5 max-xl:flex-col">
 					<ThemeList />
 					<ThemeCreation />
 				</div>

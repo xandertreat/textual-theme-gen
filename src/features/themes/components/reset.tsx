@@ -20,7 +20,7 @@ const ThemeReset: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 	return (
 		<ActionDialog>
 			<ActionDialog.Trigger
-				class="inline-flex items-center text-center size-full text-error font-bold rounded"
+				class="inline-flex size-full items-center rounded text-center font-bold text-error"
 				{...props}
 			>
 				<Icon icon="mdi:alert" />
@@ -31,7 +31,7 @@ const ThemeReset: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 				<ActionDialog.Content class="flex flex-col items-center text-center">
 					<ActionDialog.Close />
 					<span class="flex flex-col gap-2">
-						<h2 class="text-3xl font-bold">Reset Data</h2>
+						<h2 class="font-bold text-3xl">Reset Data</h2>
 						<span>
 							<p>Are you sure you want to reset your data to default?</p>
 							<p class="text-error text-xs">
@@ -42,7 +42,7 @@ const ThemeReset: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 							<ActionDialog.Close tabIndex={-1} class="">
 								<button
 									type="submit"
-									class="size-full btn btn-error btn-lg"
+									class="btn btn-error btn-lg size-full"
 									disabled={submission.pending}
 								>
 									{submission.pending ? "..." : "RESET"}

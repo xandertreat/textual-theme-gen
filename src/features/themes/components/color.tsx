@@ -24,7 +24,7 @@ const ColorSwatch: Component<
 			<ActionDialog.Trigger
 				disabled={!canPick()}
 				class={
-					"size-12 aspect-square rounded-full shadow-md not-disabled:hover:scale-105 transition-[scale] duration-200 font-black text-2xl"
+					"aspect-square size-12 rounded-full font-black text-2xl shadow-md transition-[scale] duration-200 not-disabled:hover:scale-105"
 				}
 				style={{
 					"background-color": selectedTheme().palette[props.color].base.color,
@@ -55,7 +55,7 @@ const ColorPicker: Component<
 	return (
 		<ColorArea
 			{...rest}
-			class="w-full h-36 mt-5 touch-none select-none flex flex-col items-center"
+			class="mt-5 flex h-36 w-full touch-none select-none flex-col items-center"
 			colorSpace="rgb"
 			value={color()}
 			onChange={(color: Color) => {
@@ -74,9 +74,9 @@ const ColorPicker: Component<
 				}
 			}}
 		>
-			<ColorArea.Background class="size-full rounded-md relative">
+			<ColorArea.Background class="relative size-full rounded-md">
 				<ColorArea.Thumb
-					class="rounded-full border-2 border-solid size-4"
+					class="size-4 rounded-full border-2 border-solid"
 					style={{
 						"background-color": "var(--kb-color-current)",
 						"border-color":
@@ -102,7 +102,7 @@ const EditColor: Component<
 			<ActionDialog.Portal>
 				<ActionDialog.Overlay />
 				<ActionDialog.Content
-					class="flex flex-col items-center text-center bg-primary text-primary-content border-0 "
+					class="flex flex-col items-center border-0 bg-primary text-center text-primary-content "
 					{...rest}
 				>
 					<ActionDialog.Close />

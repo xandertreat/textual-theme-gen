@@ -20,6 +20,16 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true,
+			"nursery": {
+				"useSortedClasses": {
+					"level": "error",
+					"fix": "safe",
+					"options": {
+						"attributes": ["className", "class", "classList"],
+						"functions": ["cn"]
+					}
+				}
+			},
 			"style": {
 				"noNonNullAssertion": "off" // we need to sometimes
 			},

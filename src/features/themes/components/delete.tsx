@@ -32,7 +32,7 @@ const DeleteTheme: Component<DeleteThemeProps> = (props) => {
 	return (
 		<ActionDialog>
 			<ActionDialog.Trigger
-				class="inline-flex items-center text-center size-full text-error font-bold rounded text-sm"
+				class="inline-flex size-full items-center rounded text-center font-bold text-error text-sm"
 				{...props}
 			>
 				<Icon icon="mdi:trash-can-outline" />
@@ -43,7 +43,7 @@ const DeleteTheme: Component<DeleteThemeProps> = (props) => {
 				<ActionDialog.Content class="flex flex-col items-center text-center">
 					<ActionDialog.Close />
 					<span class="flex flex-col gap-2">
-						<h2 class="text-3xl font-bold">Delete Theme</h2>
+						<h2 class="font-bold text-3xl">Delete Theme</h2>
 						<span>
 							<p>Are you sure you want to delete this theme?</p>
 							<p class="text-error text-xs">
@@ -53,7 +53,7 @@ const DeleteTheme: Component<DeleteThemeProps> = (props) => {
 						<form method="post" action={deleteTheme.with(local.theme)}>
 							<ActionDialog.Close tabIndex={-1} class="">
 								<button
-									class="size-full btn btn-lg btn-error"
+									class="btn btn-lg btn-error size-full"
 									{...rest}
 									onClick={() => {
 										contentRef()?.classList.add("opacity-0");

@@ -26,7 +26,7 @@ const ThemeListOptions: Component<ThemeListOptionsProps> = (passed) => {
 			</Popover.Anchor>
 			<Popover.Portal>
 				<Popover.Content
-					class="mt-1 w-36 bg-base-200 motion-duration-150 motion-scale-in-95 motion-opacity-in-0 data-closed:motion-scale-out-95 data-closed:motion-opacity-out-0 rounded-md border border-neutral-content/20"
+					class="motion-duration-150 motion-scale-in-95 motion-opacity-in-0 data-closed:motion-scale-out-95 data-closed:motion-opacity-out-0 mt-1 w-36 rounded-md border border-neutral-content/20 bg-base-200"
 					{...passed}
 				>
 					<ul class="menu size-full">
@@ -71,15 +71,17 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 	return (
 		<div class="flex flex-col">
 			<div class="flex gap-2">
-				<h2 class="text-3xl font-bold">Themes</h2>
+				<h2 class="font-bold text-3xl">Themes</h2>
 				<Show when={props.showOptions}>
 					<ThemeListOptions />
 					<RandomTheme />
 				</Show>
 			</div>
-			<ul class="menu p-0 px-1 rounded-box space-y-1 w-56">
-				<li class="menu-title py-0 p text-left mt-2">My themes</li>
-				<li class="mx-1" />
+			<ul class="xl:menu grid grid-cols-2 grid-rows-2 gap-2 rounded-box p-0 px-1 max-xl:items-center md:grid-cols-3 xl:w-56">
+				<li class="menu-title col-span-full mt-2 py-0 text-left max-xl:mb-1 max-xl:px-1">
+					My themes
+				</li>
+				<li class="mx-1 hidden xl:block" />
 				<Show
 					when={userThemes().length > 0}
 					fallback={<li>No themes made yet!</li>}
@@ -88,8 +90,10 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 						{(theme) => <ThemeOption theme={theme} showDelete />}
 					</For>
 				</Show>
-				<li class="menu-title py-0 p text-left mt-5">Included themes</li>
-				<li class="mx-1" />
+				<li class="menu-title col-span-full mt-5 py-0 text-left max-xl:mb-1 max-xl:px-1">
+					Included themes
+				</li>
+				<li class="mx-1 hidden xl:block" />
 				<Show
 					when={textualThemes().length > 0}
 					fallback={<li>No textual themes found</li>}
@@ -98,8 +102,10 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 						{(theme) => <ThemeOption theme={theme} />}
 					</For>
 				</Show>
-				<li class="menu-title py-0 p text-left mt-5">Presets</li>
-				<li class="mx-1" />
+				<li class="menu-title col-span-full mt-5 py-0 text-left max-xl:mb-1 max-xl:px-1">
+					Presets
+				</li>
+				<li class="mx-1 hidden xl:block" />
 				<Show
 					when={presetThemes().length > 0}
 					fallback={<li>No presets found</li>}

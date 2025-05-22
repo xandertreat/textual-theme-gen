@@ -35,7 +35,7 @@ const RandomTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 				});
 			}}
 		>
-			<Icon ref={die} class="size-6 motion-ease-out-cubic" icon="mdi:dice" />
+			<Icon ref={die} class="motion-ease-out-cubic size-6" icon="mdi:dice" />
 		</button>
 	);
 };

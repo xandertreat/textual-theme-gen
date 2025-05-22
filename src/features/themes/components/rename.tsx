@@ -54,7 +54,7 @@ const RenameTheme: Component<RenameThemeProps> = (props) => {
 			}}
 		>
 			<ActionDialog.Trigger
-				class="inline-flex items-center text-center size-full font-bold rounded text-sm"
+				class="inline-flex size-full items-center rounded text-center font-bold text-sm"
 				{...props}
 			>
 				<Icon icon="mdi:pencil-outline" />
@@ -66,13 +66,13 @@ const RenameTheme: Component<RenameThemeProps> = (props) => {
 					<ActionDialog.Close />
 					<span class="flex flex-col gap-2">
 						<span class="text-xs">
-							<h2 class="text-3xl font-bold">Rename Theme</h2>
+							<h2 class="font-bold text-3xl">Rename Theme</h2>
 							<sub class="opacity-50">
 								(This will override any existing theme with the same name)
 							</sub>
 						</span>
 						<form
-							class="text-neutral flex flex-col gap-2"
+							class="flex flex-col gap-2 text-neutral"
 							method="post"
 							action={renameAction}
 						>
@@ -108,7 +108,7 @@ const RenameTheme: Component<RenameThemeProps> = (props) => {
 									required
 								/>
 								<Icon
-									class="text-sm text-error size-6 cursor-default"
+									class="size-6 cursor-default text-error text-sm"
 									classList={{
 										hidden: isValid(),
 										block: !isValid(),
@@ -116,7 +116,7 @@ const RenameTheme: Component<RenameThemeProps> = (props) => {
 									icon="mdi:alert"
 								/>
 								<Icon
-									class="text-sm text-success  size-6 cursor-default"
+									class="size-6 cursor-default text-sm text-success"
 									classList={{
 										hidden: !isValid(),
 										block: isValid(),
@@ -151,7 +151,7 @@ const RenameTheme: Component<RenameThemeProps> = (props) => {
 							>
 								<button
 									type="submit"
-									class="size-full btn btn-success"
+									class="btn btn-success size-full"
 									disabled={submission.pending || !isValid()}
 								>
 									{submission.pending ? "..." : "Rename"}

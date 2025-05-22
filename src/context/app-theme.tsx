@@ -122,14 +122,14 @@ const AppThemeController: Component<
 		<button
 			{...props}
 			type="button"
-			class="btn btn-ghost btn-circle size-8 p-0.5 fixed inset-1"
+			class="btn btn-ghost btn-circle fixed inset-1 size-8 p-0.5"
 			onClick={() => setAppTheme(cycle[nextThemeIdx()])}
 		>
 			<Show
 				when={appTheme()}
 				fallback={
 					<Icon
-						class="size-full motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out"
+						class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full"
 						icon="mdi:theme-light-dark"
 					/>
 				}
@@ -138,26 +138,26 @@ const AppThemeController: Component<
 					<Switch
 						fallback={
 							<Icon
-								class="size-full motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out"
+								class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full"
 								icon="mdi:theme-light-dark"
 							/>
 						}
 					>
 						<Match when={theme() === "system"}>
 							<Icon
-								class="size-full motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out"
+								class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full"
 								icon="mdi:theme-light-dark"
 							/>
 						</Match>
 						<Match when={theme() === "light"}>
 							<Icon
-								class="size-full motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out"
+								class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full"
 								icon="tabler:sun-filled"
 							/>
 						</Match>
 						<Match when={theme() === "dark"}>
 							<Icon
-								class="size-full motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out"
+								class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full"
 								icon="tabler:moon-filled"
 							/>
 						</Match>

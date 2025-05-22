@@ -60,16 +60,16 @@ const ThemeOptionMenu: Component<ThemeOptionMenuProps> = (props) => {
 
 	return (
 		<Popover>
-			<Popover.Anchor class="size-full">
+			<Popover.Anchor class="aspect-square size-6">
 				<Popover.Trigger
 					type="button"
-					data-tip={"Options"}
-					class="tooltip tooltip-right h-full cursor-pointer group-hover:opacity-100 transition-opacity duration-200"
+					class="tooltip xl:tooltip-right size-full cursor-pointer p-0.5 transition-opacity duration-200 group-hover:opacity-100"
 					classList={{
 						"opacity-0": !isOptionSelected(),
-						"opacity-20": isOptionSelected(),
+						"opacity-100 xl:opacity-20": isOptionSelected(),
 					}}
 				>
+					<span class="tooltip-content">Options</span>
 					<Icon
 						aria-label="Theme Options"
 						class="size-full"
@@ -79,7 +79,7 @@ const ThemeOptionMenu: Component<ThemeOptionMenuProps> = (props) => {
 			</Popover.Anchor>
 			<Popover.Portal>
 				<Popover.Content
-					class="mt-1 w-fit min-w-40 bg-base-200 motion-duration-150 motion-scale-in-95 motion-opacity-in-0 data-closed:motion-scale-out-95 data-closed:motion-opacity-out-0 rounded-md border border-neutral-content/20"
+					class="motion-duration-150 motion-scale-in-95 motion-opacity-in-0 data-closed:motion-scale-out-95 data-closed:motion-opacity-out-0 mt-1 w-fit min-w-40 rounded-md border border-neutral-content/20 bg-base-200"
 					{...rest}
 				>
 					<ul class="menu size-full">{local.children}</ul>
@@ -100,6 +100,7 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 
 	const [needsTooltip, setNeedsTooltip] = createSignal(false);
 	const [hoveringLabel, setHoveringLabel] = createSignal(false);
+	let hoverDelay: ReturnType<typeof setTimeout> | undefined;
 	let label!: HTMLParagraphElement;
 
 	onMount(() => setNeedsTooltip(label.scrollWidth > label.clientWidth));
@@ -109,28 +110,36 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 			id={`theme-${local.theme}-option`}
 			class="motion-duration-1000/opacity motion-ease-in-out motion-duration-300 motion-opacity-in-0 -motion-translate-x-in-50"
 			classList={{
-				tooltip: hoveringLabel(),
+				"tooltip tooltip-open": needsTooltip() && hoveringLabel(),
 			}}
-			data-tip={needsTooltip() ? local.theme : undefined}
+			data-tip={local.theme}
 			{...rest}
 		>
 			<a
 				type="button"
-				class="btn btn-ghost h-fit p-0 px-1 py-0 rounded-sm font-light flex gap-1 justify-between group"
+				class="btn btn-ghost group flex h-fit justify-between gap-1 rounded-sm p-0 px-1 py-0 font-light"
 				classList={{ "btn-active": selectedThemeName() === local.theme }}
 				// biome-ignore lint/a11y/useValidAnchor: <explanation>
 				onClick={() => selectTheme(local.theme)}
 			>
-				<span class="inline-flex items-center gap-2">
+				<span class="inline-flex items-center">
 					<ThemeOptionPreview
-						class="ml-0 size-6 grid grid-cols-2 grid-rows-2 gap-0.75 p-1 rounded *:rounded shadow col-span-1 row-span-1"
+						class="col-span-1 row-span-1 ml-0 grid size-6 grid-cols-2 grid-rows-2 gap-0.75 rounded p-1 shadow *:rounded"
 						theme={local.theme}
 					/>
 					<p
 						ref={label}
-						onMouseEnter={() => setHoveringLabel(true)}
-						onMouseLeave={() => setHoveringLabel(false)}
-						class="grow-0 w-36 text-left overflow-ellipsis overflow-hidden text-nowrap whitespace-nowrap flex-nowrap"
+						onMouseEnter={() => {
+							if (!needsTooltip()) return;
+							clearTimeout(hoverDelay);
+							hoverDelay = setTimeout(() => setHoveringLabel(true), 750);
+						}}
+						onMouseLeave={() => {
+							if (!needsTooltip()) return;
+							clearTimeout(hoverDelay);
+							setHoveringLabel(false);
+						}}
+						class="w-48 max-w-max grow-0 flex-nowrap overflow-hidden overflow-ellipsis whitespace-nowrap text-nowrap pl-2 text-left xl:w-36"
 					>
 						{local.theme}
 					</p>

@@ -1,3 +1,4 @@
+import { useDialogContext } from "@corvu/popover";
 import {
 	type Component,
 	type JSX,
@@ -10,7 +11,6 @@ import Icon from "~/components/ui/icon";
 import { useTheme } from "../context/theme";
 import { randomName } from "../lib/utils";
 import type { TextualTheme } from "../types";
-import { useDialogContext } from "@corvu/popover";
 
 interface CloneThemeOptionProps
 	extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {}
@@ -37,7 +37,7 @@ export const CloneThemeOption: Component<CloneThemeOptionProps> = (props) => {
 	return (
 		<button
 			type="button"
-			class="inline-flex items-center text-center size-full font-bold rounded text-sm"
+			class="inline-flex size-full items-center rounded text-center font-bold text-sm"
 			{...props}
 			onClick={handleCloning}
 		>
@@ -66,13 +66,10 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 		});
 	};
 
-	const [isMobile, setIsMobile] = createSignal(false);
-	onMount(() => setIsMobile(window.matchMedia("(max-width: 1280px)").matches));
-
 	const DesktopButton = () => (
 		<button
 			type="button"
-			class="btn btn-ghost btn-sm bg-bottom m-2 mx-4 tooltip"
+			class="btn btn-ghost btn-sm tooltip m-2 mx-4 hidden bg-bottom xl:flex"
 			classList={{ "after:opacity-0!": isHolding() }}
 			{...props}
 			onMouseDown={() => {
@@ -93,7 +90,7 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 			}}
 		>
 			<span
-				class="tooltip-content text-xs motion-duration-200"
+				class="tooltip-content motion-duration-200 text-xs"
 				classList={{ "motion-opacity-out-0": isHolding() }}
 			>
 				(hold)
@@ -106,7 +103,7 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 	const MobileButton = () => (
 		<button
 			type="button"
-			class="btn btn-primary btn-sm bg-bottom m-2 mx-4"
+			class="btn btn-primary btn-sm m-2 mx-4 bg-bottom xl:hidden"
 			{...props}
 			onClick={handleCloning}
 		>
@@ -116,9 +113,10 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 	);
 
 	return (
-		<Show when={isMobile()} fallback={<DesktopButton />}>
+		<>
+			<DesktopButton />
 			<MobileButton />
-		</Show>
+		</>
 	);
 };
 

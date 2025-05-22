@@ -63,9 +63,9 @@ const CopyButton: Component<CopyButtonProps> = (props) => {
 	return (
 		<button
 			type="button"
-			class="h-6 w-fit tooltip tooltip-right tooltip-info hover:cursor-pointer absolute right-2 translate-y-1/4 transition ease-in-out duration-200 "
+			class="tooltip tooltip-right tooltip-info absolute right-2 h-6 w-fit translate-y-1/4 transition duration-200 ease-in-out hover:cursor-pointer "
 			classList={{
-				"tooltip-info hover:text-info opacity-10 group-hover:opacity-70 hover:opacity-100":
+				"tooltip-info opacity-10 hover:text-info hover:opacity-100 group-hover:opacity-70":
 					status() === "ready",
 				"tooltip-open tooltip-success text-success": status() === "success",
 				"tooltip-open tooltip-error text-error": status() === "error",
@@ -81,7 +81,7 @@ const CopyButton: Component<CopyButtonProps> = (props) => {
 					curPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
 				}}
 				icon={COPY_ICON}
-				class="-scale-100 rotate-180 size-full transition-[scale] ease-in-out duration-150 active:-scale-90 motion-duration-300 motion-ease-in motion-opacity-out-100 opacity-0"
+				class="-scale-100 active:-scale-90 motion-duration-300 motion-ease-in motion-opacity-out-100 size-full rotate-180 opacity-0 transition-[scale] duration-150 ease-in-out"
 			/>
 			{/* Morph targets */}
 			<Icon
@@ -159,7 +159,7 @@ const CodeBlock: Component<CodeBlockProps> = (props) => {
 		<Show when={local.details} fallback={<Markdown />}>
 			<div
 				class={cn(
-					"bg-neutral text-neutral-content border-transparent border-2 rounded-md text-left relative group",
+					"group relative rounded-md border-2 border-transparent bg-neutral text-left text-neutral-content",
 					local.class,
 					local.classList,
 				)}
@@ -168,7 +168,7 @@ const CodeBlock: Component<CodeBlockProps> = (props) => {
 				<Show when={local.copy}>
 					<CopyButton code={local.code} />
 				</Show>
-				<span class="inline-flex items-center justify-center text-center align-middle gap-1.5 p-2">
+				<span class="inline-flex items-center justify-center gap-1.5 p-2 text-center align-middle">
 					<Icon class="size-6" icon={local.langIcon} />
 					<p aria-label={`Language: ${local.lang}`}>{local.lang}</p>
 				</span>

@@ -51,7 +51,7 @@ const Content: Component<ActionContentProps> = (props) => (
 	<Dialog.Content
 		{...props}
 		class={cn(
-			"text-neutral-content fixed inset-0 z-50 min-w-80 m-auto size-fit rounded-lg border-2 border-neutral bg-neutral px-6 py-5 shadow-2xl motion-duration-200 motion-ease-in-out motion-opacity-in-0 motion-scale-in-95 motion-translate-y-in-[20%] data-closed:motion-opacity-out-0 motion-duration-150/opacity data-closed:motion-scale-out-95 data-closed:motion-translate-y-out-[-20%]",
+			"motion-duration-200 motion-ease-in-out motion-opacity-in-0 motion-scale-in-95 motion-translate-y-in-[20%] data-closed:motion-opacity-out-0 motion-duration-150/opacity data-closed:motion-scale-out-95 data-closed:motion-translate-y-out-[-20%] fixed inset-0 z-50 m-auto size-fit min-w-80 rounded-lg border-2 border-neutral bg-neutral px-6 py-5 text-neutral-content shadow-2xl",
 			props.class,
 		)}
 	/>
