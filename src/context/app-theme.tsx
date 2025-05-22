@@ -122,7 +122,7 @@ const AppThemeController: Component<
 		<button
 			{...props}
 			type="button"
-			class="btn btn-ghost btn-circle fixed inset-1 size-8 p-0.5"
+			class="btn btn-ghost btn-circle fixed inset-1 size-9 p-0.5 xl:size-11"
 			onClick={() => setAppTheme(cycle[nextThemeIdx()])}
 		>
 			<Show

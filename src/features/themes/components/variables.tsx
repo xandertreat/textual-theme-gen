@@ -13,7 +13,7 @@ const VariablesManagement: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 			<span class="flex flex-col items-center gap-1">
 				<ActionDialog.Trigger
 					class={
-						"aspect-square size-12 rounded-full bg-neutral font-black text-2xl text-neutral-content shadow-md transition-[scale] duration-200 not-disabled:hover:scale-105"
+						"aspect-square size-12 rounded-full bg-neutral font-black text-2xl text-neutral-content transition-[scale] duration-200 not-disabled:hover:scale-105"
 					}
 					disabled={!canModify()}
 				>

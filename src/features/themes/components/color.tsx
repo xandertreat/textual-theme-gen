@@ -24,7 +24,7 @@ const ColorSwatch: Component<
 			<ActionDialog.Trigger
 				disabled={!canPick()}
 				class={
-					"aspect-square size-12 rounded-full font-black text-2xl shadow-md transition-[scale] duration-200 not-disabled:hover:scale-105"
+					"aspect-square size-12 rounded-full font-black text-2xl shadow-md/50 transition-[scale] duration-200 not-disabled:hover:scale-105"
 				}
 				style={{
 					"background-color": selectedTheme().palette[props.color].base.color,
