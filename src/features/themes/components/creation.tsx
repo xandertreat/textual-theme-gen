@@ -1,9 +1,9 @@
-import { For, type Component, type JSX } from "solid-js";
+import { type Component, For, type JSX } from "solid-js";
 import Icon from "../../../components/ui/icon";
-import EditColor from "./color";
 import { useTheme } from "../context/theme";
-import VariablesManagement from "./variables";
 import CloneTheme from "./clone";
+import EditColor from "./color";
+import VariablesManagement from "./variables";
 
 const ThemeCreation: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	passed,

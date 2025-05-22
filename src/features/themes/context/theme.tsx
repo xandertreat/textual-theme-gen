@@ -1,3 +1,4 @@
+import { ReactiveMap } from "@solid-primitives/map";
 import type { Accessor, Component, JSX, Setter } from "solid-js";
 import {
 	createContext,
@@ -6,7 +7,6 @@ import {
 	onMount,
 	useContext,
 } from "solid-js";
-import { ReactiveMap } from "@solid-primitives/map";
 import { DEFAULT_THEMES, VERSION_KEY } from "../data/themes";
 import type { TextualTheme } from "../types";
 

@@ -9,31 +9,37 @@ import {
 import Icon from "~/components/ui/icon";
 import { useTheme } from "../context/theme";
 import { randomName } from "../lib/utils";
+import type { TextualTheme } from "../types";
+import { useDialogContext } from "@corvu/popover";
 
-// TODO: fix cloning bugs
 interface CloneThemeOptionProps
 	extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {}
 
 export const CloneThemeOption: Component<CloneThemeOptionProps> = (props) => {
 	const { data, selectedTheme, selectTheme } = useTheme();
+	const { setOpen } = useDialogContext();
 
-	const clone = () => {
-		const cur = { ...selectedTheme() };
-		cur.source = "user";
-		if (cur.name.includes("-clone")) {
-			cur.name = cur.name.replace(/-clone(-\w+)?$/, "");
-			cur.name = `${cur.name}-clone-${randomName()}`;
-		} else cur.name = `${cur.name}-clone`;
+	const handleCloning = () => {
+		const cur: TextualTheme = { ...selectedTheme(), source: "user" };
+		cur.name = `${cur.name.replace(/-clone(-\w+)?$/, "")}-clone`;
+		if (data.has(cur.name)) cur.name = `${cur.name}-${randomName()}`;
 
-		data.set(cur.name, cur);
+		setOpen(false);
+		// need to defer the cloning to allow the dialog to close
+		setTimeout(() => {
+			batch(() => {
+				data.set(cur.name, cur);
+				selectTheme(cur.name);
+			});
+		}, 1);
 	};
 
 	return (
 		<button
 			type="button"
 			class="inline-flex items-center text-center size-full font-bold rounded text-sm"
-			onClick={clone}
 			{...props}
+			onClick={handleCloning}
 		>
 			<Icon icon="mdi:content-copy" />
 			Clone
@@ -49,13 +55,10 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 	const { data, selectedTheme, selectTheme } = useTheme();
 	const [isHolding, setIsHolding] = createSignal(false);
 
-	const clone = () => {
-		const cur = { ...selectedTheme() };
-		cur.source = "user";
-		if (cur.name.includes("-clone")) {
-			cur.name = cur.name.replace(/-clone(-\w+)?$/, "");
-			cur.name = `${cur.name}-clone-${randomName()}`;
-		} else cur.name = `${cur.name}-clone`;
+	const handleCloning = () => {
+		const cur: TextualTheme = { ...selectedTheme(), source: "user" };
+		cur.name = `${cur.name.replace(/-clone(-\w+)?$/, "")}-clone`;
+		if (data.has(cur.name)) cur.name = `${cur.name}-${randomName()}`;
 
 		batch(() => {
 			data.set(cur.name, cur);
@@ -82,7 +85,7 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 					{ once: true },
 				);
 				setTimeout(() => {
-					if (isHolding()) clone();
+					if (isHolding()) handleCloning();
 				}, CLONE_HOLD_TIME);
 			}}
 			style={{
@@ -105,10 +108,10 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 			type="button"
 			class="btn btn-primary btn-sm bg-bottom m-2 mx-4"
 			{...props}
-			onClick={clone}
+			onClick={handleCloning}
 		>
 			<Icon class="size-6" icon="mdi:content-copy" />
-			{!isHolding() ? "Clone Theme" : "Cloning..."}
+			Clone Theme
 		</button>
 	);
 

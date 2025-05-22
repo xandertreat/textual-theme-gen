@@ -4,9 +4,9 @@ import { Show, createMemo, createSignal, onMount, splitProps } from "solid-js";
 import Icon from "../../../components/ui/icon";
 import { useTheme } from "../context/theme";
 import { getPaletteColor } from "../lib/utils";
+import { CloneThemeOption } from "./clone";
 import DeleteTheme from "./delete";
 import RenameTheme from "./rename";
-import { CloneThemeOption } from "./clone";
 
 interface ThemeOptionPreviewProps extends JSX.HTMLAttributes<HTMLDivElement> {
 	theme: string;
@@ -48,11 +48,15 @@ const ThemeOptionPreview: Component<ThemeOptionPreviewProps> = (props) => {
 };
 
 interface ThemeOptionMenuProps extends JSX.HTMLAttributes<HTMLDivElement> {
-	isOptionSelected: Accessor<boolean>;
+	theme: string;
 }
 
 const ThemeOptionMenu: Component<ThemeOptionMenuProps> = (props) => {
-	const [local, rest] = splitProps(props, ["children", "isOptionSelected"]);
+	const [local, rest] = splitProps(props, ["children", "theme"]);
+	const { selectedThemeName } = useTheme();
+	const isOptionSelected = createMemo(
+		() => selectedThemeName() === local.theme,
+	);
 
 	return (
 		<Popover>
@@ -62,8 +66,8 @@ const ThemeOptionMenu: Component<ThemeOptionMenuProps> = (props) => {
 					data-tip={"Options"}
 					class="tooltip tooltip-right h-full cursor-pointer group-hover:opacity-100 transition-opacity duration-200"
 					classList={{
-						"opacity-0": !local.isOptionSelected(),
-						"opacity-20": local.isOptionSelected(),
+						"opacity-0": !isOptionSelected(),
+						"opacity-20": isOptionSelected(),
 					}}
 				>
 					<Icon
@@ -93,9 +97,6 @@ interface ThemeOptionProps extends JSX.HTMLAttributes<HTMLLIElement> {
 const ThemeOption: Component<ThemeOptionProps> = (props) => {
 	const [local, rest] = splitProps(props, ["theme", "showDelete"]);
 	const { data, selectedThemeName, selectTheme } = useTheme();
-	const isOptionSelected = createMemo(
-		() => local.theme === selectedThemeName(),
-	);
 
 	const [needsTooltip, setNeedsTooltip] = createSignal(false);
 	const [hoveringLabel, setHoveringLabel] = createSignal(false);
@@ -116,7 +117,7 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 			<a
 				type="button"
 				class="btn btn-ghost h-fit p-0 px-1 py-0 rounded-sm font-light flex gap-1 justify-between group"
-				classList={{ "btn-active": isOptionSelected() }}
+				classList={{ "btn-active": selectedThemeName() === local.theme }}
 				// biome-ignore lint/a11y/useValidAnchor: <explanation>
 				onClick={() => selectTheme(local.theme)}
 			>
@@ -134,7 +135,7 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 						{local.theme}
 					</p>
 				</span>
-				<ThemeOptionMenu isOptionSelected={isOptionSelected}>
+				<ThemeOptionMenu theme={local.theme}>
 					<Show
 						when={data.get(local.theme)?.source === "user"}
 						fallback={

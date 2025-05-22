@@ -1,4 +1,4 @@
-import { type Component, createMemo, type JSX, splitProps } from "solid-js";
+import { type Component, type JSX, createMemo, splitProps } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import { useTheme } from "../context/theme";
 
