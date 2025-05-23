@@ -7,7 +7,7 @@ const REPOSITORY_NAME = "textual-theme-gen";
 const REPOSITORY_URL = `https://github.com/${AUTHOR}/${REPOSITORY_NAME}`;
 const GitHub: Component<JSX.HTMLAttributes<HTMLAnchorElement>> = (props) => (
 	<A
-		class="btn btn-ghost btn-circle motion-duration-500 motion-ease-in-out motion-translate-x-in-[200%] fixed top-1 right-1 size-9 p-0.5 xl:size-11"
+		class="btn btn-ghost btn-circle motion-duration-500 motion-ease-in-out motion-translate-x-in-[200%] motion-delay-500 fixed top-1 right-1 size-9 p-0.5 xl:size-11"
 		href={REPOSITORY_URL}
 		target="_blank"
 		{...props}

@@ -37,11 +37,23 @@ const Overlay: Component<ActionOverlayProps> = (props) => (
 		{...mergeProps(
 			{
 				class:
-					"fixed inset-0 z-50 bg-black opacity-50 h-full w-full motion-duration-200 motion-ease-in-out motion-opacity-in-0",
+					"fixed inset-0 z-50 bg-black opacity-50 h-full w-full motion-duration-200 motion-ease-in-out motion-opacity-in-0 flex items-end justify-center",
 			},
 			props,
 		)}
-	/>
+	>
+		<span class="motion-delay-[3000ms] motion-opacity-out-100 motion-duration-200 motion-ease-in-out mb-2 opacity-0">
+			<sub class=" text-neutral-content/80 text-xs">
+				{/* Mobile hint */}
+				<p class="hidden xl:block">
+					Press <kbd class="kbd kbd-xs text-neutral">ESC</kbd> or click{" "}
+					<kbd class="kbd kbd-xs text-neutral">M1</kbd> to close
+				</p>
+				{/* Desktop hint */}
+				<p class="block xl:hidden">Tap outside to close modal</p>
+			</sub>
+		</span>
+	</Dialog.Overlay>
 );
 
 interface ActionContentProps
