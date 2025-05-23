@@ -105,7 +105,6 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 				class="btn btn-primary btn-sm tooltip tooltip-right m-2 mx-4 hidden bg-bottom xl:flex"
 				classList={{
 					"after:opacity-0!": phase() !== "ready",
-					"after:opacity-100": phase() === "ready",
 				}}
 				{...props}
 				onMouseDown={() => {
