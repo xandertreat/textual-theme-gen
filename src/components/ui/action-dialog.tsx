@@ -47,7 +47,7 @@ const Overlay: Component<ActionOverlayProps> = (props) => (
 				{/* Mobile hint */}
 				<p class="hidden xl:block">
 					Press <kbd class="kbd kbd-xs text-neutral">ESC</kbd> or click{" "}
-					<kbd class="kbd kbd-xs text-neutral">M1</kbd> to close
+					<kbd class="kbd kbd-xs text-neutral">M1</kbd> outside to close
 				</p>
 				{/* Desktop hint */}
 				<p class="block xl:hidden">Tap outside to close modal</p>
