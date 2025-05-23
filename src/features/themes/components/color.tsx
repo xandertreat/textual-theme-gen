@@ -1,3 +1,11 @@
+import { ColorArea } from "@kobalte/core/color-area";
+import { ColorField } from "@kobalte/core/color-field";
+import { ColorSlider } from "@kobalte/core/color-slider";
+import {
+	type Color,
+	type ColorChannel,
+	parseColor,
+} from "@kobalte/core/colors";
 import {
 	type Accessor,
 	type Component,
@@ -14,19 +22,11 @@ import {
 } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import CopyButton from "~/components/ui/copy";
+import Icon from "~/components/ui/icon";
+import debounce from "~/lib/debounce";
 import { useTheme } from "../context/theme";
 import { getColorData } from "../lib/utils";
 import type { HexColorCode } from "../types";
-import {
-	type Color,
-	type ColorChannel,
-	parseColor,
-} from "@kobalte/core/colors";
-import { ColorArea } from "@kobalte/core/color-area";
-import { ColorField } from "@kobalte/core/color-field";
-import { ColorSlider } from "@kobalte/core/color-slider";
-import Icon from "~/components/ui/icon";
-import debounce from "~/lib/debounce";
 
 const DEBOUNCE_DELAY = 2.5; // ms (found through manual testing to be best responsive / performance tradeoff)
 
@@ -258,7 +258,6 @@ const ColorSelection: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 
 const ColorFields: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 	const { color, setColor } = useColorContext();
-	const [isDragging, setDragging] = createSignal(false);
 
 	const Slider: Component<{ channel: ColorChannel }> = (props) => (
 		<ColorSlider
