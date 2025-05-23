@@ -9,6 +9,7 @@ import {
 	createEffect,
 	createMemo,
 	createSignal,
+	onMount,
 	splitProps,
 	useContext,
 } from "solid-js";
@@ -22,7 +23,7 @@ const DEBOUNCE_DELAY = 4.66; // ms (found through manual testing to be best resp
 type ColorContextType = {
 	paletteKey: string;
 	color: Accessor<Color>;
-	setColor: Setter<Color>;
+	setColor: (val: Color) => Color;
 };
 const colorContext = createContext<ColorContextType>();
 const useColorContext = () => {
@@ -39,29 +40,29 @@ interface ColorContextProviderProps
 }
 const ColorContextProvider: Component<ColorContextProviderProps> = (props) => {
 	const { selectedTheme, modifySelected } = useTheme();
-	const [color, setColor] = createSignal<Color>(
+	const [color, internalSetColor] = createSignal<Color>(
 		parseColor(selectedTheme().palette[props.paletteKey].base.color),
 	);
-	const hex = createMemo(
-		() => color().toFormat("hexa").toString() as HexColorCode,
-	);
-	const palette = createMemo(() => selectedTheme().palette);
 
 	let debounce = false;
-	createEffect(() => {
+	const setColor = (val: Color) => {
+		internalSetColor(val);
 		if (!debounce) {
 			debounce = true;
 			setTimeout(() => {
 				modifySelected({
 					palette: {
-						...palette(),
-						[props.paletteKey]: getColorData(hex() as HexColorCode),
+						...selectedTheme().palette,
+						[props.paletteKey]: getColorData(
+							color().toFormat("hexa").toString() as HexColorCode,
+						),
 					},
 				});
 				debounce = false;
 			}, DEBOUNCE_DELAY);
 		}
-	});
+		return color();
+	};
 
 	return (
 		<colorContext.Provider
@@ -101,13 +102,13 @@ const ColorSwatch: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 ) => {
 	const { paletteKey } = useColorContext();
 	const { selectedTheme } = useTheme();
-	const canPick = createMemo(() => selectedTheme().source === "user");
 	const colorData = createMemo(() => selectedTheme().palette[paletteKey].base);
+	const disabled = createMemo(() => !(selectedTheme().source === "user"));
 
 	return (
 		<span class="flex flex-col items-center gap-1">
 			<ActionDialog.Trigger
-				disabled={!canPick()}
+				disabled={disabled()}
 				class={
 					"aspect-square size-12 rounded-full font-black text-2xl shadow-md/50 transition-[scale] duration-200 not-disabled:hover:scale-105"
 				}
