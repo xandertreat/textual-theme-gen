@@ -9,9 +9,6 @@ import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-import solidPlugin from "vite-plugin-solid";
-import solidSvg from "vite-plugin-solid-svg";
-
 export default defineConfig({
 	ssr: true,
 	// server: {
@@ -20,13 +17,7 @@ export default defineConfig({
 	// 	},
 	// },
 	vite: {
-		plugins: [
-			solidPlugin({
-				ssr: true,
-			}),
-			solidSvg(),
-			tailwindcss(),
-		],
+		plugins: [tailwindcss()],
 		server: {
 			allowedHosts: ["127.0.0.1", "localhost", "0.0.0.0"],
 		},

@@ -5,8 +5,8 @@ import rehypeHighlight from "rehype-highlight";
 import type { JSX } from "solid-js";
 import { type Component, Show, createSignal, splitProps } from "solid-js";
 import { SolidMarkdown, type SolidMarkdownOptions } from "solid-markdown";
-import Icon from "./icon";
 gsap.registerPlugin(MorphSVGPlugin);
+import Icon from "./icon";
 
 type CopyStatus = "ready" | "success" | "error";
 
@@ -86,7 +86,7 @@ const CopyButton: Component<CopyButtonProps> = (props) => {
 			{/* Morph targets */}
 			<Icon
 				{...COPY_ICON_PROPS}
-				style="display: none"
+				class="hidden"
 				ref={(el) => {
 					copyPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
 				}}
@@ -94,7 +94,7 @@ const CopyButton: Component<CopyButtonProps> = (props) => {
 			/>
 			<Icon
 				{...COPY_ICON_PROPS}
-				style="display: none"
+				class="hidden"
 				ref={(el) => {
 					successPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
 				}}
@@ -102,7 +102,7 @@ const CopyButton: Component<CopyButtonProps> = (props) => {
 			/>
 			<Icon
 				{...COPY_ICON_PROPS}
-				style="display: none"
+				class="hidden"
 				ref={(el) => {
 					errorPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
 				}}
