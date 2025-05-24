@@ -1,5 +1,6 @@
 import type { Component, JSX } from "solid-js";
 import Icon from "../../../components/ui/icon";
+import { useTheme } from "../context/theme";
 
 const TerminalWindow: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	props,
@@ -18,7 +19,13 @@ const TerminalWindow: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 				Terminal
 			</h2>
 		</div>
-		<div class="row-span-12 h-96 w-full rounded-br rounded-bl bg-primary/5 font-mono text-neutral-content xl:h-170">
+		<div
+			class="row-span-12 h-96 w-full rounded-br rounded-bl bg-primary/5 font-mono text-neutral-content xl:h-170"
+			style={{
+				"background-color":
+					useTheme().selectedTheme().palette.background.base.color,
+			}}
+		>
 			{props.children}
 		</div>
 	</div>

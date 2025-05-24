@@ -12,12 +12,12 @@ import type {
  * @returns A TextualColor object.
  */
 export const getTextualColor = (base: ColorInstance): TextualColor => {
-	const textColor = Color(base.isLight() ? "#000000" : "#FFFFFF");
+	const textColor = Color(base.isLight() ? "#000000FF" : "#FFFFFFFF");
 	return {
-		color: base.hex() as HexColorCode,
-		text: textColor.hex() as HexColorCode,
-		muted: textColor.mix(base.fade(0.3)).hex() as HexColorCode,
-		disabled: textColor.mix(base.fade(0.5)).hex() as HexColorCode,
+		color: base.hexa() as HexColorCode,
+		text: textColor.hexa() as HexColorCode,
+		muted: textColor.mix(base.fade(0.3)).hexa() as HexColorCode,
+		disabled: textColor.mix(base.fade(0.5)).hexa() as HexColorCode,
 	};
 };
 
@@ -135,7 +135,7 @@ export const getPaletteColor = (
 		!theme.palette ||
 		!theme.palette[color as keyof typeof theme.palette]
 	)
-		return "#000000";
+		return "#000000FF";
 	return theme.palette[color as keyof typeof theme.palette].base.color;
 };
 
