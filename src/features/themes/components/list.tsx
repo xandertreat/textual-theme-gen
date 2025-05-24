@@ -26,7 +26,7 @@ const ThemeListOptions: Component<ThemeListOptionsProps> = (passed) => {
 			</Popover.Anchor>
 			<Popover.Portal>
 				<Popover.Content
-					class="motion-duration-150 motion-scale-in-95 motion-opacity-in-0 data-closed:motion-scale-out-95 data-closed:motion-opacity-out-0 mt-1 w-36 rounded-md border border-neutral-content/20 bg-base-200"
+					class="motion-duration-150 motion-scale-in-95 motion-opacity-in-0 data-closed:motion-scale-out-95 data-closed:motion-opacity-out-0 mt-1 w-fit min-w-36 rounded-md border border-neutral-content/20 bg-base-200"
 					{...passed}
 				>
 					<ul class="menu size-full">

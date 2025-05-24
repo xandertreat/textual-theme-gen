@@ -75,8 +75,8 @@ const DEFAULTS: Required<IconifyConfiguration> = {
 	CACHE_SIZE: 256,
 	DEFAULT_SVG_ATTRIBUTES: {
 		xmlns: "http://www.w3.org/2000/svg",
-		width: "2em",
-		height: "2em",
+		width: "1em",
+		height: "1em",
 		viewBox: "0 0 24 24",
 		fill: "currentColor",
 	},
