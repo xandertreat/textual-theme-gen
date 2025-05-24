@@ -185,28 +185,51 @@ const ColorSelection: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 				</ColorArea.Background>
 			</ColorArea>
 			<Show
-				when={isEditingHex()}
+				when={!isEditingHex()}
 				fallback={
-					<ColorField class="size-full" value={hexCode()} readOnly={true}>
+					<ColorField
+						class="size-full"
+						value={inputVal()}
+						onChange={(val) => setInputVal(`#${val.replace(/#/g, "")}`)}
+						required={true}
+					>
 						<ColorField.Label class="input validator group text-primary">
 							<span class="label pointer-events-none select-none" tabIndex={-1}>
 								Hex Code
 							</span>
-							<ColorField.Input class="pointer-events-none select-none" />
-							{/* TODO: fix copy morphing on gsap */}
+							<ColorField.Input
+								ref={(el) => setTimeout(() => el.focus(), 100)}
+								onKeyPress={(e) => {
+									if (e.key === "Enter") {
+										const inputBox = e.target as HTMLInputElement;
+										inputBox.blur();
+										inputBox.closest("div")?.querySelector("button")?.click();
+									}
+								}}
+								class="pointer-events-none select-none"
+							/>
 							<div class=" -translate-y-1/2 absolute top-1/2 right-2 flex h-6 w-fit justify-between gap-2">
 								<button
 									type="button"
-									class="btn btn-circle btn-ghost btn-xs tooltip tooltip-bottom aspect-square h-full opacity-10 group-hover:opacity-100"
-									data-tip="Edit"
-									onClick={() => setEditingHex(true)}
+									class="tooltip tooltip-bottom btn btn-circle btn-ghost btn-xs aspect-square h-full text-green-600"
+									data-tip="Done"
+									onClick={() => {
+										setEditingHex(false);
+										try {
+											const color = parseColor(inputVal());
+											if (color) setColor(color);
+											document?.documentElement.style.removeProperty("cursor");
+										} catch {
+											setInputVal(hexCode());
+										}
+									}}
 								>
-									<Icon class="size-full" icon="mdi:pencil-circle-outline" />
+									<Icon class="size-full" icon="mdi:pencil-circle" />
 								</button>
 								<CopyButton
 									class="tooltip tooltip-bottom tooltip-info size-full transition duration-200 ease-in-out hover:cursor-pointer"
 									copyIcon="mdi:content-copy"
-									code={hexCode()}
+									code={inputVal()}
 								/>
 							</div>
 						</ColorField.Label>
@@ -214,38 +237,26 @@ const ColorSelection: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 					</ColorField>
 				}
 			>
-				<ColorField
-					class="size-full"
-					value={inputVal()}
-					onChange={(val) => setInputVal(`#${val.replace(/#/g, "")}`)}
-					required={true}
-				>
+				<ColorField class="size-full" value={hexCode()} readOnly={true}>
 					<ColorField.Label class="input validator group text-primary">
 						<span class="label pointer-events-none select-none" tabIndex={-1}>
 							Hex Code
 						</span>
 						<ColorField.Input class="pointer-events-none select-none" />
+						{/* TODO: fix copy morphing on gsap */}
 						<div class=" -translate-y-1/2 absolute top-1/2 right-2 flex h-6 w-fit justify-between gap-2">
 							<button
 								type="button"
-								class="tooltip tooltip-bottom btn btn-circle btn-ghost btn-xs aspect-square h-full text-green-600"
-								data-tip="Done"
-								onClick={() => {
-									setEditingHex(false);
-									try {
-										const color = parseColor(inputVal());
-										if (color) setColor(color);
-									} catch {
-										setInputVal(hexCode());
-									}
-								}}
+								class="btn btn-circle btn-ghost btn-xs tooltip tooltip-bottom aspect-square h-full opacity-10 group-hover:opacity-100"
+								data-tip="Edit"
+								onClick={() => setEditingHex(true)}
 							>
-								<Icon class="size-full" icon="mdi:pencil-circle" />
+								<Icon class="size-full" icon="mdi:pencil-circle-outline" />
 							</button>
 							<CopyButton
 								class="tooltip tooltip-bottom tooltip-info size-full transition duration-200 ease-in-out hover:cursor-pointer"
 								copyIcon="mdi:content-copy"
-								code={inputVal()}
+								code={hexCode()}
 							/>
 						</div>
 					</ColorField.Label>

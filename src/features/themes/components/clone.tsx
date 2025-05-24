@@ -37,7 +37,7 @@ export const CloneThemeOption: Component<CloneThemeOptionProps> = (props) => {
 				data.set(cur.name, cur);
 				selectTheme(cur.name);
 			});
-		}, 1);
+		});
 	};
 
 	return (

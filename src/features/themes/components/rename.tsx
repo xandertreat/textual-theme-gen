@@ -3,27 +3,31 @@ import {
 	type Component,
 	type JSX,
 	Match,
+	type Setter,
 	Show,
 	Switch,
 	batch,
+	createEffect,
 	createSignal,
+	onMount,
 	splitProps,
 } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import Icon from "~/components/ui/icon";
 import { useTheme } from "../context/theme";
 
+type InvalidReason = "malformed" | "source" | "nodiff";
 interface RenameThemeProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
 	theme: string;
 }
 
 const RenameTheme: Component<RenameThemeProps> = (props) => {
 	const [local, rest] = splitProps(props, ["theme"]);
+
 	const { data, selectTheme, selectedTheme } = useTheme();
 	const [isValid, setIsValid] = createSignal(false);
-	const [invalidReason, setInvalidReason] = createSignal<
-		"malformed" | "source" | "nodiff"
-	>("nodiff");
+	const [invalidReason, setInvalidReason] =
+		createSignal<InvalidReason>("nodiff");
 
 	const renameAction = action(async (formData: FormData) => {
 		try {
@@ -55,7 +59,7 @@ const RenameTheme: Component<RenameThemeProps> = (props) => {
 		>
 			<ActionDialog.Trigger
 				class="inline-flex size-full items-center rounded text-center font-bold text-sm"
-				{...props}
+				{...rest}
 			>
 				<Icon icon="mdi:pencil-outline" />
 				Rename theme
@@ -78,6 +82,7 @@ const RenameTheme: Component<RenameThemeProps> = (props) => {
 						>
 							<label
 								class="label input size-fit text-base-content"
+								aria-selected={true}
 								classList={{
 									"input-success": isValid(),
 									"input-error": !isValid(),
@@ -86,6 +91,7 @@ const RenameTheme: Component<RenameThemeProps> = (props) => {
 							>
 								<p class="cursor-default select-none opacity-50">Theme Name</p>
 								<input
+									ref={(el) => setTimeout(() => el.focus(), 100)}
 									type="text"
 									name="name"
 									onInput={(e) => {
@@ -101,7 +107,7 @@ const RenameTheme: Component<RenameThemeProps> = (props) => {
 										else setInvalidReason("malformed");
 									}}
 									value={local.theme}
-									placeholder="Theme name"
+									placeholder="..."
 									class="peer"
 									pattern="[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*"
 									title="Only letters, separated by single spaces, underscores or hyphens."
