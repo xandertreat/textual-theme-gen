@@ -1,10 +1,9 @@
 import { type Component, type JSX, createMemo, splitProps } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import { useTheme } from "../context/theme";
+import Icon from "~/components/ui/icon";
 
-const VariablesManagement: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
-	props,
-) => {
+const NewColor: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 	const { selectedTheme } = useTheme();
 	const canModify = createMemo(() => selectedTheme().source === "user");
 
@@ -13,13 +12,13 @@ const VariablesManagement: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 			<span class="flex flex-col items-center gap-1">
 				<ActionDialog.Trigger
 					class={
-						"aspect-square size-12 rounded-full bg-neutral font-black text-2xl text-neutral-content transition-[scale] duration-200 not-disabled:hover:scale-105"
+						"flex aspect-square size-12 items-center justify-center rounded-full bg-success font-black text-2xl text-neutral-content transition-[scale] duration-200 not-disabled:hover:scale-105"
 					}
 					disabled={!canModify()}
 				>
-					?
+					<Icon class="text-success-content" icon="mdi:plus-thick" />
 				</ActionDialog.Trigger>
-				<p class="pointer-events-none select-none text-neutral">Variables</p>
+				<p class="pointer-events-none select-none text-success">Create Color</p>
 			</span>
 			<ActionDialog.Portal>
 				<ActionDialog.Overlay />
@@ -36,4 +35,4 @@ const VariablesManagement: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	);
 };
 
-export default VariablesManagement;
+export default NewColor;

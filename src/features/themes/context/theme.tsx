@@ -10,7 +10,7 @@ import {
 import { DEFAULT_THEMES, VERSION_KEY } from "../data/themes";
 import type { TextualTheme } from "../types";
 
-const DEFAULTS = DEFAULT_THEMES();
+export const DEFAULTS = DEFAULT_THEMES();
 const STORAGE_KEY = `saved-${VERSION_KEY()}`;
 const LAST_SELECTED_KEY = `last-selected-${VERSION_KEY()}`;
 

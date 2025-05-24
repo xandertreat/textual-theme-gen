@@ -1,5 +1,5 @@
 # This script is intended to dump .tcss variables from the built in themes of Textual
-# theme list not automated
+# TODO: automate conflict resolving dumping into /src/data/themes.json
 from textual.app import App
 import logging
 
@@ -9,6 +9,7 @@ logging.basicConfig(
     datefmt="%H:%M:%S",
 )
 logger = logging.getLogger(__name__)
+
 
 class Dump(App):
     """Textual App to switch through themes and log their CSS variable values."""
@@ -26,7 +27,7 @@ class Dump(App):
         "solarized-light",
     ]
     SWITCH_INTERVAL = 0.2
-    EXIT_DELAY     = 0.5
+    EXIT_DELAY = 0.5
 
     def on_mount(self) -> None:
         self._theme_index = 0
@@ -47,6 +48,7 @@ class Dump(App):
         vars_map = self.get_css_variables()
         for var_name, value in vars_map.items():
             logger.info(f"${var_name}: {value}")
+
 
 if __name__ == "__main__":
     Dump().run(headless=True)

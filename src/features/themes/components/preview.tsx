@@ -1,6 +1,14 @@
-import type { Component, JSX } from "solid-js";
+import {
+	createSignal,
+	For,
+	Match,
+	Show,
+	Switch,
+	type Component,
+	type JSX,
+} from "solid-js";
 import Icon from "../../../components/ui/icon";
-import { useTheme } from "../context/theme";
+import { DEFAULTS, useTheme } from "../context/theme";
 
 const TerminalWindow: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	props,
@@ -20,7 +28,7 @@ const TerminalWindow: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 			</h2>
 		</div>
 		<div
-			class="row-span-12 h-96 w-full rounded-br rounded-bl bg-primary/5 font-mono text-neutral-content xl:h-170"
+			class="relative row-span-12 flex h-96 w-full items-center justify-center rounded-br rounded-bl bg-primary/5 font-mono text-neutral-content xl:h-170"
 			style={{
 				"background-color":
 					useTheme().selectedTheme().palette.background.base.color,
@@ -31,8 +39,54 @@ const TerminalWindow: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	</div>
 );
 
+const CommandPaletteFooter: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
+	props,
+) => {
+	return (
+		<div class="absolute bottom-0 left-0 flex h-1/12 w-full items-center justify-end"></div>
+	);
+};
+
+const TodosPreview: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
+	return <div class="size-full">d</div>;
+};
+
+const PaletteColorPreview: Component<
+	JSX.HTMLAttributes<HTMLDivElement> & { paletteKey: string }
+> = (props) => {
+	return <div class="size-9/10">d</div>;
+};
+
+const paletteKeys = Object.keys(DEFAULTS[0].palette).map(
+	(k) => `${k[0].toUpperCase()}${k.slice(1)}`,
+);
 const Preview = () => {
-	return <TerminalWindow>Text here.</TerminalWindow>;
+	const previewOptions = ["Todos App", ...paletteKeys];
+	const [currentPreview, setPreview] = createSignal(previewOptions[0]);
+	const [showCommandPalette, setCommandPaletteVisibility] = createSignal(false);
+	const SelectPreview: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
+		props,
+	) => <div {...props}>s</div>;
+
+	return (
+		<TerminalWindow>
+			<Switch>
+				<Match when={currentPreview() === "Todos App"}>
+					<TodosPreview />
+				</Match>
+				<For each={paletteKeys}>
+					{(key) => (
+						<Match when={currentPreview() === key}>
+							<PaletteColorPreview paletteKey={key.toLowerCase()} />
+						</Match>
+					)}
+				</For>
+			</Switch>
+			<Show when={showCommandPalette()}>
+				<CommandPaletteFooter />
+			</Show>
+		</TerminalWindow>
+	);
 };
 
 export default Preview;

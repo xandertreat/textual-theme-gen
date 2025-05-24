@@ -4,6 +4,7 @@ import { useTheme } from "../context/theme";
 import CloneTheme from "./clone";
 import EditColor from "./color";
 import VariablesManagement from "./variables";
+import NewColor from "./new-color";
 
 const ThemeCreation: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	passed,
@@ -22,6 +23,7 @@ const ThemeCreation: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 				<For each={paletteColors}>
 					{(paletteColor: string) => <EditColor color={paletteColor} />}
 				</For>
+				<NewColor />
 				<VariablesManagement />
 			</div>
 		</div>
