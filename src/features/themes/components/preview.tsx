@@ -220,9 +220,6 @@ const Preview = () => {
 	const initial = previewOptions[0];
 	const [currentPreview, setPreview] = createSignal(initial);
 	const [showCommandPalette, setCommandPaletteVisibility] = createSignal(true);
-	const SelectPreview: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
-		props,
-	) => <div {...props}>s</div>;
 
 	return (
 		<div class="flex h-fit flex-col items-center gap-2 xl:w-2/3">
@@ -255,7 +252,13 @@ const Preview = () => {
 						placement="bottom"
 						itemComponent={(props) => (
 							<Select.Item item={props.item}>
-								<Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
+								<Select.ItemLabel
+									classList={{
+										"menu-active": currentPreview() === props.item.rawValue,
+									}}
+								>
+									{props.item.rawValue}
+								</Select.ItemLabel>
 							</Select.Item>
 						)}
 					>
@@ -270,7 +273,7 @@ const Preview = () => {
 						</Select.Trigger>
 						<Select.Portal>
 							<Select.Content class="motion-duration-200 motion-opacity-in motion-scale-in-95 data-[closed]:motion-opacity-out data-[closed]:motion-scale-out-95">
-								<Select.Listbox class="menu menu-vertical space-y-0.5 rounded border border-base-300 bg-base-200 shadow **:cursor-default **:rounded" />
+								<Select.Listbox class="menu menu-vertical space-y-0.75 rounded border border-base-300 bg-base-200 shadow **:cursor-default **:rounded" />
 							</Select.Content>
 						</Select.Portal>
 					</Select>
