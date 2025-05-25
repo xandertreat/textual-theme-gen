@@ -151,13 +151,19 @@ const ColorSelection: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	props,
 ) => {
 	const { color, setColor, hexCode } = useColorContext();
+	const [isEditingHex, setEditingHex] = createSignal(false);
 	const [inputVal, setInputVal] = createSignal(
 		hexCode().length > 6 ? hexCode().slice(0, -2) : hexCode(),
 	);
+	let inputEl!: HTMLInputElement;
+
+	const currentCode = createMemo(() =>
+		isEditingHex() ? inputVal() : hexCode(),
+	);
+
 	createEffect(() =>
 		setInputVal(hexCode().length > 6 ? hexCode().slice(0, -2) : hexCode()),
 	);
-	const [isEditingHex, setEditingHex] = createSignal(false);
 
 	return (
 		<div class="flex w-max flex-col items-center gap-2">
@@ -184,85 +190,69 @@ const ColorSelection: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 					</ColorArea.Thumb>
 				</ColorArea.Background>
 			</ColorArea>
-			<Show
-				when={!isEditingHex()}
-				fallback={
-					<ColorField
-						class="size-full"
-						value={inputVal()}
-						onChange={(val) => setInputVal(`#${val.replace(/#/g, "")}`)}
-						required={true}
-					>
-						<ColorField.Label class="input validator group text-primary">
-							<span class="label pointer-events-none select-none" tabIndex={-1}>
-								Hex Code
-							</span>
-							<ColorField.Input
-								ref={(el) => setTimeout(() => el.focus(), 100)}
-								onKeyPress={(e) => {
-									if (e.key === "Enter") {
-										const inputBox = e.target as HTMLInputElement;
-										inputBox.blur();
-										inputBox.closest("div")?.querySelector("button")?.click();
-									}
-								}}
-								class="pointer-events-none select-none"
-							/>
-							<div class=" -translate-y-1/2 absolute top-1/2 right-2 flex h-6 w-fit justify-between gap-2">
-								<button
-									type="button"
-									class="tooltip tooltip-bottom btn btn-circle btn-ghost btn-xs aspect-square h-full text-green-600"
-									data-tip="Done"
-									onClick={() => {
-										setEditingHex(false);
-										try {
-											const color = parseColor(inputVal());
-											if (color) setColor(color);
-											document?.documentElement.style.removeProperty("cursor");
-										} catch {
-											setInputVal(hexCode());
-										}
-									}}
-								>
-									<Icon class="size-full" icon="mdi:pencil-circle" />
-								</button>
-								<CopyButton
-									class="tooltip tooltip-bottom tooltip-info size-full transition duration-200 ease-in-out hover:cursor-pointer"
-									copyIcon="mdi:content-copy"
-									code={inputVal()}
-								/>
-							</div>
-						</ColorField.Label>
-						<ColorField.ErrorMessage />
-					</ColorField>
-				}
+			<ColorField
+				class="size-full"
+				value={currentCode()}
+				onChange={(val) => setInputVal(`#${val.replace(/#/g, "")}`)}
+				required={true}
+				readOnly={!isEditingHex()}
 			>
-				<ColorField class="size-full" value={hexCode()} readOnly={true}>
-					<ColorField.Label class="input validator group text-primary">
-						<span class="label pointer-events-none select-none" tabIndex={-1}>
-							Hex Code
-						</span>
-						<ColorField.Input class="pointer-events-none select-none" />
-						{/* TODO: fix copy morphing on gsap */}
-						<div class=" -translate-y-1/2 absolute top-1/2 right-2 flex h-6 w-fit justify-between gap-2">
-							<button
-								type="button"
-								class="btn btn-circle btn-ghost btn-xs tooltip tooltip-bottom aspect-square h-full opacity-10 group-hover:opacity-100"
-								data-tip="Edit"
-								onClick={() => setEditingHex(true)}
-							>
-								<Icon class="size-full" icon="mdi:pencil-circle-outline" />
-							</button>
-							<CopyButton
-								class="tooltip tooltip-bottom tooltip-info size-full transition duration-200 ease-in-out hover:cursor-pointer"
-								copyIcon="mdi:content-copy"
-								code={hexCode()}
+				<ColorField.Label class="input validator group text-primary">
+					<span class="label pointer-events-none select-none" tabIndex={-1}>
+						Hex Code
+					</span>
+					<ColorField.Input
+						ref={(el) => {
+							inputEl = el;
+							setTimeout(() => el.focus(), 100);
+						}}
+						onKeyPress={(e) => {
+							if (isEditingHex() && e.key === "Enter") {
+								const inputBox = e.target as HTMLInputElement;
+								inputBox.blur();
+								inputBox.closest("div")?.querySelector("button")?.click();
+							}
+						}}
+						class="pointer-events-none select-none"
+					/>
+					<div class=" -translate-y-1/2 absolute top-1/2 right-2 flex h-6 w-fit justify-between gap-2">
+						<button
+							type="button"
+							class="tooltip tooltip-bottom btn btn-circle btn-ghost btn-xs aspect-square h-full"
+							data-tip="Done"
+							onClick={() => {
+								const editing = isEditingHex();
+								if (editing)
+									try {
+										const color = parseColor(inputVal());
+										if (color) setColor(color);
+										document?.documentElement.style.removeProperty("cursor");
+									} catch {
+										setInputVal(hexCode());
+									}
+								setEditingHex(!editing);
+								inputEl.focus();
+							}}
+						>
+							<Icon
+								class="size-full"
+								classList={{ "text-green-600": isEditingHex() }}
+								icon={
+									isEditingHex()
+										? "mdi:pencil-circle"
+										: "mdi:pencil-circle-outline"
+								}
 							/>
-						</div>
-					</ColorField.Label>
-					<ColorField.ErrorMessage />
-				</ColorField>
-			</Show>
+						</button>
+						<CopyButton
+							class="tooltip tooltip-bottom tooltip-info size-full transition duration-200 ease-in-out hover:cursor-pointer"
+							copyIcon="mdi:content-copy"
+							code={currentCode()}
+						/>
+					</div>
+				</ColorField.Label>
+				<ColorField.ErrorMessage />
+			</ColorField>
 		</div>
 	);
 };

@@ -7,6 +7,7 @@ import {
 	type Component,
 	type JSX,
 } from "solid-js";
+import { Select } from "@kobalte/core/select";
 import Icon from "../../../components/ui/icon";
 import { DEFAULTS, useTheme } from "../context/theme";
 
@@ -62,30 +63,64 @@ const paletteKeys = Object.keys(DEFAULTS[0].palette).map(
 );
 const Preview = () => {
 	const previewOptions = ["Todos App", ...paletteKeys];
-	const [currentPreview, setPreview] = createSignal(previewOptions[0]);
+	const initial = previewOptions[0];
+	const [currentPreview, setPreview] = createSignal(initial);
 	const [showCommandPalette, setCommandPaletteVisibility] = createSignal(false);
 	const SelectPreview: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 		props,
 	) => <div {...props}>s</div>;
 
 	return (
-		<TerminalWindow>
-			<Switch>
-				<Match when={currentPreview() === "Todos App"}>
-					<TodosPreview />
-				</Match>
-				<For each={paletteKeys}>
-					{(key) => (
-						<Match when={currentPreview() === key}>
-							<PaletteColorPreview paletteKey={key.toLowerCase()} />
-						</Match>
-					)}
-				</For>
-			</Switch>
-			<Show when={showCommandPalette()}>
-				<CommandPaletteFooter />
-			</Show>
-		</TerminalWindow>
+		<div class="flex flex-col items-center gap-1">
+			<TerminalWindow>
+				<Switch>
+					<Match when={currentPreview() === "Todos App"}>
+						<TodosPreview />
+					</Match>
+					<For each={paletteKeys}>
+						{(key) => (
+							<Match when={currentPreview() === key}>
+								<PaletteColorPreview paletteKey={key.toLowerCase()} />
+							</Match>
+						)}
+					</For>
+				</Switch>
+				<Show when={showCommandPalette()}>
+					<CommandPaletteFooter />
+				</Show>
+			</TerminalWindow>
+			<div class="flex w-full items-center justify-between font-light text-sm">
+				<div class="flex items-center gap-1">
+					<p>Current Preview: </p>
+					<Select
+						value={currentPreview()}
+						onChange={setPreview}
+						options={previewOptions}
+						placeholder="Select a preview..."
+						itemComponent={(props) => (
+							<Select.Item item={props.item}>
+								<Select.ItemLabel>{props.item.rawValue}</Select.ItemLabel>
+							</Select.Item>
+						)}
+					>
+						<Select.Trigger aria-label="Preview">
+							<Select.Value<string>>
+								{(state) => state.selectedOption()}
+							</Select.Value>
+							<Icon class="size-4" icon="mdi:chevron-down" />
+						</Select.Trigger>
+						<Select.Portal>
+							<Select.Content>
+								<Select.Listbox />
+							</Select.Content>
+						</Select.Portal>
+					</Select>
+				</div>
+				<div>
+					<p>Show command palette? </p>
+				</div>
+			</div>
+		</div>
 	);
 };
 
