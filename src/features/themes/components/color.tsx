@@ -172,7 +172,12 @@ const ColorSelection: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 				class=" flex h-36 w-64 flex-col items-center"
 				colorSpace="rgb"
 				value={color()}
-				onChange={setColor}
+				onChange={(val) => {
+					setColor(val);
+					document.addEventListener("pointerup", () => inputEl.focus(), {
+						once: true,
+					});
+				}}
 			>
 				<ColorArea.Label class="select-none pb-0.5">Color</ColorArea.Label>
 				<ColorArea.Background class="relative size-full rounded-xl border-2 border-zinc-50">
