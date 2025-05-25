@@ -119,10 +119,9 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 				}}
 			>
 				<span
-					class="tooltip-content motion-duration-200 text-xs"
+					class="tooltip-content text-xs "
 					classList={{
-						"motion-opacity-out-0": phase() !== "ready",
-						"motion-opacity-in": phase() === "ready",
+						"opacity-0!": phase() !== "ready",
 					}}
 				>
 					(hold)
