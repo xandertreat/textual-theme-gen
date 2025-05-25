@@ -1,6 +1,4 @@
 import { useDialogContext } from "@corvu/popover";
-import { gsap } from "gsap";
-import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
 import {
 	type Component,
 	type JSX,
@@ -16,7 +14,6 @@ import Icon from "~/components/ui/icon";
 import { useTheme } from "../context/theme";
 import { randomName } from "../lib/utils";
 import type { TextualTheme } from "../types";
-gsap.registerPlugin(MorphSVGPlugin);
 
 interface CloneThemeOptionProps
 	extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {}
@@ -84,21 +81,6 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 	};
 
 	const DesktopButton = () => {
-		let readyIcon!: SVGPathElement;
-		let clonedIcon!: SVGPathElement;
-		let errorIcon!: SVGPathElement;
-		let currentIcon!: SVGPathElement;
-
-		createEffect(() => {
-			const state = phase();
-			if (state === "ready")
-				gsap.to(currentIcon, { duration: 0.2, morphSVG: readyIcon });
-			else if (state === "cloned")
-				gsap.to(currentIcon, { duration: 0.2, morphSVG: clonedIcon });
-			else if (state === "error")
-				gsap.to(currentIcon, { duration: 0.2, morphSVG: errorIcon });
-		});
-
 		return (
 			<button
 				type="button"
@@ -147,13 +129,10 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 				</span>
 				<span class="relative size-6">
 					<Icon
-						ref={(el) => {
-							currentIcon = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
-						}}
 						class="motion-duration-150 motion-ease-in absolute inset-0 size-full scale-100"
 						classList={{
-							"motion-scale-out-0": phase() === "cloning",
-							"motion-scale-in-0": phase() !== "cloning",
+							"motion-scale-in-0": phase() === "ready",
+							"motion-scale-out-0": phase() !== "ready",
 						}}
 						icon="pixelarticons:section-copy"
 					/>
@@ -165,29 +144,23 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 						}}
 						icon="svg-spinners:blocks-wave"
 					/>
+					<Icon
+						class="motion-duration-150 motion-ease-in absolute inset-0 size-full scale-0"
+						classList={{
+							"motion-scale-in-0": phase() === "cloned",
+							"motion-scale-out-0": phase() !== "cloned",
+						}}
+						icon="material-symbols:check-rounded"
+					/>
+					<Icon
+						class="motion-duration-150 motion-ease-in absolute inset-0 size-full scale-0"
+						classList={{
+							"motion-scale-in-0": phase() === "error",
+							"motion-scale-out-0": phase() !== "error",
+						}}
+						icon="charm:cross"
+					/>
 				</span>
-				{/* Refs */}
-				<Icon
-					ref={(el) => {
-						readyIcon = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
-					}}
-					class="hidden"
-					icon="pixelarticons:section-copy"
-				/>
-				<Icon
-					ref={(el) => {
-						clonedIcon = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
-					}}
-					class="hidden"
-					icon="material-symbols:check-rounded"
-				/>
-				<Icon
-					ref={(el) => {
-						errorIcon = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
-					}}
-					class="hidden"
-					icon="charm:cross"
-				/>
 				<Switch>
 					<Match when={phase() === "ready"}>Clone Theme</Match>
 					<Match when={phase() === "cloning"}>Cloning...</Match>
