@@ -1,13 +1,13 @@
+import { Select } from "@kobalte/core/select";
 import {
-	createSignal,
+	type Component,
 	For,
+	type JSX,
 	Match,
 	Show,
 	Switch,
-	type Component,
-	type JSX,
+	createSignal,
 } from "solid-js";
-import { Select } from "@kobalte/core/select";
 import Icon from "../../../components/ui/icon";
 import { DEFAULTS, useTheme } from "../context/theme";
 

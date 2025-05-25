@@ -3,8 +3,8 @@ import Icon from "../../../components/ui/icon";
 import { useTheme } from "../context/theme";
 import CloneTheme from "./clone";
 import EditColor from "./color";
-import VariablesManagement from "./variables";
 import NewColor from "./new-color";
+import VariablesManagement from "./variables";
 
 const ThemeCreation: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	passed,
