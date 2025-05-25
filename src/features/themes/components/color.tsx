@@ -207,6 +207,7 @@ const ColorSelection: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 						Hex Code
 					</span>
 					<ColorField.Input
+						id="colorInput"
 						ref={(el) => {
 							inputEl = el;
 							setTimeout(() => el.focus(), 100);
@@ -269,7 +270,17 @@ const ColorFields: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 		<ColorSlider
 			class="relative flex h-50 touch-none select-none flex-col items-center"
 			value={color()}
-			onChange={setColor}
+			onChange={(val) => {
+				setColor(val);
+				document.addEventListener(
+					"pointerup",
+					() =>
+						document.querySelector<HTMLInputElement>("#colorInput")!.focus(),
+					{
+						once: true,
+					},
+				);
+			}}
 			channel={props.channel}
 			orientation="vertical"
 		>

@@ -6,10 +6,12 @@ import {
 	Match,
 	Show,
 	Switch,
+	createMemo,
 	createSignal,
 } from "solid-js";
 import Icon from "../../../components/ui/icon";
 import { DEFAULTS, useTheme } from "../context/theme";
+import type { TextualColor } from "../types";
 
 const TerminalWindow: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	props,
@@ -40,50 +42,174 @@ const TerminalWindow: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	</div>
 );
 
-const CommandPaletteFooter: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
+const CommandPaletteFooter: Component<JSX.HTMLAttributes<HTMLElement>> = (
 	props,
 ) => {
 	const { selectedTheme } = useTheme();
+	const keyBindingColor = createMemo(
+		() => selectedTheme().palette.accent.base.color,
+	);
+	const panelColors = createMemo(() => selectedTheme().palette.panel.base);
 
 	return (
 		<footer
-			class="absolute bottom-0 left-0 m-0 inline-flex h-4 w-full items-center justify-end gap-2 rounded-br rounded-bl bg-size-[90%] text-center"
-			style={{ "background-color": selectedTheme().palette.panel.base.color }}
+			class="absolute bottom-0 left-0 m-0 inline-flex h-4 w-full items-center justify-between gap-2 rounded-br rounded-bl bg-size-[90%] text-center text-sm"
+			style={{ "background-color": panelColors().color }}
+			{...props}
 		>
-			<div
-				class="h-full w-px text-transparent opacity-30"
-				style={{
-					"background-color": selectedTheme().palette.panel.base.disabled,
-				}}
-			>
-				|
-			</div>
-			<span class="inline-flex gap-2">
-				<kbd
-					class="font-black"
-					style={{
-						color: selectedTheme().palette.accent.base.color,
-					}}
-				>
-					^p
-				</kbd>
-				<p>palette</p>
+			<div class="inline-flex gap-4 pt-1.5">
+				<span class="inline-flex h-full gap-2">
+					<kbd
+						class="font-black"
+						style={{
+							color: keyBindingColor(),
+						}}
+					>
+						[
+					</kbd>
+					<p
+						style={{
+							color: panelColors().text,
+						}}
+					>
+						Previous theme
+					</p>
+				</span>
+				<span class="inline-flex h-full gap-2">
+					<kbd
+						class="font-black"
+						style={{
+							color: keyBindingColor(),
+						}}
+					>
+						]
+					</kbd>
+					<p
+						style={{
+							color: panelColors().text,
+						}}
+					>
+						Next theme
+					</p>
+				</span>
 				<p aria-hidden={"true"} class="-ml-3 text-transparent text-xl">
 					|
 				</p>
+			</div>
+			<span class="inline-flex items-center gap-2">
+				<div
+					class="h-4 w-px text-transparent opacity-30"
+					style={{
+						"background-color": panelColors().text,
+					}}
+				>
+					|
+				</div>
+				<span class="mr-2.25 mb-1 inline-flex gap-2">
+					<kbd
+						class="font-black"
+						style={{
+							color: keyBindingColor(),
+						}}
+					>
+						^p
+					</kbd>
+					<p
+						style={{
+							color: panelColors().text,
+						}}
+					>
+						palette
+					</p>
+				</span>
 			</span>
 		</footer>
 	);
 };
 
 const TodosPreview: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
+	const { selectedTheme } = useTheme();
+
 	return <div class="size-full">d</div>;
 };
 
 const PaletteColorPreview: Component<
 	JSX.HTMLAttributes<HTMLDivElement> & { paletteKey: string }
 > = (props) => {
-	return <div class="size-9/10">d</div>;
+	const { selectedTheme } = useTheme();
+	const paletteColors = createMemo(() =>
+		Object.entries(selectedTheme().palette[props.paletteKey]),
+	);
+
+	const ColorPreview: Component<
+		JSX.HTMLAttributes<HTMLSpanElement> & {
+			variant: string;
+			data: TextualColor;
+		}
+	> = (passed) => (
+		<span
+			class="flex h-13 w-full items-center justify-between gap-8 text-nowrap py-2 pr-8 pl-16 text-center text-sm xl:h-16"
+			style={{
+				"background-color": passed.data.color,
+			}}
+		>
+			<p
+				class="mr-8 w-40"
+				style={{
+					color: passed.data.text,
+				}}
+			>
+				${props.paletteKey}
+				{passed.variant !== "base" ? `-${passed.variant}` : undefined}
+			</p>
+			<p
+				style={{
+					color: passed.data.muted,
+				}}
+			>
+				$text-muted
+			</p>
+			<p
+				style={{
+					color: passed.data.disabled,
+				}}
+			>
+				$text-disabled
+			</p>
+		</span>
+	);
+
+	return (
+		<div
+			class="mb-3 h-fit max-h-5/6 w-5/6 overflow-y-auto border-2 px-10 xl:pb-10"
+			style={{
+				"background-color": selectedTheme().palette.surface.base.color,
+				"border-color": selectedTheme().palette.primary.base.color,
+			}}
+			{...props}
+		>
+			<h2
+				class="mt-2 mb-4 font-bold"
+				style={{
+					color: selectedTheme().palette.surface.base.text,
+				}}
+			>
+				"{props.paletteKey}"
+			</h2>
+			<main class="flex w-full flex-col max-xl:mb-12">
+				<For
+					each={paletteColors()
+						.filter(([v]) => v.includes("darken"))
+						.sort(([a], [b]) => Number(a.at(-1)) + Number(b.at(-1)))}
+				>
+					{([variant, data]) => <ColorPreview variant={variant} data={data} />}
+				</For>
+				<For each={paletteColors().filter(([v]) => !v.includes("darken"))}>
+					{([variant, data]) => <ColorPreview variant={variant} data={data} />}
+				</For>
+			</main>
+		</div>
+	);
 };
 
 const paletteKeys = Object.keys(DEFAULTS[0].palette).map(
@@ -134,7 +260,7 @@ const Preview = () => {
 						)}
 					>
 						<Select.Trigger
-							class="inline-flex w-28 cursor-pointer items-center justify-between gap-2 rounded-md border border-neutral/30 p-2 transition-colors duration-150 hover:border-neutral/50"
+							class="inline-flex w-28 cursor-pointer items-center justify-between gap-2 rounded-md border border-base-content/30 p-2 transition-colors duration-150 hover:border-base-content/50"
 							aria-label="Preview"
 						>
 							<Select.Value<string>>
@@ -152,7 +278,7 @@ const Preview = () => {
 				<label class="flex items-center gap-2">
 					<span class="label">Show command palette? </span>
 					<input
-						class="checkbox rounded-md border"
+						class="checkbox rounded-md border border-base-content/30 text-green-600 transition-colors duration-150 hover:border-base-content/50"
 						type="checkbox"
 						checked={showCommandPalette()}
 						onChange={(e) => setCommandPaletteVisibility(!showCommandPalette())}
