@@ -1,16 +1,9 @@
-import {
-	createEffect,
-	createMemo,
-	createSignal,
-	type Component,
-	type JSX,
-} from "solid-js";
+import { type Component, type JSX, createMemo } from "solid-js";
 import Icon from "~/components/ui/icon";
+import { useTheme } from "../context/theme";
 import CloneTheme from "./clone";
-import EditColor from "./color";
 import NewColor from "./new-color";
 import VariablesManagement from "./variables";
-import { useTheme } from "../context/theme";
 
 const DarkThemeToggle: Component<JSX.HTMLAttributes<HTMLInputElement>> = (
 	props,

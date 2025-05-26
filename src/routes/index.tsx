@@ -1,11 +1,7 @@
 import { A } from "@solidjs/router";
-import CodeBlock from "@ui/codeblock";
 import GitHub from "~/components/github";
 import AppThemeController, { AppThemeProvider } from "~/context/app-theme";
 import ThemeManagement from "~/features/themes/components/management";
-
-// State
-import { ThemeProvider } from "~/features/themes/context/theme";
 
 const Index = () => {
 	return (

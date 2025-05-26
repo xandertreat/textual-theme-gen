@@ -3,12 +3,9 @@ import {
 	type Component,
 	type JSX,
 	Match,
-	Show,
 	Switch,
 	batch,
-	createEffect,
 	createSignal,
-	onMount,
 } from "solid-js";
 import Icon from "~/components/ui/icon";
 import { useTheme } from "../context/theme";

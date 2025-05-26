@@ -1,9 +1,7 @@
-import Popover, { useDialogContext } from "@corvu/popover";
 import { cookieStorage, makePersisted } from "@solid-primitives/storage";
 import {
 	type Accessor,
 	type Component,
-	For,
 	type JSX,
 	Match,
 	type Setter,
@@ -13,7 +11,6 @@ import {
 	createEffect,
 	createMemo,
 	createSignal,
-	onMount,
 	useContext,
 } from "solid-js";
 import { isServer } from "solid-js/web";

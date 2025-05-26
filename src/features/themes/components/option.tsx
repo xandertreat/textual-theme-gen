@@ -1,5 +1,5 @@
 import Popover from "@corvu/popover";
-import type { Accessor, Component, JSX } from "solid-js";
+import type { Component, JSX } from "solid-js";
 import { Show, createMemo, createSignal, onMount, splitProps } from "solid-js";
 import Icon from "../../../components/ui/icon";
 import { useTheme } from "../context/theme";

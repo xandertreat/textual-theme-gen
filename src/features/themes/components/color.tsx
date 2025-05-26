@@ -10,13 +10,10 @@ import {
 	type Accessor,
 	type Component,
 	type JSX,
-	type Setter,
-	Show,
 	createContext,
 	createEffect,
 	createMemo,
 	createSignal,
-	onMount,
 	splitProps,
 	useContext,
 } from "solid-js";

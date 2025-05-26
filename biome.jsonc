@@ -30,6 +30,9 @@
 					}
 				}
 			},
+			"correctness": {
+				"noUnusedImports": "error"
+			},
 			"style": {
 				"noNonNullAssertion": "off" // we need to sometimes
 			},
