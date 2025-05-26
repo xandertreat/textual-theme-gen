@@ -11,7 +11,7 @@ const NewColor: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 		<ActionDialog>
 			<span class="flex flex-col items-center gap-1">
 				<ActionDialog.Trigger
-					class="btn tooltip tooltip-bottom m-2 mx-4 hidden w-40 border-2 border-success text-success xl:flex"
+					class="btn tooltip tooltip-bottom m-2 mx-4 hidden w-40 border-2 border-success text-success disabled:border-success/30 disabled:text-success/30 xl:flex"
 					disabled={!canModify()}
 				>
 					<Icon class="size-5 " icon="mdi:plus-circle" />
