@@ -6,6 +6,7 @@ import {
 	Match,
 	Show,
 	Switch,
+	createEffect,
 	createMemo,
 	createSignal,
 } from "solid-js";
@@ -221,6 +222,13 @@ const Preview = () => {
 	const [currentPreview, setPreview] = createSignal(initial);
 	const [showCommandPalette, setCommandPaletteVisibility] = createSignal(true);
 	const [selectOpen, setSelectOpen] = createSignal(false);
+
+	createEffect(() => {
+		if (selectOpen())
+			document.addEventListener("click", () => setSelectOpen(false), {
+				once: true,
+			});
+	});
 
 	return (
 		<div class="flex h-fit flex-col items-center gap-2 xl:w-2/3">
