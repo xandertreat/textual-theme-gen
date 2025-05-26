@@ -220,6 +220,7 @@ const Preview = () => {
 	const initial = previewOptions[0];
 	const [currentPreview, setPreview] = createSignal(initial);
 	const [showCommandPalette, setCommandPaletteVisibility] = createSignal(true);
+	const [selectOpen, setSelectOpen] = createSignal(false);
 
 	return (
 		<div class="flex h-fit flex-col items-center gap-2 xl:w-2/3">
@@ -241,45 +242,50 @@ const Preview = () => {
 				</Show>
 			</TerminalWindow>
 			<div class="flex w-full items-center justify-between font-light text-sm">
-				<div class="flex items-center gap-2">
-					<p class="cursor-default">Current Preview</p>
-					<Select
-						disallowEmptySelection={true}
-						value={currentPreview()}
-						onChange={setPreview}
-						options={previewOptions}
-						placeholder="Select a preview..."
-						placement="bottom"
-						itemComponent={(props) => (
-							<Select.Item item={props.item}>
-								<Select.ItemLabel
-									classList={{
-										"menu-active": currentPreview() === props.item.rawValue,
-									}}
-								>
-									{props.item.rawValue}
-								</Select.ItemLabel>
-							</Select.Item>
-						)}
+				<Select
+					disallowEmptySelection={true}
+					open={selectOpen()}
+					value={currentPreview()}
+					onChange={setPreview}
+					options={previewOptions}
+					placeholder="Select a preview..."
+					placement="bottom"
+					itemComponent={(props) => (
+						<Select.Item item={props.item}>
+							<Select.ItemLabel
+								classList={{
+									"menu-active": currentPreview() === props.item.rawValue,
+								}}
+							>
+								{props.item.rawValue}
+							</Select.ItemLabel>
+						</Select.Item>
+					)}
+				>
+					<Select.Label
+						class="mr-2 cursor-default select-none"
+						onClick={() => setSelectOpen(!selectOpen())}
 					>
-						<Select.Trigger
-							class="inline-flex w-28 cursor-pointer items-center justify-between gap-2 rounded-md border border-base-content/30 p-2 transition-colors duration-150 hover:border-base-content/50"
-							aria-label="Preview"
-						>
-							<Select.Value<string>>
-								{(state) => state.selectedOption()}
-							</Select.Value>
-							<Icon icon="mdi:chevron-up-down" />
-						</Select.Trigger>
-						<Select.Portal>
-							<Select.Content class="motion-duration-200 motion-opacity-in motion-scale-in-95 data-[closed]:motion-opacity-out data-[closed]:motion-scale-out-95">
-								<Select.Listbox class="menu menu-vertical space-y-0.75 rounded border border-base-300 bg-base-200 shadow **:cursor-default **:rounded" />
-							</Select.Content>
-						</Select.Portal>
-					</Select>
-				</div>
+						Current Preview
+					</Select.Label>
+					<Select.Trigger
+						onClick={() => setSelectOpen(!selectOpen())}
+						class="inline-flex w-28 cursor-pointer items-center justify-between gap-2 rounded-md border border-base-content/30 p-2 transition-colors duration-150 hover:border-base-content/50"
+						aria-label="Preview"
+					>
+						<Select.Value<string>>
+							{(state) => state.selectedOption()}
+						</Select.Value>
+						<Icon icon="mdi:chevron-up-down" />
+					</Select.Trigger>
+					<Select.Portal>
+						<Select.Content class="motion-duration-200 motion-opacity-in motion-scale-in-95 data-[closed]:motion-opacity-out data-[closed]:motion-scale-out-95">
+							<Select.Listbox class="menu menu-vertical space-y-0.75 rounded border border-base-300 bg-base-200 shadow **:cursor-default **:rounded" />
+						</Select.Content>
+					</Select.Portal>
+				</Select>
 				<label class="flex items-center gap-2">
-					<span class="label">Show command palette? </span>
+					<span class="label select-none">Show command palette? </span>
 					<input
 						class="checkbox rounded-md border border-base-content/30 text-green-600 transition-colors duration-150 hover:border-base-content/50"
 						type="checkbox"

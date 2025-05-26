@@ -33,7 +33,7 @@ const ThemeReset: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 					<span class="flex flex-col gap-2">
 						<h2 class="font-bold text-3xl">Reset Data</h2>
 						<span>
-							<p>Are you sure you want to reset your data to default?</p>
+							<p>Are you sure you want to reset all data to defaults?</p>
 							<p class="text-error text-xs">
 								This action is <b>PERMANENT</b> and cannot be undone.
 							</p>

@@ -84,7 +84,7 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 		return (
 			<button
 				type="button"
-				class="btn btn-primary btn-sm tooltip tooltip-right m-2 mx-4 hidden bg-bottom xl:flex"
+				class="btn tooltip tooltip-bottom m-2 mx-4 hidden w-40 border-2 border-primary bg-primary/15 xl:flex"
 				classList={{
 					"after:opacity-0!": phase() !== "ready",
 				}}
@@ -114,12 +114,9 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 						setTimeout(() => setPhase("ready"), CLONE_SUCCESS_DELAY);
 					}
 				}}
-				style={{
-					"background-size": "100% 200%",
-				}}
 			>
 				<span
-					class="tooltip-content text-xs "
+					class="tooltip-content text-xs"
 					classList={{
 						"opacity-0!": phase() !== "ready",
 					}}
@@ -160,12 +157,14 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 						icon="charm:cross"
 					/>
 				</span>
-				<Switch>
-					<Match when={phase() === "ready"}>Clone Theme</Match>
-					<Match when={phase() === "cloning"}>Cloning...</Match>
-					<Match when={phase() === "cloned"}>Cloned!</Match>
-					<Match when={phase() === "error"}>Failed...</Match>
-				</Switch>
+				<p>
+					<Switch>
+						<Match when={phase() === "ready"}>Clone Theme</Match>
+						<Match when={phase() === "cloning"}>Cloning...</Match>
+						<Match when={phase() === "cloned"}>Cloned!</Match>
+						<Match when={phase() === "error"}>Failed...</Match>
+					</Switch>
+				</p>
 			</button>
 		);
 	};

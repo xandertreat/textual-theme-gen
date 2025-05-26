@@ -124,7 +124,7 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 			>
 				<span class="inline-flex items-center">
 					<ThemeOptionPreview
-						class="col-span-1 row-span-1 ml-0 grid size-6 grid-cols-2 grid-rows-2 gap-0.75 rounded p-1 shadow *:rounded"
+						class="ml-0 grid size-6 grid-cols-2 grid-rows-2 gap-0.75 rounded-lg p-1 shadow *:rounded"
 						theme={local.theme}
 					/>
 					<p

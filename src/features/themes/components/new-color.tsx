@@ -11,14 +11,12 @@ const NewColor: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 		<ActionDialog>
 			<span class="flex flex-col items-center gap-1">
 				<ActionDialog.Trigger
-					class={
-						"flex aspect-square size-12 items-center justify-center rounded-full bg-success font-black text-2xl text-neutral-content transition-[scale] duration-200 not-disabled:hover:scale-105"
-					}
+					class="btn tooltip tooltip-bottom m-2 mx-4 hidden w-40 border-2 border-success text-success xl:flex"
 					disabled={!canModify()}
 				>
-					<Icon class="text-success-content" icon="mdi:plus-thick" />
+					<Icon class="size-5 " icon="mdi:plus-circle" />
+					<p>Create Color</p>
 				</ActionDialog.Trigger>
-				<p class="pointer-events-none select-none text-success">Create Color</p>
 			</span>
 			<ActionDialog.Portal>
 				<ActionDialog.Overlay />

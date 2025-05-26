@@ -1,6 +1,7 @@
 import { type Component, type JSX, createMemo, splitProps } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import { useTheme } from "../context/theme";
+import Icon from "~/components/ui/icon";
 
 const VariablesManagement: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	props,
@@ -12,14 +13,12 @@ const VariablesManagement: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 		<ActionDialog>
 			<span class="flex flex-col items-center gap-1">
 				<ActionDialog.Trigger
-					class={
-						"aspect-square size-12 rounded-full bg-neutral font-black text-2xl text-neutral-content transition-[scale] duration-200 not-disabled:hover:scale-105"
-					}
+					class="btn tooltip tooltip-bottom m-2 mx-4 hidden w-40 border-2 xl:flex"
 					disabled={!canModify()}
 				>
-					?
+					<Icon class="size-5" icon="mdi:mixer-settings" />
+					<p>Variables</p>
 				</ActionDialog.Trigger>
-				<p class="pointer-events-none select-none text-neutral">Variables</p>
 			</span>
 			<ActionDialog.Portal>
 				<ActionDialog.Overlay />
