@@ -11,15 +11,13 @@ const VariablesManagement: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 
 	return (
 		<ActionDialog>
-			<span class="flex flex-col items-center gap-1">
-				<ActionDialog.Trigger
-					class="btn tooltip tooltip-bottom m-2 mx-4 hidden w-40 border-2 xl:flex"
-					disabled={!canModify()}
-				>
-					<Icon class="size-5" icon="mdi:mixer-settings" />
-					<p>Variables</p>
-				</ActionDialog.Trigger>
-			</span>
+			<ActionDialog.Trigger
+				class="btn tooltip tooltip-bottom m-2 mx-4 w-40 border-2"
+				disabled={!canModify()}
+			>
+				<Icon class="size-5" icon="mdi:mixer-settings" />
+				<p>Variables</p>
+			</ActionDialog.Trigger>
 			<ActionDialog.Portal>
 				<ActionDialog.Overlay />
 				<ActionDialog.Content
