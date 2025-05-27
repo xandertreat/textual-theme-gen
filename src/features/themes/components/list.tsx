@@ -3,6 +3,7 @@ import type { Component, JSX } from "solid-js";
 import { For, Show, createMemo, mergeProps } from "solid-js";
 import Icon from "../../../components/ui/icon";
 import { useTheme } from "../context/theme";
+import ClearThemes from "./clear";
 import ThemeOption from "./option";
 import RandomTheme from "./random";
 import ThemeReset from "./reset";
@@ -15,7 +16,8 @@ const ThemeListOptions: Component<ThemeListOptionsProps> = (passed) => {
 			<Popover.Anchor>
 				<Popover.Trigger
 					type="button"
-					class="btn btn-circle btn-ghost btn-neutral-content"
+					class="btn btn-circle btn-ghost btn-neutral-content tooltip"
+					data-tip={"Options"}
 				>
 					<Icon
 						aria-label="Theme Options"
@@ -30,6 +32,9 @@ const ThemeListOptions: Component<ThemeListOptionsProps> = (passed) => {
 					{...passed}
 				>
 					<ul class="menu size-full">
+						<li>
+							<ClearThemes />
+						</li>
 						<li>
 							<ThemeReset />
 						</li>

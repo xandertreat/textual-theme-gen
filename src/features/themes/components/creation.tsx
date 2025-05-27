@@ -13,7 +13,7 @@ const ThemeCreation: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	return (
 		<div class="flex h-full flex-col gap-2" {...props}>
 			<span class="inline-flex items-center gap-2">
-				<Icon class="size-9" icon="mdi:palette" />{" "}
+				<Icon class="size-9" icon="mdi:palette" />
 				<h2 class="font-bold text-3xl">Colors</h2>
 			</span>
 			<div class="grid grid-cols-3 gap-5">

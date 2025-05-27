@@ -12,13 +12,16 @@ const DarkThemeToggle: Component<JSX.HTMLAttributes<HTMLInputElement>> = (
 	const disabled = createMemo(() => selectedTheme().source !== "user");
 
 	return (
-		<input
-			type="checkbox"
-			class="toggle"
-			disabled={disabled()}
-			checked={selectedTheme().dark ?? false}
-			onChange={(e) => modifySelected({ dark: !selectedTheme().dark })}
-		/>
+		<label class="flex w-1/3 items-center justify-between">
+			<span class="label select-none text-base-content">Dark theme?</span>
+			<input
+				type="checkbox"
+				class="toggle"
+				disabled={disabled()}
+				checked={selectedTheme().dark ?? false}
+				onChange={(e) => modifySelected({ dark: !selectedTheme().dark })}
+			/>
+		</label>
 	);
 };
 
@@ -26,7 +29,7 @@ const ThemeOptions: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 	return (
 		<div class="mt-8 flex h-full flex-col gap-2 xl:mt-10" {...props}>
 			<span class="inline-flex items-center gap-2">
-				<Icon class="size-9" icon="mdi:cog" />{" "}
+				<Icon class="size-9" icon="mdi:cog" />
 				<h2 class="font-bold text-3xl">Options</h2>
 			</span>
 			<div class="flex">
@@ -34,10 +37,7 @@ const ThemeOptions: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 				<NewColor />
 				<VariablesManagement />
 			</div>
-			<span class="flex w-1/3 items-center justify-between">
-				<p>Dark theme</p>
-				<DarkThemeToggle />
-			</span>
+			<DarkThemeToggle />
 		</div>
 	);
 };
