@@ -384,7 +384,7 @@ const TextColorsPreview: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 
 	return (
 		<main
-			class="flex size-full flex-col items-start justify-start gap-2 text-3xl"
+			class="flex size-full flex-col items-start justify-start gap-2 pt-2 pl-2 text-3xl"
 			style={{
 				"background-color":
 					selectedTheme().palette.background["darken-3"].color,
