@@ -131,7 +131,167 @@ const CommandPaletteFooter: Component<JSX.HTMLAttributes<HTMLElement>> = (
 const TodosPreview: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 	const { selectedTheme } = useTheme();
 
-	return <div class="size-full">d</div>;
+	return (
+		<span
+			aria-hidden={true}
+			class="-ml-0.25 relative inset-0 size-full overflow-hidden text-2xl leading-7 tracking-[-0.075em]"
+			style={{
+				color: selectedTheme().palette.surface.base.color,
+			}}
+		>
+			{"╱".repeat(100).concat("\n").repeat(100)}
+			<main
+				class="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 flex h-2/3 w-1/2 flex-col gap-2 px-9 py-7 text-md"
+				style={{
+					"background-color": selectedTheme().palette.background.base.color,
+				}}
+			>
+				<span class="flex justify-between">
+					<p
+						class="font-black"
+						style={{
+							color: selectedTheme().palette.surface.base.muted,
+						}}
+					>
+						Today
+					</p>
+					<span class="flex justify-center gap-3 *:px-3">
+						<p
+							style={{
+								color: selectedTheme().palette.error["lighten-1"].color,
+								"background-color":
+									selectedTheme().palette.error["darken-3"].color,
+							}}
+						>
+							1 overdue
+						</p>
+						<p
+							style={{
+								color: selectedTheme().palette.success["lighten-1"].color,
+								"background-color":
+									selectedTheme().palette.success["darken-3"].color,
+							}}
+						>
+							1 done
+						</p>
+					</span>
+				</span>
+				<div
+					class="flex size-full flex-col"
+					style={{
+						"background-color": selectedTheme().palette.surface.base.color,
+					}}
+				>
+					<div
+						class="flex size-full flex-col border-3 p-3 *:flex *:items-center *:gap-3 *:*:px-3 *:*:py-1"
+						style={{
+							"border-color": selectedTheme().palette.primary.base.color,
+						}}
+					>
+						<span
+							style={{
+								"background-color": selectedTheme().palette.primary.base.color,
+							}}
+						>
+							<p
+								style={{
+									color: selectedTheme().palette.surface["darken-3"].color,
+									"background-color":
+										selectedTheme().palette.surface["lighten-3"].color,
+								}}
+							>
+								X
+							</p>
+
+							<p class="font-black">Buy milk</p>
+						</span>
+						<span>
+							<p
+								style={{
+									color: selectedTheme().palette.surface["darken-3"].color,
+									"background-color":
+										selectedTheme().palette.surface["lighten-3"].color,
+								}}
+							>
+								X
+							</p>
+							<p
+								style={{
+									color: selectedTheme().palette.surface["lighten-3"].muted,
+								}}
+							>
+								Buy Bread
+							</p>
+						</span>
+						<span>
+							<p
+								style={{
+									color: selectedTheme().palette.success["lighten-3"].color,
+									"background-color":
+										selectedTheme().palette.surface["lighten-3"].color,
+								}}
+							>
+								X
+							</p>
+							<p
+								style={{
+									color: selectedTheme().palette.surface["lighten-3"].muted,
+								}}
+							>
+								Go and vote
+							</p>
+						</span>
+						<span>
+							<p
+								style={{
+									color: selectedTheme().palette.surface["darken-3"].color,
+									"background-color":
+										selectedTheme().palette.surface["lighten-3"].color,
+								}}
+							>
+								X
+							</p>
+							<p
+								style={{
+									color: selectedTheme().palette.surface["lighten-3"].muted,
+								}}
+							>
+								Return package
+							</p>
+						</span>
+					</div>
+					<p
+						class="border-3 p-6 text-left opacity-40"
+						style={{
+							color: selectedTheme().palette.surface["lighten-3"].muted,
+							"border-color": selectedTheme().palette.surface["darken-3"].color,
+						}}
+					>
+						Add a task
+					</p>
+				</div>
+				<span class="inline-flex justify-between">
+					<p
+						class="font-black"
+						style={{
+							color: selectedTheme().palette.surface.base.muted,
+						}}
+					>
+						History
+					</p>
+					<p
+						class="px-4"
+						style={{
+							color: selectedTheme().palette.primary["lighten-1"].color,
+							"background-color": selectedTheme().palette.primary.base.muted,
+						}}
+					>
+						4 items
+					</p>
+				</span>
+			</main>
+		</span>
+	);
 };
 
 const PaletteColorPreview: Component<
@@ -140,6 +300,14 @@ const PaletteColorPreview: Component<
 	const { selectedTheme } = useTheme();
 	const paletteColors = createMemo(() =>
 		Object.entries(selectedTheme().palette[props.paletteKey]),
+	);
+	const sortedNonDarkPaletteColors = createMemo(() =>
+		paletteColors()
+			.filter(([v]) => v.includes("darken"))
+			.sort(([a], [b]) => Number(a.at(-1)) + Number(b.at(-1))),
+	);
+	const sortedDarkPaletteColors = createMemo(() =>
+		paletteColors().filter(([v]) => !v.includes("darken")),
 	);
 
 	const ColorPreview: Component<
@@ -198,18 +366,40 @@ const PaletteColorPreview: Component<
 				"{props.paletteKey}"
 			</h2>
 			<main class="flex w-full flex-col max-xl:mb-12">
-				<For
-					each={paletteColors()
-						.filter(([v]) => v.includes("darken"))
-						.sort(([a], [b]) => Number(a.at(-1)) + Number(b.at(-1)))}
-				>
+				<For each={sortedNonDarkPaletteColors()}>
 					{([variant, data]) => <ColorPreview variant={variant} data={data} />}
 				</For>
-				<For each={paletteColors().filter(([v]) => !v.includes("darken"))}>
+				<For each={sortedDarkPaletteColors()}>
 					{([variant, data]) => <ColorPreview variant={variant} data={data} />}
 				</For>
 			</main>
 		</div>
+	);
+};
+const TextColorsPreview: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
+	props,
+) => {
+	const { selectedTheme } = useTheme();
+	const paletteColors = createMemo(() => Object.keys(selectedTheme().palette));
+
+	return (
+		<main
+			class="flex size-full flex-col"
+			style={{
+				"background-color":
+					selectedTheme().palette.background["darken-3"].color,
+			}}
+		>
+			<For each={paletteColors()}>
+				{(paletteColor) => (
+					<h3
+						style={{
+							color: selectedTheme().palette[paletteColor].base.color,
+						}}
+					>{`$text-${paletteColor}`}</h3>
+				)}
+			</For>
+		</main>
 	);
 };
 
@@ -217,7 +407,7 @@ const paletteKeys = Object.keys(DEFAULTS[0].palette).map(
 	(k) => `${k[0].toUpperCase()}${k.slice(1)}`,
 );
 const Preview = () => {
-	const previewOptions = ["Todos App", ...paletteKeys];
+	const previewOptions = ["Todos App", "Text", ...paletteKeys];
 	const initial = previewOptions[0];
 	const [currentPreview, setPreview] = createSignal(initial);
 	const [showCommandPalette, setCommandPaletteVisibility] = createSignal(true);
@@ -236,6 +426,9 @@ const Preview = () => {
 				<Switch>
 					<Match when={currentPreview() === "Todos App"}>
 						<TodosPreview />
+					</Match>
+					<Match when={currentPreview() === "Text"}>
+						<TextColorsPreview />
 					</Match>
 					<For each={paletteKeys}>
 						{(key) => (

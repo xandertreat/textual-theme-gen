@@ -750,7 +750,7 @@
 		"source": "textual"
 	},
 	{
-		"name": "solarized",
+		"name": "solarized-light",
 		"dark": false,
 		"palette": {
 			"primary": "#268BD2",
