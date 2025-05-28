@@ -22,10 +22,10 @@ const TerminalWindow: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 		{...props}
 	>
 		<div class="relative flex w-full items-center px-4 py-2">
-			<div class="flex items-center gap-2">
-				<div class="size-3 rounded-full bg-error" />
-				<div class="size-3 rounded-full bg-warning" />
-				<div class="size-3 rounded-full bg-success" />
+			<div class="flex items-center gap-2 *:size-3 *:rounded-full">
+				<button type="button" class="bg-error" />
+				<button type="button" class="bg-warning" />
+				<button type="button" class="bg-success" />
 			</div>
 			<h2 class="-translate-x-1/2 -translate-y-1/2 pointer-events-none absolute top-1/2 left-1/2 m-0 select-none text-center text-zinc-200">
 				Terminal
