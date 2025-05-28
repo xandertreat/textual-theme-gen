@@ -376,25 +376,31 @@ const PaletteColorPreview: Component<
 		</div>
 	);
 };
-const TextColorsPreview: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
-	props,
-) => {
+
+const TextColorsPreview: Component<
+	JSX.HTMLAttributes<HTMLElement> & { showMutedBackgrounds: boolean }
+> = (props) => {
 	const { selectedTheme } = useTheme();
 	const paletteColors = createMemo(() => Object.keys(selectedTheme().palette));
 
 	return (
 		<main
-			class="flex size-full flex-col items-start justify-start gap-2 pt-2 pl-2 text-3xl"
+			class="flex size-full flex-col items-start justify-start pt-2 pl-2 text-3xl"
+			classList={{ "gap-1": !props.showMutedBackgrounds }}
 			style={{
 				"background-color":
 					selectedTheme().palette.background["darken-3"].color,
 			}}
+			{...props}
 		>
 			<For each={paletteColors()}>
 				{(paletteColor) => (
 					<h3
 						style={{
 							color: selectedTheme().palette[paletteColor].base.color,
+							"background-color": props.showMutedBackgrounds
+								? selectedTheme().palette[paletteColor].base.muted
+								: undefined,
 						}}
 					>{`$text-${paletteColor}`}</h3>
 				)}
@@ -407,10 +413,12 @@ const paletteKeys = Object.keys(DEFAULTS[0].palette).map(
 	(k) => `${k[0].toUpperCase()}${k.slice(1)}`,
 );
 const Preview = () => {
-	const previewOptions = ["Todos App", "Text", ...paletteKeys];
+	const previewOptions = ["Todos App", "Text Colors", ...paletteKeys];
 	const initial = previewOptions[0];
 	const [currentPreview, setPreview] = createSignal(initial);
-	const [showCommandPalette, setCommandPaletteVisibility] = createSignal(true);
+	const [showCommandPalette, setCommandPaletteVisibility] = createSignal(false);
+	const [showMutedBackgrounds, setMutedBackgroundsVisibility] =
+		createSignal(false);
 	const [selectOpen, setSelectOpen] = createSignal(false);
 
 	createEffect(() => {
@@ -427,8 +435,8 @@ const Preview = () => {
 					<Match when={currentPreview() === "Todos App"}>
 						<TodosPreview />
 					</Match>
-					<Match when={currentPreview() === "Text"}>
-						<TextColorsPreview />
+					<Match when={currentPreview() === "Text Colors"}>
+						<TextColorsPreview showMutedBackgrounds={showMutedBackgrounds()} />
 					</Match>
 					<For each={paletteKeys}>
 						{(key) => (
@@ -485,15 +493,32 @@ const Preview = () => {
 						</Select.Content>
 					</Select.Portal>
 				</Select>
-				<label class="flex items-center gap-2">
-					<span class="label select-none">Show command palette? </span>
-					<input
-						class="checkbox rounded-md border border-base-content/30 text-green-600 transition-colors duration-150 hover:border-base-content/50"
-						type="checkbox"
-						checked={showCommandPalette()}
-						onChange={(e) => setCommandPaletteVisibility(!showCommandPalette())}
-					/>
-				</label>
+				<div class="flex flex-col gap-2">
+					<Show when={currentPreview() === "Text Colors"}>
+						<label class="flex items-center gap-2">
+							<span class="label select-none">Have muted backgrounds? </span>
+							<input
+								class="checkbox rounded-md border border-base-content/30 text-green-600 transition-colors duration-150 hover:border-base-content/50"
+								type="checkbox"
+								checked={showMutedBackgrounds()}
+								onChange={(e) =>
+									setMutedBackgroundsVisibility(!showMutedBackgrounds())
+								}
+							/>
+						</label>
+					</Show>
+					<label class="flex items-center gap-2">
+						<span class="label select-none">Show command palette? </span>
+						<input
+							class="checkbox rounded-md border border-base-content/30 text-green-600 transition-colors duration-150 hover:border-base-content/50"
+							type="checkbox"
+							checked={showCommandPalette()}
+							onChange={(e) =>
+								setCommandPaletteVisibility(!showCommandPalette())
+							}
+						/>
+					</label>
+				</div>
 			</div>
 		</div>
 	);
