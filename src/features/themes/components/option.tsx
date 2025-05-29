@@ -1,9 +1,15 @@
 import Popover from "@corvu/popover";
 import type { Component, JSX } from "solid-js";
-import { Show, createMemo, createSignal, onMount, splitProps } from "solid-js";
+import {
+	For,
+	Show,
+	createMemo,
+	createSignal,
+	onMount,
+	splitProps,
+} from "solid-js";
 import Icon from "../../../components/ui/icon";
 import { useTheme } from "../context/theme";
-import { getPaletteColor } from "../lib/utils";
 import { CloneThemeOption } from "./clone";
 import DeleteTheme from "./delete";
 import RenameTheme from "./rename";
@@ -15,34 +21,20 @@ interface ThemeOptionPreviewProps extends JSX.HTMLAttributes<HTMLDivElement> {
 const ThemeOptionPreview: Component<ThemeOptionPreviewProps> = (props) => {
 	const { data } = useTheme();
 	const theme = createMemo(() => data.get(props.theme)!);
+	const bgColor = createMemo(() => theme().palette.background.base.color);
+	const paletteKeys = ["primary", "secondary", "surface", "foreground"];
 
 	return (
 		<div
 			{...props}
-			style={{
-				background: getPaletteColor(theme(), "background"),
-			}}
+			class="ml-0 grid size-6 grid-cols-2 grid-rows-2 gap-0.75 rounded-lg p-1 shadow *:rounded"
+			style={{ background: bgColor() }}
 		>
-			<div
-				style={{
-					background: getPaletteColor(theme(), "primary"),
-				}}
-			/>
-			<div
-				style={{
-					background: getPaletteColor(theme(), "secondary"),
-				}}
-			/>
-			<div
-				style={{
-					background: getPaletteColor(theme(), "accent"),
-				}}
-			/>
-			<div
-				style={{
-					background: getPaletteColor(theme(), "foreground"),
-				}}
-			/>
+			<For each={paletteKeys}>
+				{(paletteKey) => (
+					<div style={{ background: theme().palette[paletteKey].base.color }} />
+				)}
+			</For>
 		</div>
 	);
 };
@@ -123,10 +115,7 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 				onClick={() => selectTheme(local.theme)}
 			>
 				<span class="inline-flex items-center">
-					<ThemeOptionPreview
-						class="ml-0 grid size-6 grid-cols-2 grid-rows-2 gap-0.75 rounded-lg p-1 shadow *:rounded"
-						theme={local.theme}
-					/>
+					<ThemeOptionPreview theme={local.theme} />
 					<p
 						ref={label}
 						onMouseEnter={() => {

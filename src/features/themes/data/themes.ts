@@ -1,8 +1,8 @@
-import { getColorData } from "../lib/utils";
 import type { HexColorCode, TextualTheme } from "../types";
-import themes from "./themes.json" with { type: "json" };
+import { getColorData } from "../lib/color";
 
-// theme data
+//---------------------------- THEME DATA -----------------------------------//
+import themes from "./themes.json" with { type: "json" };
 const THEMES = JSON.parse(JSON.stringify(themes));
 for (const theme of THEMES)
 	theme.palette = Object.fromEntries(
@@ -12,6 +12,7 @@ for (const theme of THEMES)
 		]),
 	);
 
+// TODO: handle this for users
 const OLD = false;
 const VERSION = 0.0_1;
 export const VERSION_KEY = () => {

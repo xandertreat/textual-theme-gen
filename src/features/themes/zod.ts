@@ -1,6 +1,8 @@
 import { z } from "zod";
 
-export const hexCharacterSchema = z
+const hexCharacterSchema = z
 	.string()
 	.length(1)
 	.regex(/#([A-Fa-f0-9]{1})/);
+
+export type HexCodeCharacter = z.infer<typeof hexCharacterSchema>;

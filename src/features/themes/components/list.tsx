@@ -8,6 +8,7 @@ import ThemeOption from "./option";
 import RandomTheme from "./random";
 import ThemeReset from "./reset";
 
+// TODO: add export / import options (either from a textual code config or json files from app)
 interface ThemeListOptionsProps extends JSX.HTMLAttributes<HTMLDivElement> {}
 
 const ThemeListOptions: Component<ThemeListOptionsProps> = (passed) => {

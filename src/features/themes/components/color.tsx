@@ -22,7 +22,7 @@ import CopyButton from "~/components/ui/copy";
 import Icon from "~/components/ui/icon";
 import debounce from "~/lib/debounce";
 import { useTheme } from "../context/theme";
-import { getColorData } from "../lib/utils";
+import { getColorData } from "../data/themes";
 import type { HexColorCode } from "../types";
 
 const DEBOUNCE_DELAY = 2.5; // ms (found through manual testing to be best responsive / performance tradeoff)
