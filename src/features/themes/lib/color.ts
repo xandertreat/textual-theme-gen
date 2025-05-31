@@ -8,7 +8,7 @@ import type {
 } from "../types";
 import { randomName } from "./utils";
 
-// ---------------------- from Textual's 'design.py' ---------------------- //
+// CONSTANTS / DEFAULTS //
 export const NUM_SHADES = 3;
 export const LUMINOSITY_SPREAD = 0.15;
 export const TEXT_ALPHA = 0.95;
@@ -18,32 +18,50 @@ export const DEFAULT_DARK_SURFACE = "1e1e1e" as HexColorCode;
 export const DEFAULT_LIGHT_BG = "#efefef";
 export const DEFAULT_LIGHT_SURFACE = "#f5f5f5";
 
-export const COLOR_NAMES = [
-	"primary",
-	"secondary",
-	"background",
-	//  TODO: see if these are needed
-	// "primary-background",
-	// "secondary-background",
-	"surface",
-	"panel",
-	"boost",
-	"warning",
-	"error",
-	"success",
-	"accent",
-];
-
-function adjustLuminosity(c: ColorT, delta: number): ColorT {
-	return delta >= 0 ? c.lighten(delta) : c.darken(-delta);
+// HELPERS //
+export function adjustLuminosity(c: ColorT, delta: number): ColorT {
+	return delta >= 0 ? Color(c.lighten(delta)) : Color(c.darken(-delta));
 }
 
-function getContrastText(c: ColorT, alpha = 0.95): ColorT {
+export function getContrastText(c: ColorT, alpha = 0.95): ColorT {
 	return c.l() < 0.5 ? Color("white").a(alpha) : Color("black").a(alpha);
 }
 
-// ---------------------- new ---------------------- //
+export function blend(
+	c1: ColorT,
+	c2: ColorT,
+	factor: number,
+	alpha?: number,
+): ColorT {
+	if (factor <= 0) return c1;
+	if (factor >= 1) return c2;
 
+	const [r1, g1, b1, a1] = [...c1.rgb().array(), c1.a()];
+	const [r2, g2, b2, a2] = [...c2.rgb().array(), c2.a()];
+
+	return Color({
+		r: r1 + (r2 - r1) * factor,
+		g: g1 + (g2 - g1) * factor,
+		b: b1 + (b2 - b1) * factor,
+		a: alpha ?? a1 + (a2 - a1) * factor,
+	});
+}
+
+export function tint(c1: ColorT, c2: ColorT): ColorT {
+	const [r1, g1, b1, a] = [...c1.rgb().array(), c1.a()];
+	const [r2, g2, b2, a2] = [...c2.rgb().array(), c2.a()];
+
+	return Color({
+		r: r1 + (r2 - r1) * a2,
+		g: g1 + (g2 - g1) * a2,
+		b: b1 + (b2 - b1) * a2,
+		a,
+	});
+}
+
+// UTILITY //
+
+// MAIN //
 /**
  * Generates a TextualColor object with base, text, muted, and disabled colors from a base ColorT.
  * @param base The base color instance.
@@ -75,8 +93,7 @@ export const getColorData = (hex: HexColorCode): TextualGeneratedColor => {
 	};
 
 	for (let i = -NUM_SHADES; i < NUM_SHADES; ++i)
-		if (i < 0) data[`darken-${i}`] = getTextualColor();
-		else data[`lighten-${i}`] = getTextualColor();
+		getTextualColor(adjustLuminosity(color, LUMINOSITY_SPREAD * i));
 
 	return data;
 };
@@ -115,3 +132,6 @@ export const genRandomTheme = (): TextualTheme => {
 		source: "user",
 	};
 };
+
+// some stuff taken from Textual's 'design.py'
+// https://github.com/Textualize/textual/blob/main/src/textual/color.py#L624

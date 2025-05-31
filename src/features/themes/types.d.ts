@@ -1,4 +1,4 @@
-import type { HexCodeCharacter as H } from "./zod";
+import type { HexCodeCharacter as H } from "./z";
 type HexColorCode =
 	| `#${H}${H}${H}${H}${H}${H}`
 	| `#${H}${H}${H}${H}${H}${H}${H}`
@@ -22,7 +22,8 @@ interface TextualGeneratedColor {
 interface TextualColors {
 	primary: TextualGeneratedColor;
 	secondary: TextualGeneratedColor;
-	accent: TextualGeneratedColor;
+	"primary-background": TextualGeneratedColor;
+	"secondary-background": TextualGeneratedColor;
 	background: TextualGeneratedColor;
 	foreground: TextualGeneratedColor;
 	surface: TextualGeneratedColor;
@@ -31,7 +32,7 @@ interface TextualColors {
 	warning: TextualGeneratedColor;
 	error: TextualGeneratedColor;
 	success: TextualGeneratedColor;
-	[color: string]: TextualGeneratedColor;
+	accent: TextualGeneratedColor;
 }
 
 interface TextualVariables {
