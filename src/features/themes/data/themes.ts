@@ -1,5 +1,5 @@
+import { generateColorData } from "../lib/color";
 import type { HexColorCode, TextualTheme } from "../types";
-import { getColorData } from "../lib/color";
 
 //---------------------------- THEME DATA -----------------------------------//
 import themes from "./themes.json" with { type: "json" };
@@ -8,7 +8,10 @@ for (const theme of THEMES)
 	theme.palette = Object.fromEntries(
 		Object.entries(theme.palette).map(([k, v]) => [
 			k,
-			getColorData(v as HexColorCode),
+			generateColorData(
+				v as HexColorCode,
+				theme.palette.background as HexColorCode,
+			),
 		]),
 	);
 

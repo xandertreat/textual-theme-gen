@@ -22,8 +22,8 @@ interface TextualGeneratedColor {
 interface TextualColors {
 	primary: TextualGeneratedColor;
 	secondary: TextualGeneratedColor;
-	"primary-background": TextualGeneratedColor;
-	"secondary-background": TextualGeneratedColor;
+	// "primary-background": TextualGeneratedColor;
+	// "secondary-background": TextualGeneratedColor;
 	background: TextualGeneratedColor;
 	foreground: TextualGeneratedColor;
 	surface: TextualGeneratedColor;
@@ -33,6 +33,7 @@ interface TextualColors {
 	error: TextualGeneratedColor;
 	success: TextualGeneratedColor;
 	accent: TextualGeneratedColor;
+	[color: string]: TextualGeneratedColor;
 }
 
 interface TextualVariables {

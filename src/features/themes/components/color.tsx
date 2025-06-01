@@ -2,8 +2,8 @@ import { ColorArea } from "@kobalte/core/color-area";
 import { ColorField } from "@kobalte/core/color-field";
 import { ColorSlider } from "@kobalte/core/color-slider";
 import {
-	type Color,
 	type ColorChannel,
+	type Color as ColorT,
 	parseColor,
 } from "@kobalte/core/colors";
 import {
@@ -22,15 +22,14 @@ import CopyButton from "~/components/ui/copy";
 import Icon from "~/components/ui/icon";
 import debounce from "~/lib/debounce";
 import { useTheme } from "../context/theme";
-import { getColorData } from "../data/themes";
+import { generateColorData } from "../lib/color";
 import type { HexColorCode } from "../types";
 
 const DEBOUNCE_DELAY = 2.5; // ms (found through manual testing to be best responsive / performance tradeoff)
 
 type ColorContextType = {
-	paletteKey: string;
-	color: Accessor<Color>;
-	setColor: (val: Color) => void;
+	color: Accessor<ColorT>;
+	setColor: (val: ColorT) => void;
 	hexCode: Accessor<HexColorCode>;
 };
 const colorContext = createContext<ColorContextType>();
@@ -42,16 +41,18 @@ const useColorContext = () => {
 	return context;
 };
 
-interface ColorContextProviderProps
-	extends Pick<ColorContextType, "paletteKey"> {
+interface ColorContextProviderProps {
+	paletteKey: string;
 	children: JSX.Element;
 }
 const ColorContextProvider: Component<ColorContextProviderProps> = (props) => {
 	const { selectedTheme, modifySelected } = useTheme();
+	const bg = createMemo(() => selectedTheme().palette.background.base.color);
+
 	const INITIAL = parseColor(
 		selectedTheme().palette[props.paletteKey].base.color,
 	).toFormat("hexa");
-	const [color, internalSetColor] = createSignal<Color>(INITIAL);
+	const [color, internalSetColor] = createSignal<ColorT>(INITIAL);
 
 	const hexCode = createMemo(() => color().toString("hexa") as HexColorCode);
 
@@ -60,13 +61,13 @@ const ColorContextProvider: Component<ColorContextProviderProps> = (props) => {
 			modifySelected({
 				palette: {
 					...selectedTheme().palette,
-					[props.paletteKey]: getColorData(hexCode()),
+					[props.paletteKey]: generateColorData(hexCode(), bg()),
 				},
 			}),
 		DEBOUNCE_DELAY,
 	);
 
-	const setColor = (val: Color) => {
+	const setColor = (val: ColorT) => {
 		internalSetColor(val);
 		modifyDebounce.refresh();
 		const styleSheet = document?.documentElement.style;
@@ -81,9 +82,7 @@ const ColorContextProvider: Component<ColorContextProviderProps> = (props) => {
 	};
 
 	return (
-		<colorContext.Provider
-			value={{ paletteKey: props.paletteKey, color, setColor, hexCode }}
-		>
+		<colorContext.Provider value={{ color, setColor, hexCode }}>
 			{props.children}
 		</colorContext.Provider>
 	);
@@ -96,30 +95,31 @@ const EditColor: Component<
 
 	return (
 		<ActionDialog>
-			<ColorContextProvider paletteKey={local.color}>
-				<ColorSwatch />
-				<ActionDialog.Portal>
-					<ActionDialog.Overlay />
-					<ActionDialog.Content
-						class="flex size-max items-center gap-3 border-0 bg-zinc-200 pt-8 text-center text-neutral [&>button]:text-error"
-						{...rest}
-					>
-						<ActionDialog.Close />
+			<ColorSwatch paletteKey={local.color} />
+			<ActionDialog.Portal>
+				<ActionDialog.Overlay />
+				<ActionDialog.Content
+					class="flex size-max items-center gap-3 border-0 bg-zinc-200 pt-8 text-center text-neutral [&>button]:text-error"
+					{...rest}
+				>
+					<ActionDialog.Close />
+					<ColorContextProvider paletteKey={local.color}>
 						<ColorSelection />
 						<ColorFields />
-					</ActionDialog.Content>
-				</ActionDialog.Portal>
-			</ColorContextProvider>
+					</ColorContextProvider>
+				</ActionDialog.Content>
+			</ActionDialog.Portal>
 		</ActionDialog>
 	);
 };
 
-const ColorSwatch: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
-	props,
-) => {
-	const { paletteKey } = useColorContext();
+const ColorSwatch: Component<
+	JSX.ButtonHTMLAttributes<HTMLButtonElement> & { paletteKey: string }
+> = (props) => {
 	const { selectedTheme } = useTheme();
-	const colorData = createMemo(() => selectedTheme().palette[paletteKey].base);
+	const colorData = createMemo(
+		() => selectedTheme().palette[props.paletteKey].base,
+	);
 	const disabled = createMemo(() => !(selectedTheme().source === "user"));
 
 	return (
@@ -138,7 +138,7 @@ const ColorSwatch: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 			>
 				A
 			</ActionDialog.Trigger>
-			<p>{paletteKey[0].toUpperCase() + paletteKey.slice(1)}</p>
+			<p>{props.paletteKey[0].toUpperCase() + props.paletteKey.slice(1)}</p>
 		</span>
 	);
 };

@@ -12,7 +12,7 @@ const VariablesManagement: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	return (
 		<ActionDialog>
 			<ActionDialog.Trigger
-				class="btn tooltip tooltip-bottom m-2 mx-4 w-40 border-2"
+				class="btn m-2 mx-4 w-40 border-2"
 				disabled={!canModify()}
 			>
 				<Icon class="size-5" icon="mdi:mixer-settings" />

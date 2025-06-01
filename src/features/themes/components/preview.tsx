@@ -12,6 +12,12 @@ import {
 } from "solid-js";
 import Icon from "../../../components/ui/icon";
 import { DEFAULTS, useTheme } from "../context/theme";
+import {
+	DISABLED_ALPHA,
+	MUTED_ALPHA,
+	TEXT_ALPHA,
+	getContrastText,
+} from "../lib/color";
 import type { TextualColor } from "../types";
 
 const TerminalWindow: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
@@ -139,7 +145,7 @@ const TodosPreview: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 				color: selectedTheme().palette.surface.base.color,
 			}}
 		>
-			{"╱".repeat(100).concat("\n").repeat(100)}
+			{"╱".repeat(300).concat("\n").repeat(100)}
 			<main
 				class="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 flex h-2/3 w-1/2 flex-col gap-2 px-9 py-7 text-md"
 				style={{
@@ -302,12 +308,12 @@ const PaletteColorPreview: Component<
 		Object.entries(selectedTheme().palette[props.paletteKey]),
 	);
 	const sortedNonDarkPaletteColors = createMemo(() =>
-		paletteColors()
-			.filter(([v]) => v.includes("darken"))
-			.sort(([a], [b]) => Number(a.at(-1)) + Number(b.at(-1))),
+		paletteColors().filter(([v]) => !v.includes("darken")),
 	);
 	const sortedDarkPaletteColors = createMemo(() =>
-		paletteColors().filter(([v]) => !v.includes("darken")),
+		paletteColors()
+			.filter(([v]) => v.includes("darken"))
+			.sort(([a], [b]) => Number(a.charAt(-1)) - Number(b.charAt(-1))),
 	);
 
 	const ColorPreview: Component<
@@ -325,7 +331,7 @@ const PaletteColorPreview: Component<
 			<p
 				class="mr-8 w-40"
 				style={{
-					color: passed.data.text,
+					color: getContrastText(passed.data.color, TEXT_ALPHA).toString(),
 				}}
 			>
 				${props.paletteKey}
@@ -333,14 +339,14 @@ const PaletteColorPreview: Component<
 			</p>
 			<p
 				style={{
-					color: passed.data.muted,
+					color: getContrastText(passed.data.color, MUTED_ALPHA).toString(),
 				}}
 			>
 				$text-muted
 			</p>
 			<p
 				style={{
-					color: passed.data.disabled,
+					color: getContrastText(passed.data.color, DISABLED_ALPHA).toString(),
 				}}
 			>
 				$text-disabled
@@ -366,10 +372,10 @@ const PaletteColorPreview: Component<
 				"{props.paletteKey}"
 			</h2>
 			<main class="flex w-full flex-col max-xl:mb-12">
-				<For each={sortedNonDarkPaletteColors()}>
+				<For each={sortedDarkPaletteColors()}>
 					{([variant, data]) => <ColorPreview variant={variant} data={data} />}
 				</For>
-				<For each={sortedDarkPaletteColors()}>
+				<For each={sortedNonDarkPaletteColors()}>
 					{([variant, data]) => <ColorPreview variant={variant} data={data} />}
 				</For>
 			</main>
@@ -385,11 +391,10 @@ const TextColorsPreview: Component<
 
 	return (
 		<main
-			class="flex size-full flex-col items-start justify-start pt-2 pl-2 text-3xl"
+			class="flex size-full flex-col items-start justify-start pt-2 pl-2 text-xl xl:text-3xl"
 			classList={{ "gap-1": !props.showMutedBackgrounds }}
 			style={{
-				"background-color":
-					selectedTheme().palette.background["darken-3"].color,
+				"background-color": selectedTheme().palette.background.base.color,
 			}}
 			{...props}
 		>
@@ -397,7 +402,7 @@ const TextColorsPreview: Component<
 				{(paletteColor) => (
 					<h3
 						style={{
-							color: selectedTheme().palette[paletteColor].base.color,
+							color: selectedTheme().palette[paletteColor].base.text,
 							"background-color": props.showMutedBackgrounds
 								? selectedTheme().palette[paletteColor].base.muted
 								: undefined,

@@ -3,7 +3,7 @@ import type { Component, JSX } from "solid-js";
 import { batch } from "solid-js";
 import Icon from "../../../components/ui/icon";
 import { useTheme } from "../context/theme";
-import { genRandomTheme } from "../lib/utils";
+import { genRandomTheme } from "../lib/color";
 
 const RandomTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 	props,

@@ -897,7 +897,7 @@
 			"markdown-h6-background": "transparent",
 			"markdown-h6-text-style": "bold"
 		},
-		"source": "textual"
+		"source": "preset"
 	},
 	{
 		"name": "vscode",
