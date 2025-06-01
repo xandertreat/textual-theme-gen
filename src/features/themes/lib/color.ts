@@ -18,25 +18,16 @@ export const DEFAULT_DARK_SURFACE = "#1e1e1e";
 export const DEFAULT_LIGHT_BG = "#efefef";
 export const DEFAULT_LIGHT_SURFACE = "#f5f5f5";
 
-export const TEXT_ALPHA = 0.87;
+export const TEXT_ALPHA = 0.87 * 0.95;
 export const MUTED_ALPHA = 0.6;
-export const DISABLED_ALPHA = 0.64;
+export const DISABLED_ALPHA = 0.38;
 
 // HELPERS //
-export function normalize(c: ColorT): number[] {
-	const [r, g, b] = c.rgb().array();
-	return [r / 255, g / 255, b / 255];
-}
-
-export function inverse(c: ColorT): ColorT {
-	const [r, g, b] = c.rgb().array();
-
-	return Color({
-		r: 255 - r,
-		g: 255 - g,
-		b: 255 - b,
-		alpha: c.alpha(),
-	});
+function coerceToColor(passed: ColorT | ColorLike): ColorT {
+	let c: ColorT;
+	if (!(passed instanceof Color)) c = Color(passed);
+	else c = passed;
+	return c;
 }
 
 /**
@@ -68,18 +59,20 @@ export function darken(c: ColorT, amount: number, alpha?: number): ColorT {
 export const lighten = (c: ColorT, amount: number, alpha?: number) =>
 	darken(c, -amount, alpha);
 
-export function getContrastText(
-	base: ColorT | ColorLike,
-	alpha = 0.95,
-): ColorT {
-	let c: ColorT;
-	if (!(base instanceof Color)) c = Color(base);
-	else c = base;
-	const [r, g, b] = normalize(c);
-	const brightness = (299 * r + 587 * g + 114 * b) / 1000;
-	return brightness < 0.5
-		? Color("white").alpha(alpha)
-		: Color("black").alpha(alpha);
+export function normalize(c: ColorT): number[] {
+	const [r, g, b] = c.rgb().array();
+	return [r / 255, g / 255, b / 255];
+}
+
+export function inverse(c: ColorT): ColorT {
+	const [r, g, b] = c.rgb().array();
+
+	return Color({
+		r: 255 - r,
+		g: 255 - g,
+		b: 255 - b,
+		alpha: c.alpha(),
+	});
 }
 
 export function blend(
@@ -112,6 +105,18 @@ export function tint(c1: ColorT, c2: ColorT): ColorT {
 		b: b1 + (b2 - b1) * a2,
 		alpha: a,
 	});
+}
+
+export function getContrastText(
+	base: ColorT | ColorLike,
+	alpha = 0.95,
+): ColorT {
+	const c = coerceToColor(base);
+	const [r, g, b] = normalize(c);
+	const brightness = (299 * r + 587 * g + 114 * b) / 1000;
+	return brightness < 0.5
+		? Color("white").alpha(alpha)
+		: Color("black").alpha(alpha);
 }
 
 // MAIN //
@@ -220,28 +225,13 @@ export const genRandomTheme = (): TextualTheme => {
 		boost: generateColorData(boost, bg),
 	};
 
-	const foregroundMuted = foreground.alpha(0.6).hexa();
-	const foregroundDisabled = foreground.alpha(0.38).hexa();
-
 	const scrollbarBackground = palette.background["darken-1"].color;
 	const scrollbarCornerColor = scrollbarBackground;
 	const scrollbarBackgroundHover = scrollbarBackground;
 	const scrollbarBackgroundActive = scrollbarBackground;
 
-	const markdownH6Color = foregroundMuted;
+	const markdownH6Color = palette.foreground.base.muted;
 	const variables = {
-		/* Muted variants ---------------------------------------------------------*/
-		primaryMuted: blend(primary, bg, 0.7).hexa(),
-		secondaryMuted: blend(secondary, bg, 0.7).hexa(),
-		accentMuted: blend(accent, bg, 0.7).hexa(),
-		warningMuted: blend(warning, bg, 0.7).hexa(),
-		errorMuted: blend(error, bg, 0.7).hexa(),
-		successMuted: blend(success, bg, 0.7).hexa(),
-
-		/* Foreground -------------------------------------------------------------*/
-		foregroundMuted,
-		foregroundDisabled,
-
 		/* Block‑cursor styles ----------------------------------------------------*/
 		blockCursorForeground: palette.background.base.text,
 		blockCursorBackground: primary.hexa(),
@@ -341,3 +331,5 @@ export const genRandomTheme = (): TextualTheme => {
 
 // some stuff taken from Textual's 'design.py'
 // https://github.com/Textualize/textual/blob/main/src/textual/color.py#L624
+
+// TODO: add color palette options based off textual docs color list (of built in colors)

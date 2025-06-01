@@ -22,7 +22,7 @@ import CopyButton from "~/components/ui/copy";
 import Icon from "~/components/ui/icon";
 import debounce from "~/lib/debounce";
 import { useTheme } from "../context/theme";
-import { generateColorData } from "../lib/color";
+import { TEXT_ALPHA, generateColorData, getContrastText } from "../lib/color";
 import type { HexColorCode } from "../types";
 
 const DEBOUNCE_DELAY = 2.5; // ms (found through manual testing to be best responsive / performance tradeoff)
@@ -117,9 +117,18 @@ const ColorSwatch: Component<
 	JSX.ButtonHTMLAttributes<HTMLButtonElement> & { paletteKey: string }
 > = (props) => {
 	const { selectedTheme } = useTheme();
-	const colorData = createMemo(
-		() => selectedTheme().palette[props.paletteKey].base,
+
+	const textColor = createMemo(() =>
+		getContrastText(selectedTheme().palette[props.paletteKey].base.color)
+			.alpha(TEXT_ALPHA)
+			.hexa(),
 	);
+	const baseColor = createMemo(() => {
+		const hex = selectedTheme().palette[props.paletteKey].base.color;
+		if (hex.length > 6) return hex.slice(0, -2);
+		return hex;
+	});
+
 	const disabled = createMemo(() => !(selectedTheme().source === "user"));
 
 	return (
@@ -130,9 +139,9 @@ const ColorSwatch: Component<
 					"aspect-square size-12 rounded-full font-black text-2xl shadow-md/50 transition-[scale] duration-200 not-disabled:hover:scale-105"
 				}
 				style={{
-					color: colorData().text,
-					"background-color": colorData().color,
-					"--tw-shadow-color": colorData().color,
+					color: textColor(),
+					"background-color": baseColor(),
+					"--tw-shadow-color": baseColor(),
 				}}
 				{...props}
 			>

@@ -321,38 +321,41 @@ const PaletteColorPreview: Component<
 			variant: string;
 			data: TextualColor;
 		}
-	> = (passed) => (
-		<span
-			class="flex h-13 w-full items-center justify-between gap-8 text-nowrap py-2 pr-8 pl-16 text-center text-sm xl:h-16"
-			style={{
-				"background-color": passed.data.color,
-			}}
-		>
-			<p
-				class="mr-8 w-40"
+	> = (passed) => {
+		const contrast = createMemo(() => getContrastText(passed.data.color));
+		return (
+			<span
+				class="flex h-13 w-full items-center justify-between gap-8 text-nowrap py-2 pr-8 pl-16 text-center text-sm xl:h-16"
 				style={{
-					color: getContrastText(passed.data.color, TEXT_ALPHA).toString(),
+					"background-color": passed.data.color,
 				}}
 			>
-				${props.paletteKey}
-				{passed.variant !== "base" ? `-${passed.variant}` : undefined}
-			</p>
-			<p
-				style={{
-					color: getContrastText(passed.data.color, MUTED_ALPHA).toString(),
-				}}
-			>
-				$text-muted
-			</p>
-			<p
-				style={{
-					color: getContrastText(passed.data.color, DISABLED_ALPHA).toString(),
-				}}
-			>
-				$text-disabled
-			</p>
-		</span>
-	);
+				<p
+					class="mr-8 w-40"
+					style={{
+						color: contrast().alpha(TEXT_ALPHA).hexa(),
+					}}
+				>
+					${props.paletteKey}
+					{passed.variant !== "base" ? `-${passed.variant}` : undefined}
+				</p>
+				<p
+					style={{
+						color: contrast().alpha(MUTED_ALPHA).hexa(),
+					}}
+				>
+					$text-muted
+				</p>
+				<p
+					style={{
+						color: contrast().alpha(DISABLED_ALPHA).hexa(),
+					}}
+				>
+					$text-disabled
+				</p>
+			</span>
+		);
+	};
 
 	return (
 		<div
@@ -392,7 +395,6 @@ const TextColorsPreview: Component<
 	return (
 		<main
 			class="flex size-full flex-col items-start justify-start pt-2 pl-2 text-xl xl:text-3xl"
-			classList={{ "gap-1": !props.showMutedBackgrounds }}
 			style={{
 				"background-color": selectedTheme().palette.background.base.color,
 			}}
@@ -401,6 +403,7 @@ const TextColorsPreview: Component<
 			<For each={paletteColors()}>
 				{(paletteColor) => (
 					<h3
+						class="p-0.25"
 						style={{
 							color: selectedTheme().palette[paletteColor].base.text,
 							"background-color": props.showMutedBackgrounds
