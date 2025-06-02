@@ -99,7 +99,7 @@ const EditColor: Component<
 			<ActionDialog.Portal>
 				<ActionDialog.Overlay />
 				<ActionDialog.Content
-					class="flex size-max items-center gap-3 border-0 bg-zinc-200 pt-8 text-center text-neutral [&>button]:text-error"
+					class="flex size-max items-center gap-3 border-0 pt-8 text-center [&>button]:text-error"
 					{...rest}
 				>
 					<ActionDialog.Close />

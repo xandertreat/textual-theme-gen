@@ -7,7 +7,6 @@
         "@corvu/dialog": "^0.2.4",
         "@corvu/popover": "^0.2.0",
         "@fontsource-variable/roboto": "^5.2.5",
-        "@fontsource-variable/roboto-mono": "^5.2.5",
         "@kobalte/core": "^0.13.9",
         "@solid-primitives/map": "^0.7.1",
         "@solid-primitives/storage": "^4.3.2",
@@ -394,8 +393,6 @@
     "@floating-ui/utils": ["@floating-ui/utils@0.2.9", "", {}, "sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg=="],
 
     "@fontsource-variable/roboto": ["@fontsource-variable/roboto@5.2.5", "", {}, "sha512-csqBSOWXv0h5IbPhEqYJua6/nxl7dSNZbBOMeXSO9aqzgPw3GpfgC9kL5M6ULFLRaoDoBD4U9QctoDLKMaTyMg=="],
-
-    "@fontsource-variable/roboto-mono": ["@fontsource-variable/roboto-mono@5.2.5", "", {}, "sha512-JsvF7AvjgqGBKCtVuBE5rdYrTdx8yY61Ralo0n6wnlWLCtYAHnj7NjHmpWWvSq9ROKByRfropM7VyeO0a66M3Q=="],
 
     "@frogcat/ttl2jsonld": ["@frogcat/ttl2jsonld@0.0.10", "", { "bin": { "ttl2jsonld": "bin/cli.js" } }, "sha512-0NLM96V3ziZkkOlhixSZiXe8CzewECVNtSj04s2hW2e65SgzQPzM12VWSovuRIy+2UJA2Bjkf9405yrty9tgcg=="],
 

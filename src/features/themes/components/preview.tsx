@@ -492,7 +492,7 @@ const Preview = () => {
 					<CommandPaletteFooter />
 				</Show>
 			</TerminalWindow>
-			<div class="flex w-full items-center justify-between font-light text-sm">
+			<div class="mt-1 flex w-full justify-between font-light text-sm">
 				<div class="flex flex-col items-start gap-2">
 					<Select
 						class="w-full"
@@ -585,7 +585,7 @@ const Preview = () => {
 					</Show>
 				</div>
 				<div class="flex flex-col gap-2">
-					<label class="flex items-center gap-2">
+					<label class="flex items-center justify-between gap-2">
 						<span class="label select-none">Show command palette? </span>
 						<input
 							class="checkbox rounded-md border border-base-content/30 text-green-600 transition-colors duration-150 hover:border-base-content/50"
@@ -597,7 +597,7 @@ const Preview = () => {
 						/>
 					</label>
 					<Show when={currentPreview() === "Text"}>
-						<label class="flex items-center gap-2">
+						<label class="flex items-center justify-between gap-2">
 							<span class="label select-none">Show muted backgrounds? </span>
 							<input
 								class="checkbox rounded-md border border-base-content/30 text-green-600 transition-colors duration-150 hover:border-base-content/50"
