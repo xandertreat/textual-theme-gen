@@ -22,7 +22,7 @@ const ThemeOptionPreview: Component<ThemeOptionPreviewProps> = (props) => {
 	const { data } = useTheme();
 	const theme = createMemo(() => data.get(props.theme)!);
 	const bgColor = createMemo(() => theme().palette.background.base.color);
-	const paletteKeys = ["primary", "secondary", "surface", "foreground"];
+	const paletteKeys = ["primary", "secondary", "accent", "foreground"];
 
 	return (
 		<div
