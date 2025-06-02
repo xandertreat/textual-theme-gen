@@ -16,7 +16,7 @@ import {
 	DISABLED_ALPHA,
 	MUTED_ALPHA,
 	TEXT_ALPHA,
-	getContrastText,
+	calcAutoText,
 } from "../lib/color";
 import type { TextualColor } from "../types";
 
@@ -322,7 +322,12 @@ const PaletteColorPreview: Component<
 			data: TextualColor;
 		}
 	> = (passed) => {
-		const contrast = createMemo(() => getContrastText(passed.data.color));
+		const contrast = createMemo(() =>
+			calcAutoText(
+				passed.data.color,
+				selectedTheme().palette.background.base.color,
+			),
+		);
 		return (
 			<span
 				class="flex h-13 w-full items-center justify-between gap-8 text-nowrap py-2 pr-8 pl-16 text-center text-sm xl:h-16"
@@ -421,9 +426,25 @@ const paletteKeys = Object.keys(DEFAULTS[0].palette).map(
 	(k) => `${k[0].toUpperCase()}${k.slice(1)}`,
 );
 const Preview = () => {
-	const previewOptions = ["Todos App", "Text Colors", ...paletteKeys];
-	const initial = previewOptions[0];
-	const [currentPreview, setPreview] = createSignal(initial);
+	const previewOptions = ["Todos App", "Colors", "Text"];
+	const [currentPreview, setPreview] = createSignal(previewOptions[0]);
+	// ordered to match `textual colors` preview
+	const colorPreviewOptions = [
+		"Primary",
+		"Secondary",
+		"Background",
+		"Foreground",
+		"Surface",
+		"Panel",
+		"Boost",
+		"Warning",
+		"Error",
+		"Success",
+		"Accent",
+	];
+	const [currentColorPreview, setColorPreview] = createSignal(
+		colorPreviewOptions[0],
+	);
 	const [showCommandPalette, setCommandPaletteVisibility] = createSignal(false);
 	const [showMutedBackgrounds, setMutedBackgroundsVisibility] =
 		createSignal(false);
@@ -436,6 +457,15 @@ const Preview = () => {
 			});
 	});
 
+	const [colorSelectOpen, setColorSelectOpen] = createSignal(false);
+
+	createEffect(() => {
+		if (colorSelectOpen())
+			document.addEventListener("click", () => setColorSelectOpen(false), {
+				once: true,
+			});
+	});
+
 	return (
 		<div class="flex h-fit flex-col items-center gap-2 xl:w-2/3">
 			<TerminalWindow>
@@ -443,78 +473,118 @@ const Preview = () => {
 					<Match when={currentPreview() === "Todos App"}>
 						<TodosPreview />
 					</Match>
-					<Match when={currentPreview() === "Text Colors"}>
-						<TextColorsPreview showMutedBackgrounds={showMutedBackgrounds()} />
-					</Match>
 					<For each={paletteKeys}>
 						{(key) => (
-							<Match when={currentPreview() === key}>
+							<Match
+								when={
+									currentPreview() === "Colors" && currentColorPreview() === key
+								}
+							>
 								<PaletteColorPreview paletteKey={key.toLowerCase()} />
 							</Match>
 						)}
 					</For>
+					<Match when={currentPreview() === "Text"}>
+						<TextColorsPreview showMutedBackgrounds={showMutedBackgrounds()} />
+					</Match>
 				</Switch>
 				<Show when={showCommandPalette()}>
 					<CommandPaletteFooter />
 				</Show>
 			</TerminalWindow>
 			<div class="flex w-full items-center justify-between font-light text-sm">
-				<Select
-					disallowEmptySelection={true}
-					open={selectOpen()}
-					value={currentPreview()}
-					onChange={setPreview}
-					options={previewOptions}
-					placeholder="Select a preview..."
-					placement="bottom"
-					itemComponent={(props) => (
-						<Select.Item item={props.item}>
-							<Select.ItemLabel
-								classList={{
-									"menu-active": currentPreview() === props.item.rawValue,
-								}}
+				<div class="flex flex-col items-start gap-2">
+					<Select
+						class="w-full"
+						disallowEmptySelection={true}
+						open={selectOpen()}
+						value={currentPreview()}
+						onChange={setPreview}
+						options={previewOptions}
+						placeholder="Select a preview..."
+						placement="bottom"
+						itemComponent={(props) => (
+							<Select.Item item={props.item}>
+								<Select.ItemLabel
+									classList={{
+										"menu-active": currentPreview() === props.item.rawValue,
+									}}
+								>
+									{props.item.rawValue}
+								</Select.ItemLabel>
+							</Select.Item>
+						)}
+					>
+						<Select.Label
+							class="mr-2 cursor-default select-none"
+							onClick={() => setSelectOpen(!selectOpen())}
+						>
+							Current Preview
+						</Select.Label>
+						<Select.Trigger
+							onClick={() => setSelectOpen(!selectOpen())}
+							class="inline-flex w-28 cursor-pointer items-center justify-between gap-2 rounded-md border border-base-content/30 p-2 transition-colors duration-150 hover:border-base-content/50"
+							aria-label="Preview"
+						>
+							<Select.Value<string>>
+								{(state) => state.selectedOption()}
+							</Select.Value>
+							<Icon icon="mdi:chevron-up-down" />
+						</Select.Trigger>
+						<Select.Portal>
+							<Select.Content class="motion-duration-200 motion-opacity-in motion-scale-in-95 data-[closed]:motion-opacity-out data-[closed]:motion-scale-out-95">
+								<Select.Listbox class="menu menu-vertical space-y-0.75 rounded border border-base-300 bg-base-200 shadow **:cursor-default **:rounded" />
+							</Select.Content>
+						</Select.Portal>
+					</Select>
+					<Show when={currentPreview() === "Colors"}>
+						<Select
+							class="flex w-full items-center justify-between"
+							disallowEmptySelection={true}
+							open={colorSelectOpen()}
+							value={currentColorPreview()}
+							onChange={setColorPreview}
+							options={colorPreviewOptions}
+							placeholder="Select a color..."
+							placement="bottom"
+							itemComponent={(props) => (
+								<Select.Item item={props.item}>
+									<Select.ItemLabel
+										classList={{
+											"menu-active":
+												currentColorPreview() === props.item.rawValue,
+										}}
+									>
+										{props.item.rawValue}
+									</Select.ItemLabel>
+								</Select.Item>
+							)}
+						>
+							<Select.Label
+								class="mr-2 cursor-default select-none"
+								onClick={() => setColorSelectOpen(!colorSelectOpen())}
 							>
-								{props.item.rawValue}
-							</Select.ItemLabel>
-						</Select.Item>
-					)}
-				>
-					<Select.Label
-						class="mr-2 cursor-default select-none"
-						onClick={() => setSelectOpen(!selectOpen())}
-					>
-						Current Preview
-					</Select.Label>
-					<Select.Trigger
-						onClick={() => setSelectOpen(!selectOpen())}
-						class="inline-flex w-28 cursor-pointer items-center justify-between gap-2 rounded-md border border-base-content/30 p-2 transition-colors duration-150 hover:border-base-content/50"
-						aria-label="Preview"
-					>
-						<Select.Value<string>>
-							{(state) => state.selectedOption()}
-						</Select.Value>
-						<Icon icon="mdi:chevron-up-down" />
-					</Select.Trigger>
-					<Select.Portal>
-						<Select.Content class="motion-duration-200 motion-opacity-in motion-scale-in-95 data-[closed]:motion-opacity-out data-[closed]:motion-scale-out-95">
-							<Select.Listbox class="menu menu-vertical space-y-0.75 rounded border border-base-300 bg-base-200 shadow **:cursor-default **:rounded" />
-						</Select.Content>
-					</Select.Portal>
-				</Select>
-				<div class="flex flex-col gap-2">
-					<Show when={currentPreview() === "Text Colors"}>
-						<label class="flex items-center gap-2">
-							<span class="label select-none">Have muted backgrounds? </span>
-							<input
-								class="checkbox rounded-md border border-base-content/30 text-green-600 transition-colors duration-150 hover:border-base-content/50"
-								type="checkbox"
-								checked={showMutedBackgrounds()}
-								onChange={(e) =>
-									setMutedBackgroundsVisibility(!showMutedBackgrounds())
-								}
-							/>
-						</label>
+								Current Color
+							</Select.Label>
+							<Select.Trigger
+								onClick={() => setColorSelectOpen(!colorSelectOpen())}
+								class="inline-flex w-28 cursor-pointer items-center justify-between gap-2 rounded-md border border-base-content/30 p-2 transition-colors duration-150 hover:border-base-content/50"
+								aria-label="Color Preview"
+							>
+								<Select.Value<string>>
+									{(state) => state.selectedOption()}
+								</Select.Value>
+								<Icon icon="mdi:chevron-up-down" />
+							</Select.Trigger>
+							<Select.Portal>
+								<Select.Content class="motion-duration-200 motion-opacity-in motion-scale-in-95 data-[closed]:motion-opacity-out data-[closed]:motion-scale-out-95">
+									<Select.Listbox class="menu menu-vertical space-y-0.75 rounded border border-base-300 bg-base-200 shadow **:cursor-default **:rounded" />
+								</Select.Content>
+							</Select.Portal>
+						</Select>
 					</Show>
+				</div>
+				<div class="flex flex-col gap-2">
 					<label class="flex items-center gap-2">
 						<span class="label select-none">Show command palette? </span>
 						<input
@@ -526,6 +596,19 @@ const Preview = () => {
 							}
 						/>
 					</label>
+					<Show when={currentPreview() === "Text"}>
+						<label class="flex items-center gap-2">
+							<span class="label select-none">Show muted backgrounds? </span>
+							<input
+								class="checkbox rounded-md border border-base-content/30 text-green-600 transition-colors duration-150 hover:border-base-content/50"
+								type="checkbox"
+								checked={showMutedBackgrounds()}
+								onChange={(e) =>
+									setMutedBackgroundsVisibility(!showMutedBackgrounds())
+								}
+							/>
+						</label>
+					</Show>
 				</div>
 			</div>
 		</div>

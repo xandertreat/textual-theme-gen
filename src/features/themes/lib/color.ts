@@ -119,6 +119,16 @@ export function getContrastText(
 		: Color("black").alpha(alpha);
 }
 
+export function calcAutoText(
+	base: ColorT | ColorLike,
+	bg: ColorT | ColorLike,
+): ColorT {
+	const c1 = coerceToColor(base);
+	const c2 = coerceToColor(bg);
+
+	return getContrastText(tint(c2, c1));
+}
+
 // MAIN //
 function genDarkShades(base: ColorT) {
 	// TODO: implement, allow users to manage and generate, integrate etc.
