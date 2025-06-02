@@ -219,7 +219,7 @@ export const genRandomTheme = (): TextualTheme => {
 	const warning = randomLCH();
 	const error = randomLCH();
 	const panel = blend(surface, primary, 0.1, 1);
-	const boost = panel.mix(getContrastText(bg, 0.04), 0.1);
+	const boost = getContrastText(bg, 0.04);
 
 	const palette = {
 		primary: generateColorData(primary, bg),
