@@ -1,6 +1,7 @@
-import { createMemo, onCleanup, type Component, type JSX } from "solid-js";
+import { type Component, type JSX, createMemo, onCleanup } from "solid-js";
 import Icon from "~/components/ui/icon";
 import { useTheme } from "../context/theme";
+import { VERSION_KEY } from "../data/themes";
 
 const ExportThemes: Component<JSX.AnchorHTMLAttributes<HTMLAnchorElement>> = (
 	props,
@@ -20,17 +21,17 @@ const ExportThemes: Component<JSX.AnchorHTMLAttributes<HTMLAnchorElement>> = (
 	});
 
 	const fileName = createMemo(
-		() => `textual-themes-${(new Date()).toLocaleString()}`,
+		() => `ttg-${VERSION_KEY()}-${(new Date()).toLocaleString()}`,
 	);
 
 	return (
 		<a
-			href={exportUri()}
-			download={fileName()}
 			class="inline-flex size-full items-center rounded text-center font-bold text-sm"
 			classList={{
 				"cursor-not-allowed opacity-50": !exportUri(),
 			}}
+			download={fileName()}
+			href={exportUri()}
 			{...props}
 		>
 			<Icon icon="mdi:file-export-outline" />

@@ -1,14 +1,22 @@
 import Popover from "@corvu/popover";
 import type { Component, JSX } from "solid-js";
-import { For, Show, createMemo, mergeProps } from "solid-js";
+import {
+	For,
+	Show,
+	createEffect,
+	createMemo,
+	createSignal,
+	mergeProps,
+	onMount,
+} from "solid-js";
 import Icon from "../../../components/ui/icon";
 import { useTheme } from "../context/theme";
 import ClearThemes from "./clear";
+import ExportThemes from "./export";
+import ImportThemes from "./import";
 import ThemeOption from "./option";
 import RandomTheme from "./random";
 import ThemeReset from "./reset";
-import ImportThemes from "./import";
-import ExportThemes from "./export";
 
 // TODO: add export / import options (either from a textual code config or json files from app)
 interface ThemeListOptionsProps extends JSX.HTMLAttributes<HTMLDivElement> {}
@@ -18,9 +26,9 @@ const ThemeListOptions: Component<ThemeListOptionsProps> = (passed) => {
 		<Popover>
 			<Popover.Anchor>
 				<Popover.Trigger
-					type="button"
 					class="btn btn-circle btn-ghost btn-neutral-content tooltip"
 					data-tip={"Options"}
+					type="button"
 				>
 					<Icon
 						aria-label="Theme Options"
@@ -61,7 +69,7 @@ interface ThemeListProps extends JSX.HTMLAttributes<HTMLDivElement> {
 const ThemeList: Component<ThemeListProps> = (passed) => {
 	const props = mergeProps({ showOptions: true }, passed);
 
-	// state
+	// theme state
 	const { data } = useTheme();
 	const userThemes = createMemo(() => [
 		...data
@@ -82,6 +90,27 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 			.map((t) => t.name),
 	]);
 
+	// state
+	const userVisibility = 1 << 0;
+	const includedVisibility = 1 << 1;
+	const presetVisibility = 1 << 2;
+
+	const STORAGE_KEY = "listVisibility";
+	const initialVisibility = userVisibility | includedVisibility;
+	const [visibility, setVisibility] = createSignal(initialVisibility);
+	const isVisible = (flag: number) => (visibility() & flag) !== 0;
+
+	onMount(() => {
+		// load from local storage (if any)
+		const localData = localStorage.getItem(STORAGE_KEY);
+		if (localData) setVisibility(Number(localData));
+
+		// sync local storage from now on
+		createEffect(() => {
+			localStorage.setItem(STORAGE_KEY, String(visibility()));
+		});
+	});
+
 	return (
 		<div class="flex flex-col">
 			<div class="flex gap-2">
@@ -91,42 +120,96 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 					<RandomTheme />
 				</Show>
 			</div>
-			<ul class="xl:menu grid grid-cols-2 grid-rows-2 gap-2 rounded-box p-0 px-1 max-xl:items-center md:grid-cols-3 xl:w-56">
-				<li class="menu-title col-span-full mt-2 py-0 text-left max-xl:mb-1 max-xl:px-1">
-					My themes
+			<ul class="xl:menu grid grid-cols-2 grid-rows-2 flex-nowrap gap-2 rounded-box p-0 px-1 max-xl:items-center md:grid-cols-3 xl:w-56">
+				<li class="menu-title col-span-full mt-5 py-0 text-left max-xl:mb-1 max-xl:px-1">
+					<span class="flex select-none items-center justify-between">
+						My themes
+						<button
+							class="btn btn-xs btn-ghost btn-circle"
+							onClick={() => setVisibility(visibility() ^ userVisibility)}
+							type="button"
+						>
+							<Icon
+								class="size-5/6"
+								icon={
+									isVisible(userVisibility)
+										? "mdi:eye-outline"
+										: "mdi:eye-off-outline"
+								}
+							/>
+						</button>
+					</span>
 				</li>
-				<li class="mx-1 hidden xl:block" />
-				<Show
-					when={userThemes().length > 0}
-					fallback={<li>No themes made yet!</li>}
-				>
-					<For each={userThemes()}>
-						{(theme) => <ThemeOption theme={theme} showDelete />}
-					</For>
+				<Show when={isVisible(userVisibility)}>
+					<li class="mx-1 hidden xl:block" />
+					<Show
+						fallback={<li>No themes made yet!</li>}
+						when={userThemes().length > 0}
+					>
+						<For each={userThemes()}>
+							{(theme) => <ThemeOption showDelete theme={theme} />}
+						</For>
+					</Show>
 				</Show>
 				<li class="menu-title col-span-full mt-5 py-0 text-left max-xl:mb-1 max-xl:px-1">
-					Included themes
+					<span class="flex select-none items-center justify-between">
+						Included themes
+						<button
+							class="btn btn-xs btn-ghost btn-circle"
+							onClick={() => setVisibility(visibility() ^ includedVisibility)}
+							type="button"
+						>
+							<Icon
+								class="size-5/6"
+								icon={
+									isVisible(includedVisibility)
+										? "mdi:eye-outline"
+										: "mdi:eye-off-outline"
+								}
+							/>
+						</button>
+					</span>
 				</li>
-				<li class="mx-1 hidden xl:block" />
-				<Show
-					when={textualThemes().length > 0}
-					fallback={<li>No textual themes found</li>}
-				>
-					<For each={textualThemes()}>
-						{(theme) => <ThemeOption theme={theme} />}
-					</For>
+				<Show when={isVisible(includedVisibility)}>
+					<li class="mx-1 hidden xl:block" />
+					<Show
+						fallback={<li>No textual themes found</li>}
+						when={textualThemes().length > 0}
+					>
+						<For each={textualThemes()}>
+							{(theme) => <ThemeOption theme={theme} />}
+						</For>
+					</Show>
 				</Show>
 				<li class="menu-title col-span-full mt-5 py-0 text-left max-xl:mb-1 max-xl:px-1">
-					Presets
+					<span class="flex select-none items-center justify-between">
+						Presets
+						<button
+							class="btn btn-xs btn-ghost btn-circle"
+							onClick={() => setVisibility(visibility() ^ presetVisibility)}
+							type="button"
+						>
+							<Icon
+								class="size-5/6"
+								icon={
+									isVisible(presetVisibility)
+										? "mdi:eye-outline"
+										: "mdi:eye-off-outline"
+								}
+							/>
+						</button>
+					</span>
 				</li>
-				<li class="mx-1 hidden xl:block" />
-				<Show
-					when={presetThemes().length > 0}
-					fallback={<li>No presets found</li>}
-				>
-					<For each={presetThemes()}>
-						{(theme) => <ThemeOption theme={theme} />}
-					</For>
+				<Show when={isVisible(presetVisibility)}>
+					<li class="mx-1 hidden xl:block" />
+					<Show
+						fallback={<li>No presets found</li>}
+						when={presetThemes().length > 0}
+					>
+						<For each={presetThemes()}>
+							{(theme) => <ThemeOption theme={theme} />}
+						</For>
+					</Show>
 				</Show>
 			</ul>
 		</div>

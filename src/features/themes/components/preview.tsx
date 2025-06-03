@@ -17,6 +17,8 @@ import {
 	MUTED_ALPHA,
 	TEXT_ALPHA,
 	calcAutoText,
+	getContrastText,
+	inverse,
 } from "../lib/color";
 import type { TextualColor } from "../types";
 
@@ -24,14 +26,14 @@ const TerminalWindow: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	props,
 ) => (
 	<div
-		class="flex size-full flex-col rounded border border-primary bg-neutral shadow-md"
+		class="flex size-full grow-0 flex-col rounded border border-primary bg-neutral shadow-md"
 		{...props}
 	>
 		<div class="relative flex w-full items-center px-4 py-2">
 			<div class="flex items-center gap-2 *:size-3 *:rounded-full">
-				<button type="button" class="bg-error" />
-				<button type="button" class="bg-warning" />
-				<button type="button" class="bg-success" />
+				<button class="bg-error" type="button" />
+				<button class="bg-warning" type="button" />
+				<button class="bg-success" type="button" />
 			</div>
 			<h2 class="-translate-x-1/2 -translate-y-1/2 pointer-events-none absolute top-1/2 left-1/2 m-0 select-none text-center text-zinc-200">
 				Terminal
@@ -53,15 +55,20 @@ const CommandPaletteFooter: Component<JSX.HTMLAttributes<HTMLElement>> = (
 	props,
 ) => {
 	const { selectedTheme } = useTheme();
-	const keyBindingColor = createMemo(
-		() => selectedTheme().palette.accent.base.color,
+	const footerBackground = createMemo(
+		() => selectedTheme().palette.panel.base.color,
 	);
-	const panelColors = createMemo(() => selectedTheme().palette.panel.base);
+	const footerText = createMemo(() =>
+		getContrastText(footerBackground()).hexa(),
+	);
+	const keyBindingColor = createMemo(() => inverse(footerBackground()).hexa());
 
 	return (
 		<footer
 			class="absolute bottom-0 left-0 m-0 inline-flex h-4 w-full items-center justify-between gap-2 rounded-br rounded-bl bg-size-[90%] text-center text-sm"
-			style={{ "background-color": panelColors().color }}
+			style={{
+				"background-color": footerBackground(),
+			}}
 			{...props}
 		>
 			<div class="inline-flex gap-4 pt-1.5">
@@ -76,7 +83,7 @@ const CommandPaletteFooter: Component<JSX.HTMLAttributes<HTMLElement>> = (
 					</kbd>
 					<p
 						style={{
-							color: panelColors().text,
+							color: footerText(),
 						}}
 					>
 						Previous theme
@@ -93,7 +100,7 @@ const CommandPaletteFooter: Component<JSX.HTMLAttributes<HTMLElement>> = (
 					</kbd>
 					<p
 						style={{
-							color: panelColors().text,
+							color: footerText(),
 						}}
 					>
 						Next theme
@@ -107,7 +114,10 @@ const CommandPaletteFooter: Component<JSX.HTMLAttributes<HTMLElement>> = (
 				<div
 					class="h-4 w-px text-transparent opacity-30"
 					style={{
-						"background-color": panelColors().text,
+						"background-color": calcAutoText({
+							bg: footerBackground(),
+							base: selectedTheme().palette.boost.base.color,
+						}).hexa(),
 					}}
 				>
 					|
@@ -123,7 +133,7 @@ const CommandPaletteFooter: Component<JSX.HTMLAttributes<HTMLElement>> = (
 					</kbd>
 					<p
 						style={{
-							color: panelColors().text,
+							color: footerText(),
 						}}
 					>
 						palette
@@ -134,169 +144,258 @@ const CommandPaletteFooter: Component<JSX.HTMLAttributes<HTMLElement>> = (
 	);
 };
 
-const TodosPreview: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
+const StylingTooltip: Component<JSX.HTMLAttributes<HTMLSpanElement>> = (
+	props,
+) => <span class="tooltip-content rounded-none text-justify" {...props} />;
+
+const TodosPreview: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 	const { selectedTheme } = useTheme();
 
+	// colors
+	const bg = createMemo(() => selectedTheme().palette.background.base.color);
+	const bgSurface = createMemo(
+		() => selectedTheme().palette.surface.base.color,
+	);
+
 	return (
-		<span
+		<div
 			aria-hidden={true}
-			class="-ml-0.25 relative inset-0 size-full overflow-hidden text-2xl leading-7 tracking-[-0.075em]"
+			class="relative inset-0 size-full overflow-hidden text-2xl leading-7 tracking-[-0.075em]"
 			style={{
-				color: selectedTheme().palette.surface.base.color,
+				color: bgSurface(),
 			}}
 		>
 			{"╱".repeat(300).concat("\n").repeat(100)}
 			<main
-				class="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 flex h-2/3 w-1/2 flex-col gap-2 px-9 py-7 text-md"
+				class="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 flex h-80 w-1/2 flex-col gap-2 px-9 py-7 text-md tracking-normal xl:h-2/3"
 				style={{
-					"background-color": selectedTheme().palette.background.base.color,
+					"background-color": bg(),
 				}}
+				{...props}
 			>
-				<span class="flex justify-between">
-					<p
-						class="font-black"
+				<div class="flex justify-between">
+					<span
+						class="tooltip tooltip-info font-bold"
 						style={{
-							color: selectedTheme().palette.surface.base.muted,
+							color: selectedTheme().palette.foreground.base.color,
 						}}
 					>
+						<StylingTooltip>
+							<b>text:</b> $foreground
+						</StylingTooltip>
 						Today
-					</p>
-					<span class="flex justify-center gap-3 *:px-3">
-						<p
-							style={{
-								color: selectedTheme().palette.error["lighten-1"].color,
-								"background-color":
-									selectedTheme().palette.error["darken-3"].color,
-							}}
-						>
-							1 overdue
-						</p>
-						<p
-							style={{
-								color: selectedTheme().palette.success["lighten-1"].color,
-								"background-color":
-									selectedTheme().palette.success["darken-3"].color,
-							}}
-						>
-							1 done
-						</p>
 					</span>
-				</span>
+					<div class="flex justify-center gap-3 *:px-3.5">
+						<span
+							class="tooltip tooltip-info"
+							style={{
+								color: selectedTheme().palette.error.base.text,
+								"background-color": selectedTheme().palette.error.base.muted,
+							}}
+						>
+							<StylingTooltip>
+								<b>background:</b> $error-muted
+								<br />
+								<b>text:</b> $text-error
+							</StylingTooltip>
+							1 overdue
+						</span>
+						<span
+							class="tooltip tooltip-info"
+							style={{
+								color: selectedTheme().palette.success.base.text,
+								"background-color": selectedTheme().palette.success.base.muted,
+							}}
+						>
+							<StylingTooltip>
+								<b>background:</b> $success-muted
+								<br />
+								<b>text:</b> $text-success
+							</StylingTooltip>
+							1 done
+						</span>
+					</div>
+				</div>
 				<div
-					class="flex size-full flex-col"
+					class="tooltip tooltip-bottom tooltip-info flex size-full flex-col"
 					style={{
-						"background-color": selectedTheme().palette.surface.base.color,
+						"background-color": bgSurface(),
 					}}
 				>
+					<StylingTooltip>
+						<b>background:</b> $surface
+						<br />
+						<b>text:</b> $boost {MUTED_ALPHA * 100}%
+					</StylingTooltip>
 					<div
-						class="flex size-full flex-col border-3 p-3 *:flex *:items-center *:gap-3 *:*:px-3 *:*:py-1"
+						class="tooltip tooltip-right tooltip-info flex size-full flex-col border-3 p-3 *:flex *:items-center *:gap-3 *:*:px-3 *:*:py-1"
 						style={{
 							"border-color": selectedTheme().palette.primary.base.color,
 						}}
 					>
+						<StylingTooltip>
+							<b>border:</b> $primary
+						</StylingTooltip>
 						<span
+							class="tooltip tooltip-info font-black"
 							style={{
 								"background-color": selectedTheme().palette.primary.base.color,
 							}}
 						>
+							<StylingTooltip>
+								<b>background:</b> $primary
+								<br />
+								<b>text:</b> $text
+							</StylingTooltip>
 							<p
+								class="tooltip tooltip-info tooltip-left"
 								style={{
-									color: selectedTheme().palette.surface["darken-3"].color,
-									"background-color":
-										selectedTheme().palette.surface["lighten-3"].color,
+									color: selectedTheme().palette.panel["darken-2"].color,
+									"background-color": selectedTheme().palette.panel.base.color,
 								}}
 							>
+								<StylingTooltip>
+									<b>background:</b> $panel
+									<br />
+									<b>text:</b> $panel-darken-2
+								</StylingTooltip>
 								X
 							</p>
 
-							<p class="font-black">Buy milk</p>
-						</span>
-						<span>
 							<p
 								style={{
-									color: selectedTheme().palette.surface["darken-3"].color,
-									"background-color":
-										selectedTheme().palette.surface["lighten-3"].color,
+									color: getContrastText(
+										selectedTheme().palette.primary.base.color,
+									).hexa(),
 								}}
 							>
-								X
+								Buy milk
 							</p>
-							<p
+						</span>
+						<div>
+							<span
+								class="tooltip tooltip-info tooltip-left"
 								style={{
-									color: selectedTheme().palette.surface["lighten-3"].muted,
+									color: selectedTheme().palette.panel["darken-2"].color,
+									"background-color": selectedTheme().palette.panel.base.color,
 								}}
 							>
+								<StylingTooltip>
+									<b>background:</b> $panel
+									<br />
+									<b>text:</b> $panel-darken-2
+								</StylingTooltip>
+								X
+							</span>
+							<span
+								class="tooltip tooltip-right tooltip-info"
+								style={{
+									color: selectedTheme().palette.foreground.base.color,
+								}}
+							>
+								<StylingTooltip>
+									<b>text:</b> $foreground
+								</StylingTooltip>
 								Buy Bread
-							</p>
-						</span>
-						<span>
-							<p
+							</span>
+						</div>
+						<div>
+							<span
+								class="tooltip tooltip-info tooltip-left"
 								style={{
-									color: selectedTheme().palette.success["lighten-3"].color,
-									"background-color":
-										selectedTheme().palette.surface["lighten-3"].color,
+									color: selectedTheme().palette.success.base.text,
+									"background-color": selectedTheme().palette.panel.base.color,
 								}}
 							>
+								<StylingTooltip>
+									<b>background:</b> $panel
+									<br />
+									<b>text:</b> $text-success
+								</StylingTooltip>
 								X
-							</p>
-							<p
+							</span>
+							<span
+								class="tooltip tooltip-right tooltip-info"
 								style={{
-									color: selectedTheme().palette.surface["lighten-3"].muted,
+									color: selectedTheme().palette.foreground.base.color,
 								}}
 							>
+								<StylingTooltip>
+									<b>text:</b> $foreground
+								</StylingTooltip>
 								Go and vote
-							</p>
-						</span>
-						<span>
-							<p
+							</span>
+						</div>
+						<div>
+							<span
+								class="tooltip tooltip-info tooltip-left"
 								style={{
-									color: selectedTheme().palette.surface["darken-3"].color,
-									"background-color":
-										selectedTheme().palette.surface["lighten-3"].color,
+									color: selectedTheme().palette.panel["darken-2"].color,
+									"background-color": selectedTheme().palette.panel.base.color,
 								}}
 							>
+								<StylingTooltip>
+									<b>background:</b> $panel
+									<br />
+									<b>text:</b> $panel-darken-2
+								</StylingTooltip>
 								X
-							</p>
-							<p
+							</span>
+							<span
+								class="tooltip tooltip-right tooltip-info"
 								style={{
-									color: selectedTheme().palette.surface["lighten-3"].muted,
+									color: selectedTheme().palette.foreground.base.color,
 								}}
 							>
+								<StylingTooltip>
+									<b>text:</b> $foreground
+								</StylingTooltip>
 								Return package
-							</p>
-						</span>
+							</span>
+						</div>
 					</div>
-					<p
-						class="border-3 p-6 text-left opacity-40"
+					<span
+						class="tooltip tooltip-right tooltip-info border-3 p-6 text-left"
 						style={{
-							color: selectedTheme().palette.surface["lighten-3"].muted,
-							"border-color": selectedTheme().palette.surface["darken-3"].color,
+							color: selectedTheme().palette.boost.base.muted,
+							"border-color": selectedTheme().palette.boost.base.color,
 						}}
 					>
+						<StylingTooltip>
+							<b>border:</b> $boost
+						</StylingTooltip>
 						Add a task
-					</p>
+					</span>
 				</div>
-				<span class="inline-flex justify-between">
-					<p
-						class="font-black"
+				<div class="inline-flex justify-between">
+					<span
+						class="tooltip tooltip-bottom tooltip-info font-black"
 						style={{
-							color: selectedTheme().palette.surface.base.muted,
+							color: selectedTheme().palette.foreground.base.color,
 						}}
 					>
+						<StylingTooltip>
+							<b>text:</b> $foreground
+						</StylingTooltip>
 						History
-					</p>
-					<p
-						class="px-4"
+					</span>
+					<span
+						class="tooltip tooltip-bottom tooltip-info px-3.5"
 						style={{
-							color: selectedTheme().palette.primary["lighten-1"].color,
+							color: selectedTheme().palette.primary.base.text,
 							"background-color": selectedTheme().palette.primary.base.muted,
 						}}
 					>
+						<StylingTooltip>
+							<b>background:</b> $primary-muted
+							<br />
+							<b>text:</b> $text-primary
+						</StylingTooltip>
 						4 items
-					</p>
-				</span>
+					</span>
+				</div>
 			</main>
-		</span>
+		</div>
 	);
 };
 
@@ -323,10 +422,10 @@ const PaletteColorPreview: Component<
 		}
 	> = (passed) => {
 		const contrast = createMemo(() =>
-			calcAutoText(
-				passed.data.color,
-				selectedTheme().palette.background.base.color,
-			),
+			calcAutoText({
+				base: passed.data.color,
+				bg: selectedTheme().palette.background.base.color,
+			}),
 		);
 		return (
 			<span
@@ -381,10 +480,10 @@ const PaletteColorPreview: Component<
 			</h2>
 			<main class="flex w-full flex-col max-xl:mb-12">
 				<For each={sortedDarkPaletteColors()}>
-					{([variant, data]) => <ColorPreview variant={variant} data={data} />}
+					{([variant, data]) => <ColorPreview data={data} variant={variant} />}
 				</For>
 				<For each={sortedNonDarkPaletteColors()}>
-					{([variant, data]) => <ColorPreview variant={variant} data={data} />}
+					{([variant, data]) => <ColorPreview data={data} variant={variant} />}
 				</For>
 			</main>
 		</div>
@@ -408,7 +507,7 @@ const TextColorsPreview: Component<
 			<For each={paletteColors()}>
 				{(paletteColor) => (
 					<h3
-						class="p-0.25"
+						class="px-1 py-0.25"
 						style={{
 							color: selectedTheme().palette[paletteColor].base.text,
 							"background-color": props.showMutedBackgrounds
@@ -467,7 +566,7 @@ const Preview = () => {
 	});
 
 	return (
-		<div class="flex h-fit flex-col items-center gap-2 xl:w-2/3">
+		<div class="flex h-fit min-w-3/5 flex-col items-center gap-2 overflow-clip">
 			<TerminalWindow>
 				<Switch>
 					<Match when={currentPreview() === "Todos App"}>
@@ -497,12 +596,6 @@ const Preview = () => {
 					<Select
 						class="w-full"
 						disallowEmptySelection={true}
-						open={selectOpen()}
-						value={currentPreview()}
-						onChange={setPreview}
-						options={previewOptions}
-						placeholder="Select a preview..."
-						placement="bottom"
 						itemComponent={(props) => (
 							<Select.Item item={props.item}>
 								<Select.ItemLabel
@@ -514,6 +607,12 @@ const Preview = () => {
 								</Select.ItemLabel>
 							</Select.Item>
 						)}
+						onChange={setPreview}
+						open={selectOpen()}
+						options={previewOptions}
+						placeholder="Select a preview..."
+						placement="bottom"
+						value={currentPreview()}
 					>
 						<Select.Label
 							class="mr-2 cursor-default select-none"
@@ -522,9 +621,9 @@ const Preview = () => {
 							Current Preview
 						</Select.Label>
 						<Select.Trigger
-							onClick={() => setSelectOpen(!selectOpen())}
-							class="inline-flex w-28 cursor-pointer items-center justify-between gap-2 rounded-md border border-base-content/30 p-2 transition-colors duration-150 hover:border-base-content/50"
 							aria-label="Preview"
+							class="inline-flex w-28 cursor-pointer items-center justify-between gap-2 rounded-md border border-base-content/30 p-2 transition-colors duration-150 hover:border-base-content/50"
+							onClick={() => setSelectOpen(!selectOpen())}
 						>
 							<Select.Value<string>>
 								{(state) => state.selectedOption()}
@@ -541,12 +640,6 @@ const Preview = () => {
 						<Select
 							class="flex w-full items-center justify-between"
 							disallowEmptySelection={true}
-							open={colorSelectOpen()}
-							value={currentColorPreview()}
-							onChange={setColorPreview}
-							options={colorPreviewOptions}
-							placeholder="Select a color..."
-							placement="bottom"
 							itemComponent={(props) => (
 								<Select.Item item={props.item}>
 									<Select.ItemLabel
@@ -559,6 +652,12 @@ const Preview = () => {
 									</Select.ItemLabel>
 								</Select.Item>
 							)}
+							onChange={setColorPreview}
+							open={colorSelectOpen()}
+							options={colorPreviewOptions}
+							placeholder="Select a color..."
+							placement="bottom"
+							value={currentColorPreview()}
 						>
 							<Select.Label
 								class="mr-2 cursor-default select-none"
@@ -567,9 +666,9 @@ const Preview = () => {
 								Current Color
 							</Select.Label>
 							<Select.Trigger
-								onClick={() => setColorSelectOpen(!colorSelectOpen())}
-								class="inline-flex w-28 cursor-pointer items-center justify-between gap-2 rounded-md border border-base-content/30 p-2 transition-colors duration-150 hover:border-base-content/50"
 								aria-label="Color Preview"
+								class="inline-flex w-28 cursor-pointer items-center justify-between gap-2 rounded-md border border-base-content/30 p-2 transition-colors duration-150 hover:border-base-content/50"
+								onClick={() => setColorSelectOpen(!colorSelectOpen())}
 							>
 								<Select.Value<string>>
 									{(state) => state.selectedOption()}
@@ -588,24 +687,24 @@ const Preview = () => {
 					<label class="flex items-center justify-between gap-2">
 						<span class="label select-none">Show command palette? </span>
 						<input
-							class="checkbox rounded-md border border-base-content/30 text-green-600 transition-colors duration-150 hover:border-base-content/50"
-							type="checkbox"
 							checked={showCommandPalette()}
+							class="checkbox rounded-md border border-base-content/30 text-green-600 transition-colors duration-150 hover:border-base-content/50"
 							onChange={(e) =>
 								setCommandPaletteVisibility(!showCommandPalette())
 							}
+							type="checkbox"
 						/>
 					</label>
 					<Show when={currentPreview() === "Text"}>
 						<label class="flex items-center justify-between gap-2">
 							<span class="label select-none">Show muted backgrounds? </span>
 							<input
-								class="checkbox rounded-md border border-base-content/30 text-green-600 transition-colors duration-150 hover:border-base-content/50"
-								type="checkbox"
 								checked={showMutedBackgrounds()}
+								class="checkbox rounded-md border border-base-content/30 text-green-600 transition-colors duration-150 hover:border-base-content/50"
 								onChange={(e) =>
 									setMutedBackgroundsVisibility(!showMutedBackgrounds())
 								}
+								type="checkbox"
 							/>
 						</label>
 					</Show>

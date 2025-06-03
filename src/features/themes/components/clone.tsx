@@ -36,8 +36,8 @@ export const CloneThemeOption: Component<CloneThemeOptionProps> = (props) => {
 
 	return (
 		<button
-			type="button"
 			class="inline-flex size-full items-center rounded text-center font-bold text-sm"
+			type="button"
 			{...props}
 			onClick={handleCloning}
 		>
@@ -48,8 +48,8 @@ export const CloneThemeOption: Component<CloneThemeOptionProps> = (props) => {
 };
 
 type CloneState = "ready" | "cloning" | "cloned" | "error";
-const CLONE_HOLD_TIME = 1500; // milliseconds
-const CLONE_SUCCESS_DELAY = 3000; // milliseconds
+const CLONE_HOLD_TIME = 1000; // milliseconds
+const CLONE_SUCCESS_DELAY = 1750; // milliseconds
 const QUERY_SELECTOR = "path";
 
 const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
@@ -80,11 +80,11 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 	const DesktopButton = () => {
 		return (
 			<button
-				type="button"
 				class="btn tooltip tooltip-bottom m-2 mx-4 hidden w-40 border-2 border-primary bg-primary/15 xl:flex"
 				classList={{
 					"after:opacity-0!": phase() !== "ready",
 				}}
+				type="button"
 				{...props}
 				onMouseDown={() => {
 					if (phase() !== "ready") return;
@@ -168,8 +168,8 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 
 	const MobileButton = () => (
 		<button
-			type="button"
 			class="btn btn-primary btn-sm m-2 mx-4 bg-bottom xl:hidden"
+			type="button"
 			{...props}
 			onClick={handleCloning}
 		>

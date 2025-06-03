@@ -1,6 +1,7 @@
 import type { Component, JSX } from "solid-js";
 import Icon from "~/components/ui/icon";
 import { useTheme } from "../context/theme";
+import { VERSION_KEY } from "../data/themes";
 import type { TextualTheme } from "../types";
 
 const ImportThemes: Component<JSX.HTMLAttributes<HTMLLabelElement>> = (
@@ -15,7 +16,9 @@ const ImportThemes: Component<JSX.HTMLAttributes<HTMLLabelElement>> = (
 			const promises: Promise<string>[] = [];
 			if (files.length > 0)
 				for (const file of files)
-					if (file.type === "application/json") promises.push(file.text());
+					if (file.type === "application/json")
+						if (file.name.includes(String(VERSION_KEY())))
+							promises.push(file.text());
 			const exportedFiles = await Promise.all(promises);
 			if (exportedFiles.length > 0) {
 				for (const exported of exportedFiles) {
@@ -34,11 +37,11 @@ const ImportThemes: Component<JSX.HTMLAttributes<HTMLLabelElement>> = (
 			{...props}
 		>
 			<input
-				type="file"
 				accept="application/json"
-				onChange={handleFileImport}
-				multiple
 				hidden
+				multiple
+				onChange={handleFileImport}
+				type="file"
 			/>
 			<Icon icon="mdi:file-import-outline" />
 			Import

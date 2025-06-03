@@ -64,14 +64,15 @@ export function normalize(c: ColorT): number[] {
 	return [r / 255, g / 255, b / 255];
 }
 
-export function inverse(c: ColorT): ColorT {
-	const [r, g, b] = c.rgb().array();
+export function inverse(c: ColorT | ColorLike): ColorT {
+	const base = coerceToColor(c);
+	const [r, g, b] = base.rgb().array();
 
 	return Color({
 		r: 255 - r,
 		g: 255 - g,
 		b: 255 - b,
-		alpha: c.alpha(),
+		alpha: base.alpha(),
 	});
 }
 
@@ -109,7 +110,7 @@ export function tint(c1: ColorT, c2: ColorT): ColorT {
 
 export function getContrastText(
 	base: ColorT | ColorLike,
-	alpha = 0.95,
+	alpha = TEXT_ALPHA,
 ): ColorT {
 	const c = coerceToColor(base);
 	const [r, g, b] = normalize(c);
@@ -119,14 +120,12 @@ export function getContrastText(
 		: Color("black").alpha(alpha);
 }
 
-export function calcAutoText(
-	base: ColorT | ColorLike,
-	bg: ColorT | ColorLike,
-): ColorT {
-	const c1 = coerceToColor(base);
-	const c2 = coerceToColor(bg);
-
-	return getContrastText(tint(c2, c1));
+export function calcAutoText({
+	base,
+	bg,
+}: { base: ColorT | ColorLike; bg?: ColorT | ColorLike }): ColorT {
+	const coerced = coerceToColor(base);
+	return getContrastText(bg ? tint(coerceToColor(bg), coerced) : coerced);
 }
 
 // MAIN //

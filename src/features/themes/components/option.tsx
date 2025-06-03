@@ -54,12 +54,12 @@ const ThemeOptionMenu: Component<ThemeOptionMenuProps> = (props) => {
 		<Popover>
 			<Popover.Anchor class="aspect-square size-6">
 				<Popover.Trigger
-					type="button"
 					class="tooltip xl:tooltip-right size-full cursor-pointer p-0.5 transition-opacity duration-200 group-hover:opacity-100"
 					classList={{
 						"opacity-0": !isOptionSelected(),
 						"opacity-100 xl:opacity-20": isOptionSelected(),
 					}}
+					type="button"
 				>
 					<span class="tooltip-content">Options</span>
 					<Icon
@@ -99,25 +99,25 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 
 	return (
 		<li
-			id={`theme-${local.theme}-option`}
 			class="motion-duration-1000/opacity motion-ease-in-out motion-duration-300 motion-opacity-in-0 -motion-translate-x-in-50"
 			classList={{
 				"tooltip tooltip-open": needsTooltip() && hoveringLabel(),
 			}}
 			data-tip={local.theme}
+			id={`theme-${local.theme}-option`}
 			{...rest}
 		>
 			<a
-				type="button"
 				class="btn btn-ghost group flex h-fit justify-between gap-1 rounded-sm p-0 px-1 py-0 font-light"
 				classList={{ "btn-active": selectedThemeName() === local.theme }}
 				// biome-ignore lint/a11y/useValidAnchor: <explanation>
 				onClick={() => selectTheme(local.theme)}
+				type="button"
 			>
 				<span class="inline-flex items-center">
 					<ThemeOptionPreview theme={local.theme} />
 					<p
-						ref={label}
+						class="w-48 max-w-max grow-0 flex-nowrap overflow-hidden overflow-ellipsis whitespace-nowrap text-nowrap pl-2 text-left xl:w-36"
 						onMouseEnter={() => {
 							if (!needsTooltip()) return;
 							clearTimeout(hoverDelay);
@@ -128,19 +128,19 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 							clearTimeout(hoverDelay);
 							setHoveringLabel(false);
 						}}
-						class="w-48 max-w-max grow-0 flex-nowrap overflow-hidden overflow-ellipsis whitespace-nowrap text-nowrap pl-2 text-left xl:w-36"
+						ref={label}
 					>
 						{local.theme}
 					</p>
 				</span>
 				<ThemeOptionMenu theme={local.theme}>
 					<Show
-						when={data.get(local.theme)?.source === "user"}
 						fallback={
 							<li>
 								<CloneThemeOption />
 							</li>
 						}
+						when={data.get(local.theme)?.source === "user"}
 					>
 						<li>
 							<RenameTheme theme={local.theme} />

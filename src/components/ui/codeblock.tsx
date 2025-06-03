@@ -50,7 +50,7 @@ const CodeBlock: Component<CodeBlockProps> = (props) => {
 	);
 
 	return (
-		<Show when={local.details} fallback={<Markdown />}>
+		<Show fallback={<Markdown />} when={local.details}>
 			<div
 				class={cn(
 					"group relative rounded-md border-2 border-transparent bg-neutral text-left text-neutral-content",

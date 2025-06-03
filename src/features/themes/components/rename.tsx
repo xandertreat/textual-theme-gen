@@ -73,23 +73,22 @@ const RenameTheme: Component<RenameThemeProps> = (props) => {
 							</sub>
 						</span>
 						<form
+							action={renameAction}
 							class="flex flex-col gap-2 text-neutral"
 							method="post"
-							action={renameAction}
 						>
 							<label
-								class="label input size-fit text-base-content"
+								aria-invalid={!isValid()}
 								aria-selected={true}
+								class="label input size-fit text-base-content"
 								classList={{
 									"input-success": isValid(),
 									"input-error": !isValid(),
 								}}
-								aria-invalid={!isValid()}
 							>
 								<p class="cursor-default select-none opacity-50">Theme Name</p>
 								<input
-									ref={(el) => setTimeout(() => el.focus(), 100)}
-									type="text"
+									class="peer"
 									name="name"
 									onInput={(e) => {
 										const input = e.target.value;
@@ -103,12 +102,13 @@ const RenameTheme: Component<RenameThemeProps> = (props) => {
 										else if (overwriting) setInvalidReason("source");
 										else setInvalidReason("malformed");
 									}}
-									value={local.theme}
-									placeholder="..."
-									class="peer"
 									pattern="[a-zA-Z0-9]+(?:-[a-zA-Z0-9]+)*"
-									title="Only letters, separated by single spaces, underscores or hyphens."
+									placeholder="..."
+									ref={(el) => setTimeout(() => el.focus(), 100)}
 									required
+									title="Only letters, separated by single spaces, underscores or hyphens."
+									type="text"
+									value={local.theme}
 								/>
 								<Icon
 									class="size-6 cursor-default text-error text-sm"
@@ -145,17 +145,17 @@ const RenameTheme: Component<RenameThemeProps> = (props) => {
 								</Switch>
 							</Show>
 							<ActionDialog.Close
-								tabIndex={-1}
 								class=""
 								classList={{
 									"mt-1": isValid(),
 									"pointer-events-none": submission.pending || !isValid(),
 								}}
+								tabIndex={-1}
 							>
 								<button
-									type="submit"
 									class="btn btn-success size-full"
 									disabled={submission.pending || !isValid()}
+									type="submit"
 								>
 									{submission.pending ? "..." : "Rename"}
 								</button>

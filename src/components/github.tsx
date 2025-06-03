@@ -12,7 +12,7 @@ const GitHub: Component<JSX.HTMLAttributes<HTMLAnchorElement>> = (props) => (
 		target="_blank"
 		{...props}
 	>
-		<Icon icon="devicon:github" class="size-full" />
+		<Icon class="size-full" icon="devicon:github" />
 	</A>
 );
 

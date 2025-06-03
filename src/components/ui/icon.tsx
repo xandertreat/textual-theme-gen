@@ -229,6 +229,7 @@ const SVGWrapper: Component<JSX.SvgSVGAttributes<SVGSVGElement>> = (props) => {
 	return (
 		<svg
 			{...CONFIGURATION.DEFAULT_SVG_ATTRIBUTES}
+			role={"img"}
 			style={{
 				"aspect-ratio": "1/1",
 				"background-color": "transparent",
@@ -236,7 +237,6 @@ const SVGWrapper: Component<JSX.SvgSVGAttributes<SVGSVGElement>> = (props) => {
 				"user-select": "none",
 				display: "inline-block",
 			}}
-			role={"img"}
 			{...rest}
 		>
 			{local.children}
@@ -247,23 +247,23 @@ const SVGWrapper: Component<JSX.SvgSVGAttributes<SVGSVGElement>> = (props) => {
 const LoadingFallback: Component<
 	JSX.SvgSVGAttributes<SVGSVGElement> & { loadingIcon: boolean }
 > = (props) => (
-	<Show when={props.loadingIcon} fallback={<SVGWrapper {...props} />}>
+	<Show fallback={<SVGWrapper {...props} />} when={props.loadingIcon}>
 		<SVGWrapper {...props}>
 			<path
-				fill="currentColor"
 				d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"
+				fill="currentColor"
 				opacity="0.25"
 			/>
 			<path
-				fill="currentColor"
 				d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z"
+				fill="currentColor"
 			>
 				<animateTransform
 					attributeName="transform"
-					type="rotate"
-					values="0 12 12;360 12 12"
 					dur="0.75s"
 					repeatCount="indefinite"
+					type="rotate"
+					values="0 12 12;360 12 12"
 				/>
 			</path>
 		</SVGWrapper>
@@ -273,13 +273,13 @@ const LoadingFallback: Component<
 const ErrorFallback: Component<
 	JSX.SvgSVGAttributes<SVGSVGElement> & { errorIcon: boolean }
 > = (props) => (
-	<Show when={props.errorIcon} fallback={<SVGWrapper {...props} />}>
+	<Show fallback={<SVGWrapper {...props} />} when={props.errorIcon}>
 		<SVGWrapper {...props}>
 			<path
-				fill="currentColor"
 				d="M12 17a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-1-4h2V7h-2z"
+				fill="currentColor"
 			/>
-			<circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" />
+			<circle cx="12" cy="12" fill="none" r="10" stroke="currentColor" />
 		</SVGWrapper>
 	</Show>
 );
@@ -332,10 +332,10 @@ export const Icon: Component<IconifyIconProps> = (raw) => {
 				fallback={<ErrorFallback errorIcon={visibility.showError} {...rest} />}
 			>
 				<Show
-					when={data()}
 					fallback={
 						<LoadingFallback loadingIcon={visibility.showLoading} {...rest} />
 					}
+					when={data()}
 				>
 					{(data) => (
 						<svg {...data().attributes} {...rest} innerHTML={data().vector} />

@@ -39,11 +39,11 @@ const ClearThemes: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 							</p>
 						</span>
 						<form action={clearThemes} method="post">
-							<ActionDialog.Close tabIndex={-1} class="">
+							<ActionDialog.Close class="" tabIndex={-1}>
 								<button
-									type="submit"
 									class="btn btn-error btn-lg size-full"
 									disabled={submission.pending}
+									type="submit"
 								>
 									{submission.pending ? "..." : "DELETE"}
 								</button>

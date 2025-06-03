@@ -118,18 +118,18 @@ const AppThemeController: Component<
 	return (
 		<button
 			{...props}
-			type="button"
 			class="btn btn-ghost btn-circle motion-duration-500 motion-ease-in-out -motion-translate-x-in-[200%] motion-delay-500 fixed inset-1 size-9 translate-x-full p-0.5 xl:size-11"
 			onClick={() => setAppTheme(cycle[nextThemeIdx()])}
+			type="button"
 		>
 			<Show
-				when={appTheme()}
 				fallback={
 					<Icon
 						class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full"
 						icon="mdi:theme-light-dark"
 					/>
 				}
+				when={appTheme()}
 			>
 				{(theme) => (
 					<Switch

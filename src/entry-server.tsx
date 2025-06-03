@@ -5,32 +5,32 @@ import { DEFAULT_APP_THEME } from "./context/app-theme";
 export default createHandler(() => (
 	<StartServer
 		document={({ assets, children, scripts }) => (
-			<html lang="en-US" data-theme={DEFAULT_APP_THEME}>
+			<html data-theme={DEFAULT_APP_THEME} lang="en-US">
 				<head>
 					<meta charset="UTF-8" />
 					<meta name="description" />
 					<meta
-						name="viewport"
 						content="width=device-width, viewport-fit=cover, initial-scale=1.0"
+						name="viewport"
 					/>
 					<link
-						rel="icon"
-						type="image/png"
 						href="/favicon-96x96.png"
+						rel="icon"
 						sizes="96x96"
+						type="image/png"
 					/>
-					<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-					<link rel="shortcut icon" href="/favicon.ico" />
+					<link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+					<link href="/favicon.ico" rel="shortcut icon" />
 					<link
+						href="/apple-touch-icon.png"
 						rel="apple-touch-icon"
 						sizes="180x180"
-						href="/apple-touch-icon.png"
 					/>
-					<meta name="apple-mobile-web-app-title" content="SolidBoard" />
-					<link rel="manifest" href="/site.webmanifest" />
-					<meta name="msapplication-TileColor" content="#ffffff" />
-					<meta name="msapplication-TileImage" content="/ms-icon-144x144.png" />
-					<meta name="theme-color" content="#ffffff" />
+					<meta content="SolidBoard" name="apple-mobile-web-app-title" />
+					<link href="/site.webmanifest" rel="manifest" />
+					<meta content="#ffffff" name="msapplication-TileColor" />
+					<meta content="/ms-icon-144x144.png" name="msapplication-TileImage" />
+					<meta content="#ffffff" name="theme-color" />
 					{assets}
 					<script
 						innerText={`document.documentElement.dataset.theme =

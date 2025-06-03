@@ -50,8 +50,8 @@ const DeleteTheme: Component<DeleteThemeProps> = (props) => {
 								This action is <b>PERMANENT</b> and cannot be undone.
 							</p>
 						</span>
-						<form method="post" action={deleteTheme.with(local.theme)}>
-							<ActionDialog.Close tabIndex={-1} class="">
+						<form action={deleteTheme.with(local.theme)} method="post">
+							<ActionDialog.Close class="" tabIndex={-1}>
 								<button
 									class="btn btn-lg btn-error size-full"
 									{...rest}

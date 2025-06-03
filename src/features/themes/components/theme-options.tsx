@@ -15,11 +15,11 @@ const DarkThemeToggle: Component<JSX.HTMLAttributes<HTMLInputElement>> = (
 		<label class="flex w-1/3 items-center justify-between">
 			<span class="label select-none text-base-content">Dark theme?</span>
 			<input
-				type="checkbox"
+				checked={selectedTheme().dark ?? false}
 				class="toggle"
 				disabled={disabled()}
-				checked={selectedTheme().dark ?? false}
 				onChange={(e) => modifySelected({ dark: !selectedTheme().dark })}
+				type="checkbox"
 			/>
 		</label>
 	);

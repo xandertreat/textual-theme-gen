@@ -61,8 +61,8 @@ const CopyButton: Component<CopyButtonProps> = (passed) => {
 
 	return (
 		<button
-			type="button"
 			class="tooltip tooltip-right absolute right-2 h-6 w-fit translate-y-1/4 transition duration-200 ease-in-out hover:cursor-pointer"
+			type="button"
 			{...rest}
 			classList={{
 				"tooltip-info opacity-10 hover:text-info hover:opacity-100 group-hover:opacity-70":
@@ -70,38 +70,38 @@ const CopyButton: Component<CopyButtonProps> = (passed) => {
 				"tooltip-open tooltip-success text-success": status() === "success",
 				"tooltip-open tooltip-error text-error": status() === "error",
 			}}
-			onClick={handleClick}
 			data-tip={CopyStatusLabel[status()]}
+			onClick={handleClick}
 		>
 			{/* Button icon */}
 			<Icon
+				class="-scale-100 active:-scale-90 motion-duration-300 motion-ease-in motion-opacity-out-100 size-full rotate-180 opacity-0 transition-[scale] duration-150 ease-in-out"
+				icon={local.copyIcon}
 				ref={(el) => {
 					curPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
 				}}
-				icon={local.copyIcon}
-				class="-scale-100 active:-scale-90 motion-duration-300 motion-ease-in motion-opacity-out-100 size-full rotate-180 opacity-0 transition-[scale] duration-150 ease-in-out"
 			/>
 			{/* Morph targets */}
 			<Icon
 				class="hidden"
+				icon={local.copyIcon}
 				ref={(el) => {
 					copyPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
 				}}
-				icon={local.copyIcon}
 			/>
 			<Icon
 				class="hidden"
+				icon={local.successIcon}
 				ref={(el) => {
 					successPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
 				}}
-				icon={local.successIcon}
 			/>
 			<Icon
 				class="hidden"
+				icon={local.errorIcon}
 				ref={(el) => {
 					errorPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
 				}}
-				icon={local.errorIcon}
 			/>
 		</button>
 	);

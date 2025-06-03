@@ -14,9 +14,8 @@ const RandomTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 
 	return (
 		<button
-			type="button"
-			data-tip="Random"
 			class="btn btn-circle tooltip tooltip-top"
+			data-tip="Random"
 			onClick={() => {
 				const randomTheme = genRandomTheme();
 				const newName = randomTheme.name;
@@ -34,8 +33,9 @@ const RandomTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 					duration: 1,
 				});
 			}}
+			type="button"
 		>
-			<Icon ref={die} class="motion-ease-out-cubic size-6" icon="mdi:dice" />
+			<Icon class="motion-ease-out-cubic size-6" icon="mdi:dice" ref={die} />
 		</button>
 	);
 };

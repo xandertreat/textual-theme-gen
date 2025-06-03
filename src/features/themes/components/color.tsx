@@ -134,10 +134,10 @@ const ColorSwatch: Component<
 	return (
 		<span class="flex flex-col items-center gap-1">
 			<ActionDialog.Trigger
-				disabled={disabled()}
 				class={
 					"aspect-square size-12 rounded-full font-black text-2xl shadow-md/50 transition-[scale] duration-200 not-disabled:hover:scale-105"
 				}
+				disabled={disabled()}
 				style={{
 					color: textColor(),
 					"background-color": baseColor(),
@@ -177,13 +177,13 @@ const ColorSelection: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 				{...props}
 				class=" flex h-36 w-64 flex-col items-center"
 				colorSpace="rgb"
-				value={color()}
 				onChange={(val) => {
 					setColor(val);
 					document.addEventListener("pointerup", () => inputEl.focus(), {
 						once: true,
 					});
 				}}
+				value={color()}
 			>
 				<ColorArea.Label class="select-none pb-0.5">Color</ColorArea.Label>
 				<ColorArea.Background class="relative size-full rounded-xl border-2 border-zinc-50">
@@ -203,21 +203,22 @@ const ColorSelection: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 			</ColorArea>
 			<ColorField
 				class="size-full"
-				value={currentCode()}
-				onChange={(val) => setInputVal(`#${val.replace(/#/g, "")}`)}
-				required={true}
+				onChange={(val) =>
+					setInputVal(
+						`${val.length > 0 ? "#" : ""}${val.replace(/#/g, "").trim().normalize().slice(0, 6)}`,
+					)
+				}
 				readOnly={!isEditingHex()}
+				required={true}
+				value={currentCode()}
 			>
 				<ColorField.Label class="input validator group text-primary">
 					<span class="label pointer-events-none select-none" tabIndex={-1}>
 						Hex Code
 					</span>
 					<ColorField.Input
+						class="pointer-events-none select-none"
 						id="colorInput"
-						ref={(el) => {
-							inputEl = el;
-							setTimeout(() => el.focus(), 100);
-						}}
 						onKeyPress={(e) => {
 							if (isEditingHex() && e.key === "Enter") {
 								const inputBox = e.target as HTMLInputElement;
@@ -225,11 +226,13 @@ const ColorSelection: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 								inputBox.closest("div")?.querySelector("button")?.click();
 							}
 						}}
-						class="pointer-events-none select-none"
+						ref={(el) => {
+							inputEl = el;
+							setTimeout(() => el.focus(), 100);
+						}}
 					/>
 					<div class=" -translate-y-1/2 absolute top-1/2 right-2 flex h-6 w-fit justify-between gap-2">
 						<button
-							type="button"
 							class="tooltip tooltip-bottom btn btn-circle btn-ghost btn-xs aspect-square h-full"
 							data-tip="Done"
 							onClick={() => {
@@ -245,6 +248,7 @@ const ColorSelection: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 								setEditingHex(!editing);
 								inputEl.focus();
 							}}
+							type="button"
 						>
 							<Icon
 								class="size-full"
@@ -258,8 +262,12 @@ const ColorSelection: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 						</button>
 						<CopyButton
 							class="tooltip tooltip-bottom tooltip-info size-full transition duration-200 ease-in-out hover:cursor-pointer"
+							code={`#${currentCode()
+								.replace(/#/g, "")
+								.trim()
+								.normalize()
+								.slice(0, 6)}`}
 							copyIcon="mdi:content-copy"
-							code={currentCode()}
 						/>
 					</div>
 				</ColorField.Label>
@@ -274,8 +282,8 @@ const ColorFields: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 
 	const Slider: Component<{ channel: ColorChannel }> = (props) => (
 		<ColorSlider
+			channel={props.channel}
 			class="relative flex h-50 touch-none select-none flex-col items-center"
-			value={color()}
 			onChange={(val) => {
 				setColor(val);
 				document.addEventListener(
@@ -287,8 +295,8 @@ const ColorFields: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 					},
 				);
 			}}
-			channel={props.channel}
 			orientation="vertical"
+			value={color()}
 		>
 			<div class="ColorSliderLabel">
 				<ColorSlider.Label>

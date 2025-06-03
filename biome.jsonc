@@ -16,6 +16,13 @@
 	"organizeImports": {
 		"enabled": true
 	},
+	"assists": {
+		"actions": {
+			"source": {
+				"sortJsxProps": "on"
+			}
+		}
+	},
 	"linter": {
 		"enabled": true,
 		"rules": {
@@ -25,7 +32,7 @@
 					"level": "error",
 					"fix": "safe",
 					"options": {
-						"attributes": ["className", "class", "classList"],
+						"attributes": ["class", "classList"],
 						"functions": ["cn"]
 					}
 				}
