@@ -27,7 +27,7 @@ const ThemeOptionPreview: Component<ThemeOptionPreviewProps> = (props) => {
 	return (
 		<div
 			{...props}
-			class="ml-0 grid size-6 grid-cols-2 grid-rows-2 gap-0.75 rounded-lg p-1 shadow *:rounded"
+			class="ml-0 grid size-6 shrink-0 grid-cols-2 grid-rows-2 gap-0.75 rounded-lg p-1 shadow *:rounded"
 			style={{ background: bgColor() }}
 		>
 			<For each={paletteKeys}>
@@ -99,7 +99,7 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 
 	return (
 		<li
-			class="motion-duration-1000/opacity motion-ease-in-out motion-duration-300 motion-opacity-in-0 -motion-translate-x-in-50"
+			class="motion-duration-1000/opacity motion-ease-in-out motion-duration-300 motion-opacity-in-0 -motion-translate-x-in-50 w-56"
 			classList={{
 				"tooltip tooltip-open": needsTooltip() && hoveringLabel(),
 			}}
@@ -114,10 +114,10 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 				onClick={() => selectTheme(local.theme)}
 				type="button"
 			>
-				<span class="inline-flex items-center">
+				<span class="flex max-w-5/6 items-center">
 					<ThemeOptionPreview theme={local.theme} />
 					<p
-						class="w-48 max-w-max grow-0 flex-nowrap overflow-hidden overflow-ellipsis whitespace-nowrap text-nowrap pl-2 text-left xl:w-36"
+						class="overflow-hidden text-ellipsis whitespace-nowrap text-nowrap pl-2 text-left"
 						onMouseEnter={() => {
 							if (!needsTooltip()) return;
 							clearTimeout(hoverDelay);
