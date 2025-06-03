@@ -122,7 +122,7 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 					</div>
 				</Show>
 			</div>
-			<ul class="xl:menu grid grid-cols-2 grid-rows-2 flex-nowrap gap-2 rounded-box p-0 px-1 max-xl:items-center md:grid-cols-3 xl:w-56">
+			<ul class="hd:flex grid hd:w-56 grid-cols-2 grid-rows-2 hd:flex-col gap-2 rounded-box p-0 px-1 max-xl:items-center md:grid-cols-3">
 				<li class="menu-title col-span-full mt-5 py-0 text-left max-xl:mb-1 max-xl:px-1">
 					<span class="flex select-none items-center justify-between">
 						My themes
@@ -143,7 +143,6 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 					</span>
 				</li>
 				<Show when={isVisible(userVisibility)}>
-					<li class="mx-1 hidden xl:block" />
 					<Show
 						fallback={<li>No themes made yet!</li>}
 						when={userThemes().length > 0}
@@ -173,7 +172,6 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 					</span>
 				</li>
 				<Show when={isVisible(includedVisibility)}>
-					<li class="mx-1 hidden xl:block" />
 					<Show
 						fallback={<li>No textual themes found</li>}
 						when={textualThemes().length > 0}
@@ -203,7 +201,6 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 					</span>
 				</li>
 				<Show when={isVisible(presetVisibility)}>
-					<li class="mx-1 hidden xl:block" />
 					<Show
 						fallback={<li>No presets found</li>}
 						when={presetThemes().length > 0}

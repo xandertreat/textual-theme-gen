@@ -12,7 +12,7 @@ const DarkThemeToggle: Component<JSX.HTMLAttributes<HTMLInputElement>> = (
 	const disabled = createMemo(() => selectedTheme().source !== "user");
 
 	return (
-		<label class="flex w-1/3 items-center justify-between">
+		<label class="mt-2 flex qhd:w-1/3 w-4/5 items-center justify-between qhd:self-auto hd:self-center">
 			<span class="label select-none text-base-content">Dark theme?</span>
 			<input
 				checked={selectedTheme().dark ?? false}
@@ -27,12 +27,12 @@ const DarkThemeToggle: Component<JSX.HTMLAttributes<HTMLInputElement>> = (
 
 const ThemeOptions: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 	return (
-		<div class="mt-8 flex h-full flex-col gap-2 xl:mt-10" {...props}>
-			<span class="inline-flex items-center gap-2">
+		<div class="hd:mt-2 mt-8 flex h-full flex-col gap-2" {...props}>
+			<span class="inline-flex gap-2">
 				<Icon class="size-9" icon="mdi:cog" />
 				<h2 class="font-bold text-3xl">Options</h2>
 			</span>
-			<div class="flex">
+			<div class="flex qhd:flex-row flex-col">
 				<CloneTheme />
 				<NewColor />
 				<VariablesManagement />

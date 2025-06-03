@@ -16,7 +16,7 @@ const ThemeCreation: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 				<Icon class="size-9" icon="mdi:palette" />
 				<h2 class="font-bold text-3xl">Colors</h2>
 			</span>
-			<div class="grid grid-cols-3 gap-5">
+			<div class="grid grid-cols-2 qhd:grid-cols-3 gap-2 qhd:gap-5">
 				<For each={paletteColors}>
 					{(paletteColor: string) => <EditColor color={paletteColor} />}
 				</For>

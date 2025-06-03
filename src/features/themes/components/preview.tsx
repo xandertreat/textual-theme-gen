@@ -167,13 +167,13 @@ const TodosPreview: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 		>
 			{"╱".repeat(300).concat("\n").repeat(100)}
 			<main
-				class="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 flex h-80 w-1/2 flex-col gap-2 px-9 py-7 text-md tracking-normal xl:h-2/3"
+				class="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 flex h-80 hd:h-2/3 w-11/20 flex-col gap-2 px-9 py-7 tracking-normal max-fhd:text-lg max-hd:text-xs"
 				style={{
 					"background-color": bg(),
 				}}
 				{...props}
 			>
-				<div class="flex justify-between">
+				<div class="mb-4 flex justify-between">
 					<span
 						class="tooltip tooltip-info font-bold"
 						style={{
@@ -181,11 +181,11 @@ const TodosPreview: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 						}}
 					>
 						<StylingTooltip>
-							<b>text:</b> $foreground
+							<b>color:</b> $foreground
 						</StylingTooltip>
 						Today
 					</span>
-					<div class="flex justify-center gap-3 *:px-3.5">
+					<div class="flex justify-center gap-3.5 *:px-3.5">
 						<span
 							class="tooltip tooltip-info"
 							style={{
@@ -196,7 +196,7 @@ const TodosPreview: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 							<StylingTooltip>
 								<b>background:</b> $error-muted
 								<br />
-								<b>text:</b> $text-error
+								<b>color:</b> $text-error
 							</StylingTooltip>
 							1 overdue
 						</span>
@@ -210,7 +210,7 @@ const TodosPreview: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 							<StylingTooltip>
 								<b>background:</b> $success-muted
 								<br />
-								<b>text:</b> $text-success
+								<b>color:</b> $text-success
 							</StylingTooltip>
 							1 done
 						</span>
@@ -225,16 +225,16 @@ const TodosPreview: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 					<StylingTooltip>
 						<b>background:</b> $surface
 						<br />
-						<b>text:</b> $boost {MUTED_ALPHA * 100}%
+						<b>color:</b> $boost {MUTED_ALPHA * 100}%
 					</StylingTooltip>
 					<div
-						class="tooltip tooltip-right tooltip-info flex size-full flex-col border-3 p-3 *:flex *:items-center *:gap-3 *:*:px-3 *:*:py-1"
+						class="tooltip tooltip-right tooltip-info flex size-full flex-col border-3 px-3.5 py-6 *:flex *:items-center *:gap-3 *:*:px-3 *:*:py-1"
 						style={{
 							"border-color": selectedTheme().palette.primary.base.color,
 						}}
 					>
 						<StylingTooltip>
-							<b>border:</b> $primary
+							<b>border:</b> solid $primary
 						</StylingTooltip>
 						<span
 							class="tooltip tooltip-info font-black"
@@ -245,7 +245,7 @@ const TodosPreview: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 							<StylingTooltip>
 								<b>background:</b> $primary
 								<br />
-								<b>text:</b> $text
+								<b>color:</b> $text
 							</StylingTooltip>
 							<p
 								class="tooltip tooltip-info tooltip-left"
@@ -257,7 +257,7 @@ const TodosPreview: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 								<StylingTooltip>
 									<b>background:</b> $panel
 									<br />
-									<b>text:</b> $panel-darken-2
+									<b>color:</b> $panel-darken-2
 								</StylingTooltip>
 								X
 							</p>
@@ -283,7 +283,7 @@ const TodosPreview: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 								<StylingTooltip>
 									<b>background:</b> $panel
 									<br />
-									<b>text:</b> $panel-darken-2
+									<b>color:</b> $panel-darken-2
 								</StylingTooltip>
 								X
 							</span>
@@ -294,7 +294,7 @@ const TodosPreview: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 								}}
 							>
 								<StylingTooltip>
-									<b>text:</b> $foreground
+									<b>color:</b> $foreground
 								</StylingTooltip>
 								Buy Bread
 							</span>
@@ -310,7 +310,7 @@ const TodosPreview: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 								<StylingTooltip>
 									<b>background:</b> $panel
 									<br />
-									<b>text:</b> $text-success
+									<b>color:</b> $text-success
 								</StylingTooltip>
 								X
 							</span>
@@ -321,7 +321,7 @@ const TodosPreview: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 								}}
 							>
 								<StylingTooltip>
-									<b>text:</b> $foreground
+									<b>color:</b> $foreground
 								</StylingTooltip>
 								Go and vote
 							</span>
@@ -337,7 +337,7 @@ const TodosPreview: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 								<StylingTooltip>
 									<b>background:</b> $panel
 									<br />
-									<b>text:</b> $panel-darken-2
+									<b>color:</b> $panel-darken-2
 								</StylingTooltip>
 								X
 							</span>
@@ -348,7 +348,7 @@ const TodosPreview: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 								}}
 							>
 								<StylingTooltip>
-									<b>text:</b> $foreground
+									<b>color:</b> $foreground
 								</StylingTooltip>
 								Return package
 							</span>
@@ -362,12 +362,12 @@ const TodosPreview: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 						}}
 					>
 						<StylingTooltip>
-							<b>border:</b> $boost
+							<b>border:</b> solid $boost
 						</StylingTooltip>
 						Add a task
 					</span>
 				</div>
-				<div class="inline-flex justify-between">
+				<div class="fhd:mt-7 inline-flex justify-between">
 					<span
 						class="tooltip tooltip-bottom tooltip-info font-black"
 						style={{
@@ -375,7 +375,7 @@ const TodosPreview: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 						}}
 					>
 						<StylingTooltip>
-							<b>text:</b> $foreground
+							<b>color:</b> $foreground
 						</StylingTooltip>
 						History
 					</span>
@@ -389,7 +389,7 @@ const TodosPreview: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 						<StylingTooltip>
 							<b>background:</b> $primary-muted
 							<br />
-							<b>text:</b> $text-primary
+							<b>color:</b> $text-primary
 						</StylingTooltip>
 						4 items
 					</span>
@@ -429,7 +429,7 @@ const PaletteColorPreview: Component<
 		);
 		return (
 			<span
-				class="flex h-13 w-full items-center justify-between gap-8 text-nowrap py-2 pr-8 pl-16 text-center text-sm xl:h-16"
+				class="flex fhd:h-16 h-13 w-full items-center justify-between fhd:gap-8 text-nowrap fhd:px-0 px-2 py-2 fhd:pr-8 fhd:pl-16 text-center text-sm"
 				style={{
 					"background-color": passed.data.color,
 				}}
@@ -463,7 +463,7 @@ const PaletteColorPreview: Component<
 
 	return (
 		<div
-			class="mb-3 h-fit max-h-5/6 w-5/6 overflow-y-auto border-2 px-10 xl:pb-10"
+			class="mb-3 h-fit max-h-5/6 w-5/6 overflow-scroll border-2 px-10 xl:pb-10"
 			style={{
 				"background-color": selectedTheme().palette.surface.base.color,
 				"border-color": selectedTheme().palette.primary.base.color,
@@ -478,7 +478,7 @@ const PaletteColorPreview: Component<
 			>
 				"{props.paletteKey}"
 			</h2>
-			<main class="flex w-full flex-col max-xl:mb-12">
+			<main class="flex w-full flex-col max-hd:mb-12">
 				<For each={sortedDarkPaletteColors()}>
 					{([variant, data]) => <ColorPreview data={data} variant={variant} />}
 				</For>
@@ -573,7 +573,7 @@ const Preview = () => {
 	});
 
 	return (
-		<div class="flex h-fit min-w-3/5 flex-col items-center gap-2 overflow-clip">
+		<div class="flex h-fit w-full hd:min-w-2/3 qhd:min-w-3/5 hd:max-w-2/3 qhd:max-w-3/5 flex-col items-center gap-2 overflow-clip">
 			<TerminalWindow>
 				<Switch>
 					<Match when={currentPreview() === "Todos App"}>

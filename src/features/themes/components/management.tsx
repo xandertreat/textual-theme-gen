@@ -8,15 +8,18 @@ const ThemeManagement: Component<JSX.HTMLAttributes<HTMLElement>> = (
 	passed,
 ) => {
 	return (
-		<main class="flex w-[80vw] gap-10 p-5 max-xl:flex-col" {...passed}>
-			<ThemeProvider>
-				<aside class=" flex flex-col gap-10 xl:flex-row">
+		<ThemeProvider>
+			<main
+				class="mt-5 flex uhd:w-[50vw] w-[80vw] uhd:gap-10 max-xl:flex-col"
+				{...passed}
+			>
+				<aside class="flex flex-col gap-5 qhd:gap-10 xl:flex-row">
 					<ThemeList />
-					<ThemeCreation class="flex h-full flex-col gap-2" />
+					<ThemeCreation class="hd:mr-5 qhd:mr-0 flex h-full flex-col gap-2" />
 				</aside>
 				<Preview />
-			</ThemeProvider>
-		</main>
+			</main>
+		</ThemeProvider>
 	);
 };
 
