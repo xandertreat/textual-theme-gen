@@ -6,7 +6,7 @@
 		"dev": "vinxi dev",
 		"build": "vinxi build",
 		"start": "vinxi start",
-		"s": "bun run build; bun start",
+		"preview": "bun run build; bun start",
 		"check": "biome check",
 		"check:fix": "biome check --write",
 		"format": "biome format --write",
