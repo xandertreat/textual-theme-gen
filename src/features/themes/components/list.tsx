@@ -112,12 +112,14 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 	});
 
 	return (
-		<div class="flex flex-col">
-			<div class="flex gap-2">
+		<div {...props}>
+			<div class="flex justify-between">
 				<h2 class="font-bold text-3xl">Themes</h2>
 				<Show when={props.showOptions}>
-					<ThemeListOptions />
-					<RandomTheme />
+					<div class="flex gap-2">
+						<ThemeListOptions />
+						<RandomTheme />
+					</div>
 				</Show>
 			</div>
 			<ul class="xl:menu grid grid-cols-2 grid-rows-2 flex-nowrap gap-2 rounded-box p-0 px-1 max-xl:items-center md:grid-cols-3 xl:w-56">

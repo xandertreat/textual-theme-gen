@@ -11,7 +11,7 @@ const ThemeCreation: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	const paletteColors = Object.keys(data.get(firstThemeName)!.palette);
 
 	return (
-		<div class="flex h-full flex-col gap-2" {...props}>
+		<div {...props}>
 			<span class="inline-flex items-center gap-2">
 				<Icon class="size-9" icon="mdi:palette" />
 				<h2 class="font-bold text-3xl">Colors</h2>

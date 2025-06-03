@@ -27,6 +27,11 @@
   }
 }
 
+/* utilities */
+@layer utilities {
+  
+}
+
 /* daisyUI */
 @plugin "daisyui" {
   themes: false;

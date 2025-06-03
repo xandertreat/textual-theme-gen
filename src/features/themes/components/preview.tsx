@@ -494,7 +494,14 @@ const TextColorsPreview: Component<
 	JSX.HTMLAttributes<HTMLElement> & { showMutedBackgrounds: boolean }
 > = (props) => {
 	const { selectedTheme } = useTheme();
-	const paletteColors = createMemo(() => Object.keys(selectedTheme().palette));
+	const paletteColors = [
+		"primary",
+		"secondary",
+		"warning",
+		"error",
+		"success",
+		"accent",
+	];
 
 	return (
 		<main
@@ -504,7 +511,7 @@ const TextColorsPreview: Component<
 			}}
 			{...props}
 		>
-			<For each={paletteColors()}>
+			<For each={paletteColors}>
 				{(paletteColor) => (
 					<h3
 						class="px-1 py-0.25"
