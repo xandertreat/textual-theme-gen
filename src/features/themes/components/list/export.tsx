@@ -1,7 +1,7 @@
 import { type Component, type JSX, createMemo, onCleanup } from "solid-js";
 import Icon from "~/components/ui/icon";
-import { useTheme } from "../context/theme";
-import { VERSION_KEY } from "../data/themes";
+import { useTheme } from "~/features/themes/context/theme";
+import { VERSION_KEY } from "~/features/themes/data/themes";
 
 const ExportThemes: Component<JSX.AnchorHTMLAttributes<HTMLAnchorElement>> = (
 	props,

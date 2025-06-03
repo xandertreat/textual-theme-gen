@@ -1,8 +1,8 @@
 import type { Component, JSX } from "solid-js";
 import Icon from "~/components/ui/icon";
-import { useTheme } from "../context/theme";
-import { VERSION_KEY } from "../data/themes";
-import type { TextualTheme } from "../types";
+import { useTheme } from "~/features/themes/context/theme";
+import { VERSION_KEY } from "~/features/themes/data/themes";
+import type { TextualTheme } from "~/features/themes/types";
 
 const ImportThemes: Component<JSX.HTMLAttributes<HTMLLabelElement>> = (
 	props,

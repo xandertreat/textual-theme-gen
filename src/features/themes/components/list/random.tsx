@@ -1,9 +1,9 @@
 import gsap from "gsap";
 import type { Component, JSX } from "solid-js";
 import { batch } from "solid-js";
-import Icon from "../../../components/ui/icon";
-import { useTheme } from "../context/theme";
-import { genRandomTheme } from "../lib/color";
+import Icon from "~/components/ui/icon";
+import { useTheme } from "~/features/themes/context/theme";
+import { genRandomTheme } from "~/features/themes/lib/color";
 
 const RandomTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 	props,

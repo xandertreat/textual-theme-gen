@@ -1,6 +1,6 @@
 import { type Component, type JSX, createMemo } from "solid-js";
 import Icon from "~/components/ui/icon";
-import { useTheme } from "../context/theme";
+import { useTheme } from "~/features/themes/context/theme";
 import CloneTheme from "./clone";
 import NewColor from "./new-color";
 import VariablesManagement from "./variables";

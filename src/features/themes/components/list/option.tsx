@@ -8,8 +8,8 @@ import {
 	onMount,
 	splitProps,
 } from "solid-js";
-import Icon from "../../../components/ui/icon";
-import { useTheme } from "../context/theme";
+import Icon from "../../../../components/ui/icon";
+import { useTheme } from "../../context/theme";
 import { CloneThemeOption } from "./clone";
 import DeleteTheme from "./delete";
 import RenameTheme from "./rename";

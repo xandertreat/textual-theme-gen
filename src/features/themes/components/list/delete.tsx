@@ -4,8 +4,8 @@ import type { Component, JSX } from "solid-js";
 import { batch, splitProps } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import Icon from "~/components/ui/icon";
-import { useTheme } from "../context/theme";
-import type { TextualTheme } from "../types";
+import { useTheme } from "~/features/themes/context/theme";
+import type { TextualTheme } from "~/features/themes/types";
 
 interface DeleteThemeProps extends JSX.HTMLAttributes<HTMLButtonElement> {
 	theme: string;

@@ -9,8 +9,8 @@ import {
 	mergeProps,
 	onMount,
 } from "solid-js";
-import Icon from "../../../components/ui/icon";
-import { useTheme } from "../context/theme";
+import Icon from "~/components/ui/icon";
+import { useTheme } from "~/features/themes/context/theme";
 import ClearThemes from "./clear";
 import ExportThemes from "./export";
 import ImportThemes from "./import";

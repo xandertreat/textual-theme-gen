@@ -1,6 +1,6 @@
 import { type Component, For, type JSX } from "solid-js";
 import Icon from "~/components/ui/icon";
-import { useTheme } from "../context/theme";
+import { useTheme } from "~/features/themes/context/theme";
 import EditColor from "./color";
 import ThemeOptions from "./theme-options";
 

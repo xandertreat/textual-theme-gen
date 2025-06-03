@@ -1,22 +1,20 @@
 import { type Component, type JSX, createMemo } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import Icon from "~/components/ui/icon";
-import { useTheme } from "../context/theme";
+import { useTheme } from "~/features/themes/context/theme";
 
-const VariablesManagement: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
-	props,
-) => {
+const NewColor: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 	const { selectedTheme } = useTheme();
 	const canModify = createMemo(() => selectedTheme().source === "user");
 
 	return (
 		<ActionDialog>
 			<ActionDialog.Trigger
-				class="btn m-2 mx-4 w-40 border-2"
+				class="btn m-2 mx-4 w-40 border-2 border-success text-success disabled:border-success/30 disabled:text-success/30"
 				disabled={!canModify()}
 			>
-				<Icon class="size-5" icon="mdi:mixer-settings" />
-				<p>Variables</p>
+				<Icon class="size-5 " icon="mdi:plus-circle" />
+				<p>Create Color</p>
 			</ActionDialog.Trigger>
 			<ActionDialog.Portal>
 				<ActionDialog.Overlay />
@@ -33,4 +31,4 @@ const VariablesManagement: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	);
 };
 
-export default VariablesManagement;
+export default NewColor;

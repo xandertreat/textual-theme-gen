@@ -1,8 +1,8 @@
 import type { Component, JSX } from "solid-js";
 import { ThemeProvider } from "../context/theme";
-import ThemeCreation from "./creation";
-import ThemeList from "./list";
-import Preview from "./preview";
+import ThemeCreation from "./editing/creation";
+import ThemeList from "./list/list";
+import Preview from "./preview/preview";
 
 const ThemeManagement: Component<JSX.HTMLAttributes<HTMLElement>> = (
 	passed,
@@ -10,7 +10,7 @@ const ThemeManagement: Component<JSX.HTMLAttributes<HTMLElement>> = (
 	return (
 		<ThemeProvider>
 			<main
-				class="mt-5 flex uhd:w-[50vw] w-[80vw] uhd:gap-10 max-xl:flex-col"
+				class="mt-5 flex fhd:w-[80vw] hd:w-screen uhd:w-[50vw] w-[90vw] uhd:gap-10 hd:pr-20 fhd:pl-0 hd:pl-5 max-xl:flex-col"
 				{...passed}
 			>
 				<aside class="flex flex-col gap-5 qhd:gap-10 xl:flex-row">

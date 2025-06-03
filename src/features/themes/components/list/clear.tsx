@@ -2,7 +2,7 @@ import { action, useSubmission } from "@solidjs/router";
 import type { Component, JSX } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import Icon from "~/components/ui/icon";
-import { useTheme } from "../context/theme";
+import { useTheme } from "~/features/themes/context/theme";
 
 const ClearThemes: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 	props,

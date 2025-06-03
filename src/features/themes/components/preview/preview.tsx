@@ -10,8 +10,8 @@ import {
 	createMemo,
 	createSignal,
 } from "solid-js";
-import Icon from "../../../components/ui/icon";
-import { DEFAULTS, useTheme } from "../context/theme";
+import Icon from "~/components/ui/icon";
+import { DEFAULTS, useTheme } from "~/features/themes/context/theme";
 import {
 	DISABLED_ALPHA,
 	MUTED_ALPHA,
@@ -19,8 +19,8 @@ import {
 	calcAutoText,
 	getContrastText,
 	inverse,
-} from "../lib/color";
-import type { TextualColor } from "../types";
+} from "~/features/themes/lib/color";
+import type { TextualColor } from "~/features/themes/types";
 
 const TerminalWindow: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	props,

@@ -11,7 +11,7 @@ import {
 } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import Icon from "~/components/ui/icon";
-import { useTheme } from "../context/theme";
+import { useTheme } from "~/features/themes/context/theme";
 
 type InvalidReason = "malformed" | "source" | "nodiff";
 interface RenameThemeProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {

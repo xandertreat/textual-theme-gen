@@ -20,10 +20,14 @@ import {
 import ActionDialog from "~/components/ui/action-dialog";
 import CopyButton from "~/components/ui/copy";
 import Icon from "~/components/ui/icon";
+import { useTheme } from "~/features/themes/context/theme";
+import {
+	TEXT_ALPHA,
+	generateColorData,
+	getContrastText,
+} from "~/features/themes/lib/color";
+import type { HexColorCode } from "~/features/themes/types";
 import debounce from "~/lib/debounce";
-import { useTheme } from "../context/theme";
-import { TEXT_ALPHA, generateColorData, getContrastText } from "../lib/color";
-import type { HexColorCode } from "../types";
 
 const DEBOUNCE_DELAY = 2.5; // ms (found through manual testing to be best responsive / performance tradeoff)
 
