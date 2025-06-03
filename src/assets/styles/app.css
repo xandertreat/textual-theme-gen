@@ -7,10 +7,13 @@
     sans-serif;
   --font-mono: Consolas, "SFMono-Regular", Menlo,
     Monaco, "Liberation Mono", "Courier New", monospace;
-  --breakpoint-hd: 1200px;
-  --breakpoint-fhd: 1900px;
-  --breakpoint-qhd: 2500px;
-  --breakpoint-uhd: 4000px;
+  --breakpoint-sm: 576px;   /* phones */
+  --breakpoint-md: 768px;   /* tablets */
+  --breakpoint-lg: 1024px;  /* small laptops / landscape tablets */
+  --breakpoint-hd: 1200px;  /* HD (720p) */
+  --breakpoint-fhd: 1900px; /* Full HD (1080p) */
+  --breakpoint-qhd: 2500px; /* QHD (1440p / 2 K) */
+  --breakpoint-uhd: 4000px; /* UHD (4 K) */
 }
 
 /* global css */

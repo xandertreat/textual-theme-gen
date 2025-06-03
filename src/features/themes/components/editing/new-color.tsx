@@ -10,7 +10,7 @@ const NewColor: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 	return (
 		<ActionDialog>
 			<ActionDialog.Trigger
-				class="btn m-2 mx-4 w-40 border-2 border-success text-success disabled:border-success/30 disabled:text-success/30"
+				class="btn m-2 mx-4 hd:w-40 border-2 border-success text-success disabled:border-success/30 disabled:text-success/30"
 				disabled={!canModify()}
 			>
 				<Icon class="size-5 " icon="mdi:plus-circle" />

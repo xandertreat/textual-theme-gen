@@ -136,7 +136,7 @@ const ColorSwatch: Component<
 	const disabled = createMemo(() => !(selectedTheme().source === "user"));
 
 	return (
-		<span class="flex flex-col items-center gap-1">
+		<span class="m-1 flex flex-col items-center gap-1">
 			<ActionDialog.Trigger
 				class={
 					"aspect-square size-12 rounded-full font-black text-2xl shadow-md/50 transition-[scale] duration-200 not-disabled:hover:scale-105"
@@ -151,7 +151,9 @@ const ColorSwatch: Component<
 			>
 				A
 			</ActionDialog.Trigger>
-			<p>{props.paletteKey[0].toUpperCase() + props.paletteKey.slice(1)}</p>
+			<p class="hd:text-xs! qhd:text-base! text-xs md:text-base!">
+				{props.paletteKey[0].toUpperCase() + props.paletteKey.slice(1)}
+			</p>
 		</span>
 	);
 };
