@@ -141,6 +141,7 @@ const ColorSwatch: Component<
 				class={
 					"aspect-square size-12 rounded-full font-black text-2xl shadow-md/50 transition-[scale] duration-200 not-disabled:hover:scale-105"
 				}
+				classList={{ "pointer-events-none": disabled() }}
 				disabled={disabled()}
 				style={{
 					color: textColor(),
