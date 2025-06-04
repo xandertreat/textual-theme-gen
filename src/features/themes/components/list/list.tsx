@@ -17,6 +17,7 @@ import ImportThemes from "./import";
 import ThemeOption from "./option";
 import RandomTheme from "./random";
 import ThemeReset from "./reset";
+import NewTheme from "./new";
 
 // TODO: add export / import options (either from a textual code config or json files from app)
 interface ThemeListOptionsProps extends JSX.HTMLAttributes<HTMLDivElement> {}
@@ -151,6 +152,7 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 							{(theme) => <ThemeOption showDelete theme={theme} />}
 						</For>
 					</Show>
+					<NewTheme />
 				</Show>
 				<li class="menu-title col-span-full mt-5 py-0 text-left max-xl:mb-1 max-xl:px-1">
 					<span class="flex select-none items-center justify-between">

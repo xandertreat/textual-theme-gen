@@ -199,10 +199,10 @@ export const generateColorData = (
  * Generates a random theme object.
  * @returns A random TextualTheme object.
  */
-export const genRandomTheme = (): TextualTheme => {
+export const genRandomTheme = (isDark?: boolean): TextualTheme => {
 	const randomLCH = () =>
 		Color().lch(Math.random() * 100, Math.random() * 130, Math.random() * 360);
-	const dark = Math.random() > 0.5;
+	const dark = isDark ?? Math.random() > 0.5;
 	let bg: ColorT;
 	let surface: ColorT;
 	if (dark) {
