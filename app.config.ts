@@ -18,7 +18,6 @@ export default defineConfig({
 	vite: {
 		plugins: [tailwindcss()],
 		server: {
-			port: 3010,
 			allowedHosts: ["127.0.0.1", "localhost", "0.0.0.0"],
 		},
 		test: {

@@ -44,6 +44,4 @@ RUN addgroup --system app \
     && adduser --system --ingroup app app
 USER app
 
-EXPOSE 3010
-
 CMD ["node", ".output/server/index.mjs"]
