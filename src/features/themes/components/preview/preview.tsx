@@ -53,7 +53,7 @@ const PaletteColorPreview: Component<
 		);
 		return (
 			<span
-				class="flex fhd:h-16 h-13 w-full items-center justify-between fhd:gap-8 text-nowrap fhd:px-0 px-2 py-2 fhd:pr-8 fhd:pl-16 text-center text-sm"
+				class="flex fhd:h-16 h-13 min-w-max items-center justify-between gap-8 text-nowrap px-2 py-2 pr-8 pl-16 text-center text-sm md:w-auto"
 				style={{
 					"background-color": passed.data.color,
 				}}
@@ -87,7 +87,7 @@ const PaletteColorPreview: Component<
 
 	return (
 		<div
-			class="mb-3 h-fit max-h-5/6 w-5/6 overflow-scroll border-2 px-10 xl:pb-10"
+			class="mb-3 grid h-fit max-h-9/10 w-9/10 overflow-scroll border-2 px-10 hd:pb-10 md:max-h-5/6 md:w-5/6"
 			style={{
 				"background-color": selectedTheme().palette.surface.base.color,
 				"border-color": selectedTheme().palette.primary.base.color,
@@ -95,9 +95,9 @@ const PaletteColorPreview: Component<
 			{...props}
 		>
 			<h2
-				class="mt-2 mb-4 font-bold"
+				class="mt-2 mb-4 self-center font-bold"
 				style={{
-					color: selectedTheme().palette.surface.base.text,
+					color: selectedTheme().palette.foreground.base.text,
 				}}
 			>
 				"{props.paletteKey}"
@@ -129,7 +129,7 @@ const TextColorsPreview: Component<
 
 	return (
 		<main
-			class="flex size-full flex-col items-start justify-start pt-2 pl-2 text-xl xl:text-3xl"
+			class="flex size-full flex-col items-start justify-start pt-2 pl-2 text-3xl"
 			style={{
 				"background-color": selectedTheme().palette.background.base.color,
 			}}

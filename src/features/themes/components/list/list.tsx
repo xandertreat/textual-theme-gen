@@ -122,7 +122,7 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 					</div>
 				</Show>
 			</div>
-			<ul class="hd:flex grid hd:w-56 grid-cols-2 grid-rows-2 hd:flex-col gap-2 rounded-box p-0 px-1 max-xl:items-center md:grid-cols-3">
+			<ul class="hd:flex grid hd:w-56 grid-cols-1 xs:grid-cols-2 hd:flex-col gap-2 rounded-box p-0 px-1 md:grid-cols-3">
 				<li class="menu-title col-span-full mt-5 py-0 text-left max-xl:mb-1 max-xl:px-1">
 					<span class="flex select-none items-center justify-between">
 						My themes

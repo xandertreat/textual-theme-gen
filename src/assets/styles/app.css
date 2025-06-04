@@ -7,6 +7,7 @@
     sans-serif;
   --font-mono: Consolas, "SFMono-Regular", Menlo,
     Monaco, "Liberation Mono", "Courier New", monospace;
+  --breakpoint-xs: 370px;   /* very small phones */
   --breakpoint-sm: 576px;   /* phones */
   --breakpoint-md: 768px;   /* tablets */
   --breakpoint-lg: 1024px;  /* small laptops / landscape tablets */

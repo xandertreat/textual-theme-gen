@@ -99,7 +99,7 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 
 	return (
 		<li
-			class="motion-duration-1000/opacity motion-ease-in-out motion-duration-300 motion-opacity-in-0 -motion-translate-x-in-50 w-56"
+			class="motion-duration-1000/opacity motion-ease-in-out motion-duration-300 motion-opacity-in-0 -motion-translate-x-in-50 "
 			classList={{
 				"tooltip tooltip-open": needsTooltip() && hoveringLabel(),
 			}}

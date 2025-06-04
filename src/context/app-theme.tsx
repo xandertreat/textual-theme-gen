@@ -118,7 +118,7 @@ const AppThemeController: Component<
 	return (
 		<button
 			{...props}
-			class="btn btn-ghost btn-circle motion-duration-500 motion-ease-in-out -motion-translate-x-in-[200%] motion-delay-500 fixed inset-1 size-9 translate-x-full p-0.5 xl:size-11"
+			class="btn btn-ghost btn-circle motion-duration-500 motion-ease-in-out -motion-translate-x-in-[200%] motion-delay-500 fixed inset-1 hd:size-11 size-6 translate-x-full p-0.5 md:size-9"
 			onClick={() => setAppTheme(cycle[nextThemeIdx()])}
 			type="button"
 		>
