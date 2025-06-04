@@ -1,6 +1,6 @@
 import { cn } from "@util";
 import type { JSX } from "solid-js";
-import { type Component, Show, splitProps } from "solid-js";
+import { type Component, createMemo, Show, splitProps } from "solid-js";
 import CopyButton from "./copy";
 import Icon from "./icon";
 
@@ -35,6 +35,9 @@ const CodeBlock: Component<CodeBlockProps> = (props) => {
 	local.langIcon ??= `logos:${local.lang}`;
 
 	const Code = () => {
+		const highlightedCode = createMemo(
+			() => hljs.highlight(local.code, { language: local.lang }).value,
+		);
 		return (
 			<div
 				class="overflow-scroll bg-[#151B23] p-2 font-mono!"
@@ -47,12 +50,7 @@ const CodeBlock: Component<CodeBlockProps> = (props) => {
 					<CopyButton code={local.code} />
 				</Show>
 				<pre>
-					<code
-						{...rest}
-						innerHTML={
-							hljs.highlight(local.code, { language: local.lang }).value
-						}
-					/>
+					<code {...rest} innerHTML={highlightedCode()} />
 				</pre>
 			</div>
 		);
