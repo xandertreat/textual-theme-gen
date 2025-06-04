@@ -196,6 +196,8 @@ public/                  # Static assets, icons, manifest
 - [ ] Add further options for derived colors / variables to include in code bundle
 - [ ] Fully support variables
 - [ ] Localization / Internationalization
+- [ ] Icon package / refactor
+- [ ] Pre-packaged colors to pick from (from textual's built in colors)
 
 ---
 
