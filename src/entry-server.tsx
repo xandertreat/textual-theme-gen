@@ -2,7 +2,7 @@
 import { StartServer, createHandler } from "@solidjs/start/server";
 import { DEFAULT_APP_THEME } from "./context/app-theme";
 
-export const LIVE_URL = "https://ttg.xtreat.dev/";
+export const LIVE_URL = "https://xtreat.dev/ttg";
 
 export default createHandler(() => (
 	<StartServer
