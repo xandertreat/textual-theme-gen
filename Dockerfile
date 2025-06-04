@@ -32,7 +32,7 @@ WORKDIR /app
 COPY bun.lock* package.json ./
 
 RUN --mount=type=cache,target=/root/.bun \
-    bun install --omit=dev
+    bun install
 
 COPY . .
 
