@@ -13,7 +13,6 @@ A modern, highly interactive theme generator and playground for [Textual](https:
 
 [![Open Issues](https://img.shields.io/github/issues/xandertreat/textual-theme-gen)](https://github.com/xandertreat/textual-theme-gen/issues)
 [![Open PRs](https://img.shields.io/github/issues-pr/xandertreat/textual-theme-gen?color=purple)](https://github.com/xandertreat/textual-theme-gen/pulls)
-[![All Contributors](https://img.shields.io/github/all-contributors/projectOwner/projectName?color=ee8449&style=flat-square)](#contributors)
 
 [![MIT License](https://img.shields.io/badge/license-MIT-success?logo=open-source-initiative&logoColor=white)](https://github.com/xandertreat/textual-theme-gen/blob/main/LICENSE)
 [![Code Style: Biome](https://img.shields.io/badge/code%20style-biome-5ed9c7?logo=biome&logoColor=white)](https://biomejs.dev/)
@@ -204,19 +203,6 @@ public/                  # Static assets, icons, manifest
 ## 📝 License
 
 [MIT](LICENSE)
-
----
-
-## Contributors
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
 
 ---
 
