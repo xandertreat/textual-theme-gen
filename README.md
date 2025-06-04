@@ -4,7 +4,7 @@ A modern, highly interactive theme generator and playground for [Textual](https:
 
 [![Node.js](https://img.shields.io/badge/node-%3E=20.x-green?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Bun](https://img.shields.io/badge/bun-%3E=1.x-blue?logo=bun&logoColor=white)](https://bun.sh/)
-[![Demo](https://img.shields.io/badge/demo-online-blue)](https://xtreat.dev/ttg)
+[![Demo](https://img.shields.io/badge/demo-online-blue)](https://ttg.xtreat.dev)
 
 [![CI Checks](https://img.shields.io/github/actions/workflow/status/xandertreat/textual-theme-gen/ci.yml?branch=main)](https://github.com/xandertreat/textual-theme-gen/actions)
 [![Coverage](https://img.shields.io/badge/coverage-local-informational?logo=codecov&logoColor=white)](./coverage/index.html)
@@ -30,7 +30,7 @@ A quick look at the app in action:
 
 ![Demo GIF](./public/demo.gif)
 
-> Want to see more? Try the [live demo](https://xtreat.dev/ttg)!
+> Want to see more? Try the [live demo](https://ttg.xtreat.dev)!
 
 ---
 
