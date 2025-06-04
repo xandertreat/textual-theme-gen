@@ -24,7 +24,7 @@ const CommandPalette: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 			}}
 			{...props}
 		>
-			<div class="inline-flex gap-4 pt-1.5">
+			<div class="invisible inline-flex gap-4 pt-1.5 md:visible">
 				<span class="inline-flex h-full gap-2">
 					<kbd
 						class="font-black"

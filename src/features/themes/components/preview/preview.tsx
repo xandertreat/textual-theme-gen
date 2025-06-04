@@ -222,7 +222,37 @@ const Preview = () => {
 					<CommandPalette />
 				</Show>
 			</TerminalWindow>
-			<div class="mt-1 flex w-full justify-between font-light text-sm">
+			<div class="mt-1 flex w-full flex-col items-start justify-between gap-2 font-light text-sm md:flex-row">
+				<div class=" flex flex-col gap-2 md:hidden">
+					<label class="label flex items-center justify-between gap-2">
+						<span class="cursor-default select-none text-base-content">
+							Show command palette?
+						</span>
+						<input
+							checked={showCommandPalette()}
+							class="checkbox rounded-md border border-base-content/30 text-green-600 transition-colors duration-150 hover:border-base-content/50"
+							onChange={(e) =>
+								setCommandPaletteVisibility(!showCommandPalette())
+							}
+							type="checkbox"
+						/>
+					</label>
+					<Show when={currentPreview() === "Text"}>
+						<label class="label flex items-center justify-between gap-2">
+							<span class="cursor-default select-none text-base-content">
+								Show muted backgrounds?
+							</span>
+							<input
+								checked={showMutedBackgrounds()}
+								class="checkbox rounded-md border border-base-content/30 text-green-600 transition-colors duration-150 hover:border-base-content/50"
+								onChange={(e) =>
+									setMutedBackgroundsVisibility(!showMutedBackgrounds())
+								}
+								type="checkbox"
+							/>
+						</label>
+					</Show>
+				</div>
 				<div class="flex items-start gap-2 lg:flex-col">
 					<Select
 						class="flex w-full flex-col items-center justify-between gap-1 lg:flex-row"
@@ -314,9 +344,11 @@ const Preview = () => {
 						</Select>
 					</Show>
 				</div>
-				<div class="flex flex-col gap-2">
-					<label class="flex items-center justify-between gap-2">
-						<span class="label select-none">Show command palette? </span>
+				<div class=" hidden flex-col gap-2 md:flex">
+					<label class="label flex items-center justify-between gap-2">
+						<span class="cursor-default select-none text-base-content">
+							Show command palette?
+						</span>
 						<input
 							checked={showCommandPalette()}
 							class="checkbox rounded-md border border-base-content/30 text-green-600 transition-colors duration-150 hover:border-base-content/50"
@@ -327,8 +359,10 @@ const Preview = () => {
 						/>
 					</label>
 					<Show when={currentPreview() === "Text"}>
-						<label class="flex items-center justify-between gap-2">
-							<span class="label select-none">Show muted backgrounds? </span>
+						<label class="label flex items-center justify-between gap-2">
+							<span class="cursor-default select-none text-base-content">
+								Show muted backgrounds?
+							</span>
 							<input
 								checked={showMutedBackgrounds()}
 								class="checkbox rounded-md border border-base-content/30 text-green-600 transition-colors duration-150 hover:border-base-content/50"
