@@ -57,7 +57,7 @@ export default createHandler(() => (
 					/>
 					<meta content="strict-origin-when-cross-origin" name="referrer" />
 					<meta content="telephone=no" name="format-detection" />
-					<link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+					{/* <link href="/favicon.svg" rel="icon" type="image/svg+xml" /> */}
 					<link href="/favicon.ico" rel="icon" sizes="any" />
 					<link
 						href="/favicon-32x32.png"
