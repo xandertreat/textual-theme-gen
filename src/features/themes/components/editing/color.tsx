@@ -92,31 +92,6 @@ const ColorContextProvider: Component<ColorContextProviderProps> = (props) => {
 	);
 };
 
-const EditColor: Component<
-	JSX.HTMLAttributes<HTMLDivElement> & { color: string }
-> = (props) => {
-	const [local, rest] = splitProps(props, ["color"]);
-
-	return (
-		<ActionDialog>
-			<ColorSwatch paletteKey={local.color} />
-			<ActionDialog.Portal>
-				<ActionDialog.Overlay />
-				<ActionDialog.Content
-					class="flex size-max items-center gap-3 border-0 pt-8 text-center [&>button]:text-error"
-					{...rest}
-				>
-					<ActionDialog.Close />
-					<ColorContextProvider paletteKey={local.color}>
-						<ColorSelection />
-						<ColorFields />
-					</ColorContextProvider>
-				</ActionDialog.Content>
-			</ActionDialog.Portal>
-		</ActionDialog>
-	);
-};
-
 const ColorSwatch: Component<
 	JSX.ButtonHTMLAttributes<HTMLButtonElement> & { paletteKey: string }
 > = (props) => {
@@ -159,36 +134,124 @@ const ColorSwatch: Component<
 	);
 };
 
-// TODO: re-implement hex input field myself so it can use HEXA and not require such bloat
-const ColorSelection: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
-	props,
-) => {
-	const { color, setColor, hexCode } = useColorContext();
+const HexCodeField: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
+	const { setColor, hexCode } = useColorContext();
 	const [isEditingHex, setEditingHex] = createSignal(false);
 	const [inputVal, setInputVal] = createSignal(
 		hexCode().length > 6 ? hexCode().slice(0, -2) : hexCode(),
 	);
-	let inputEl!: HTMLInputElement;
 
 	const currentCode = createMemo(() =>
 		isEditingHex() ? inputVal() : hexCode(),
 	);
-
 	createEffect(() =>
 		setInputVal(hexCode().length > 6 ? hexCode().slice(0, -2) : hexCode()),
 	);
 
+	let inputEl!: HTMLInputElement;
+
 	return (
-		<div class="flex w-max flex-col items-center gap-2">
+		<ColorField
+			onChange={(val) =>
+				setInputVal(
+					`${val.length > 0 ? "#" : ""}${val.replace(/#/g, "").trim().normalize().slice(0, 6)}`,
+				)
+			}
+			readOnly={!isEditingHex()}
+			required={true}
+			value={currentCode()}
+			{...props}
+		>
+			<ColorField.Label class="input validator group text-primary">
+				<span class="label pointer-events-none select-none" tabIndex={-1}>
+					Hex Code
+				</span>
+				<ColorField.Input
+					class="pointer-events-none select-none"
+					id="colorInput"
+					onKeyPress={(e) => {
+						if (isEditingHex() && e.key === "Enter") {
+							const inputBox = e.target as HTMLInputElement;
+							inputBox.blur();
+							inputBox.closest("div")?.querySelector("button")?.click();
+						}
+					}}
+					ref={(el) => {
+						inputEl = el;
+						setTimeout(() => el.focus(), 100);
+					}}
+				/>
+				<div class=" -translate-y-1/2 absolute top-1/2 right-2 flex h-6 w-fit justify-between gap-2">
+					<button
+						class="tooltip tooltip-bottom btn btn-circle btn-ghost btn-xs aspect-square h-full"
+						data-tip="Done"
+						onClick={() => {
+							const editing = isEditingHex();
+							if (editing)
+								try {
+									const color = parseColor(inputVal());
+									if (color) setColor(color);
+									document?.documentElement.style.removeProperty("cursor");
+								} catch {
+									setInputVal(hexCode());
+								}
+							setEditingHex(!editing);
+							inputEl.focus();
+						}}
+						type="button"
+					>
+						<Icon
+							class="size-full"
+							classList={{ "text-green-600": isEditingHex() }}
+							icon={
+								isEditingHex()
+									? "mdi:pencil-circle"
+									: "mdi:pencil-circle-outline"
+							}
+						/>
+					</button>
+					<CopyButton
+						class="tooltip tooltip-bottom tooltip-info size-full transition duration-200 ease-in-out hover:cursor-pointer"
+						code={`#${currentCode()
+							.replace(/#/g, "")
+							.trim()
+							.normalize()
+							.slice(0, 6)}`}
+						copyIcon="mdi:content-copy"
+					/>
+				</div>
+			</ColorField.Label>
+			<ColorField.ErrorMessage />
+		</ColorField>
+	);
+};
+
+// TODO: re-implement hex input field myself so it can use HEXA and not require such bloat
+const ColorSelection: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
+	props,
+) => {
+	const { color, setColor } = useColorContext();
+
+	return (
+		<div {...props}>
 			<ColorArea
-				{...props}
 				class=" flex h-36 w-64 flex-col items-center"
 				colorSpace="rgb"
 				onChange={(val) => {
 					setColor(val);
-					document.addEventListener("pointerup", () => inputEl.focus(), {
-						once: true,
-					});
+					document.addEventListener(
+						"pointerup",
+						() => {
+							for (const inputEl of document.querySelectorAll<HTMLInputElement>(
+								"#hexCodeField",
+							))
+								if (inputEl.style.getPropertyValue("display") !== "hidden")
+									inputEl.focus();
+						},
+						{
+							once: true,
+						},
+					);
 				}}
 				value={color()}
 			>
@@ -208,78 +271,6 @@ const ColorSelection: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 					</ColorArea.Thumb>
 				</ColorArea.Background>
 			</ColorArea>
-			<ColorField
-				class="size-full"
-				onChange={(val) =>
-					setInputVal(
-						`${val.length > 0 ? "#" : ""}${val.replace(/#/g, "").trim().normalize().slice(0, 6)}`,
-					)
-				}
-				readOnly={!isEditingHex()}
-				required={true}
-				value={currentCode()}
-			>
-				<ColorField.Label class="input validator group text-primary">
-					<span class="label pointer-events-none select-none" tabIndex={-1}>
-						Hex Code
-					</span>
-					<ColorField.Input
-						class="pointer-events-none select-none"
-						id="colorInput"
-						onKeyPress={(e) => {
-							if (isEditingHex() && e.key === "Enter") {
-								const inputBox = e.target as HTMLInputElement;
-								inputBox.blur();
-								inputBox.closest("div")?.querySelector("button")?.click();
-							}
-						}}
-						ref={(el) => {
-							inputEl = el;
-							setTimeout(() => el.focus(), 100);
-						}}
-					/>
-					<div class=" -translate-y-1/2 absolute top-1/2 right-2 flex h-6 w-fit justify-between gap-2">
-						<button
-							class="tooltip tooltip-bottom btn btn-circle btn-ghost btn-xs aspect-square h-full"
-							data-tip="Done"
-							onClick={() => {
-								const editing = isEditingHex();
-								if (editing)
-									try {
-										const color = parseColor(inputVal());
-										if (color) setColor(color);
-										document?.documentElement.style.removeProperty("cursor");
-									} catch {
-										setInputVal(hexCode());
-									}
-								setEditingHex(!editing);
-								inputEl.focus();
-							}}
-							type="button"
-						>
-							<Icon
-								class="size-full"
-								classList={{ "text-green-600": isEditingHex() }}
-								icon={
-									isEditingHex()
-										? "mdi:pencil-circle"
-										: "mdi:pencil-circle-outline"
-								}
-							/>
-						</button>
-						<CopyButton
-							class="tooltip tooltip-bottom tooltip-info size-full transition duration-200 ease-in-out hover:cursor-pointer"
-							code={`#${currentCode()
-								.replace(/#/g, "")
-								.trim()
-								.normalize()
-								.slice(0, 6)}`}
-							copyIcon="mdi:content-copy"
-						/>
-					</div>
-				</ColorField.Label>
-				<ColorField.ErrorMessage />
-			</ColorField>
 		</div>
 	);
 };
@@ -290,7 +281,7 @@ const ColorFields: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 	const Slider: Component<{ channel: ColorChannel }> = (props) => (
 		<ColorSlider
 			channel={props.channel}
-			class="relative flex h-50 touch-none select-none flex-col items-center"
+			class="relative flex h-50 w-6 touch-none select-none flex-col items-center"
 			onChange={(val) => {
 				setColor(val);
 				document.addEventListener(
@@ -302,7 +293,7 @@ const ColorFields: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 					},
 				);
 			}}
-			orientation="vertical"
+			orientation={"vertical"}
 			value={color()}
 		>
 			<div class="ColorSliderLabel">
@@ -310,9 +301,9 @@ const ColorFields: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 					{props.channel[0].toLocaleUpperCase() + props.channel.slice(1)}
 				</ColorSlider.Label>
 			</div>
-			<ColorSlider.Track class="relative my-2 h-full w-6 rounded border-2 border-zinc-50">
+			<ColorSlider.Track class="relative my-2 size-full rounded border-2 border-zinc-50">
 				<ColorSlider.Thumb
-					class="-translate-x-1/2 left-1/2 z-10 size-4 cursor-grab rounded-full border-2 border-zinc-50 border-solid shadow"
+					class="-translate-x-1/2 absolute left-1/2 z-10 size-6 cursor-grab rounded-full border-2 border-zinc-50 border-solid shadow md:size-4"
 					style={{
 						background:
 							"linear-gradient(var(--kb-color-current), var(--kb-color-current)) border-box, linear-gradient(black, white)",
@@ -328,12 +319,42 @@ const ColorFields: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 	);
 
 	return (
-		<div class="flex w-full items-center justify-between gap-2">
+		<div class="flex w-full items-center justify-center gap-10 md:justify-between md:gap-2">
 			<Slider channel="red" />
 			<Slider channel="green" />
 			<Slider channel="blue" />
 			<Slider channel="alpha" />
 		</div>
+	);
+};
+
+const EditColor: Component<
+	JSX.HTMLAttributes<HTMLDivElement> & { color: string }
+> = (props) => {
+	const [local, rest] = splitProps(props, ["color"]);
+
+	return (
+		<ActionDialog>
+			<ColorSwatch paletteKey={local.color} />
+			<ActionDialog.Portal>
+				<ActionDialog.Overlay />
+				<ActionDialog.Content
+					class="flex w-1/2 items-center gap-3 border-0 text-center max-md:flex-col max-md:rounded-none md:size-max md:pt-8 [&>button]:text-error"
+					{...rest}
+				>
+					<ActionDialog.Close class="btn btn-circle btn-ghost btn-xs absolute top-2 left-2" />
+					<ColorContextProvider paletteKey={local.color}>
+						<div class=" hidden flex-col gap-3 md:flex">
+							<ColorSelection class="flex w-max flex-col items-center gap-2" />
+							<HexCodeField class="size-full" />
+						</div>
+						<ColorFields />
+						<ColorSelection class="flex w-max flex-col items-center gap-2 md:hidden" />
+						<HexCodeField class="block size-full md:hidden" />
+					</ColorContextProvider>
+				</ActionDialog.Content>
+			</ActionDialog.Portal>
+		</ActionDialog>
 	);
 };
 
