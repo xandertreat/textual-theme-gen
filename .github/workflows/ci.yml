@@ -7,7 +7,7 @@ on:
     branches: [main, dev]
 
 jobs:
-  build-and-test:
+  checks:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -27,7 +27,7 @@ jobs:
           bun format:check
 
       - name: Type check
-        run: bun ts-lint
+        run: bun tsc
 
       - name: Run tests
         run: bun test
