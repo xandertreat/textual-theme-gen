@@ -1,20 +1,29 @@
 import { type Component, type JSX, createMemo } from "solid-js";
 import { useTheme } from "~/features/themes/context/theme";
-import {
-	calcAutoText,
-	getContrastText,
-	inverse,
-} from "~/features/themes/lib/color";
+import { calcAutoText } from "~/features/themes/lib/color";
 
 const CommandPalette: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 	const { selectedTheme } = useTheme();
-	const footerBackground = createMemo(
-		() => selectedTheme().palette.panel.base.color,
-	);
-	const footerText = createMemo(() =>
-		getContrastText(footerBackground()).hexa(),
-	);
-	const keyBindingColor = createMemo(() => inverse(footerBackground()).hexa());
+	const footerBackground = createMemo(() => {
+		const theme = selectedTheme();
+		return (
+			theme.variables["footer-background"] ?? theme.palette.panel.base.color
+		);
+	});
+	const footerText = createMemo(() => {
+		const theme = selectedTheme();
+		return (
+			theme.variables["footer-foreground"] ??
+			theme.palette.foreground.base.color
+		);
+	});
+	const keyBindingColor = createMemo(() => {
+		const theme = selectedTheme();
+		return (
+			theme.variables["footer-key-foreground"] ??
+			theme.palette.accent.base.color
+		);
+	});
 
 	return (
 		<footer
@@ -24,7 +33,7 @@ const CommandPalette: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 			}}
 			{...props}
 		>
-			<div class="invisible inline-flex gap-4 pt-1.5 md:visible">
+			<div class="invisible inline-flex gap-4 pt-1.75 md:visible">
 				<span class="inline-flex h-full gap-2">
 					<kbd
 						class="font-black"
@@ -75,7 +84,7 @@ const CommandPalette: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 				>
 					|
 				</div>
-				<span class="mr-2.25 mb-1 inline-flex gap-2">
+				<span class="mr-2.25 inline-flex gap-2">
 					<kbd
 						class="font-black"
 						style={{

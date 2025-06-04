@@ -44,8 +44,8 @@ type TextualThemeSource = "textual" | "preset" | "user";
 
 interface TextualTheme {
 	name: string;
-	dark?: boolean;
+	dark: boolean;
 	palette: TextualColors;
-	variables?: TextualVariables;
-	source?: TextualThemeSource;
+	variables: TextualVariables;
+	source: TextualThemeSource;
 }

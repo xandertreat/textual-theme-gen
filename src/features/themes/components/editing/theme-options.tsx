@@ -12,7 +12,7 @@ const DarkThemeToggle: Component<JSX.HTMLAttributes<HTMLInputElement>> = (
 	const disabled = createMemo(() => selectedTheme().source !== "user");
 
 	return (
-		<label class="mt-2 flex hd:w-4/5 qhd:w-1/3 items-center justify-between qhd:self-auto hd:self-center">
+		<label class="mt-2 flex fhd:w-full hd:w-4/5 w-full items-center justify-between qhd:px-5 fhd:pr-5 max-fhd:self-center">
 			<span class="label select-none text-base-content">Dark theme?</span>
 			<input
 				checked={selectedTheme().dark ?? false}

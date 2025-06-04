@@ -783,7 +783,7 @@
 			"block-cursor-blurred-background": "#268BD24C",
 			"block-cursor-blurred-text-style": "none",
 			"block-hover-background": "#0000000C",
-			"footer-foreground": "#586E75",
+			"footer-foreground": "#FDF6E3",
 			"footer-background": "#268BD2",
 			"footer-key-foreground": "#FDF6E3",
 			"footer-key-background": "transparent",

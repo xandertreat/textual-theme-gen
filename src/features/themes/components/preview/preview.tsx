@@ -9,6 +9,7 @@ import {
 	createEffect,
 	createMemo,
 	createSignal,
+	onMount,
 } from "solid-js";
 import Icon from "~/components/ui/icon";
 import { DEFAULTS, useTheme } from "~/features/themes/context/theme";
@@ -179,6 +180,33 @@ const Preview = () => {
 	const [showMutedBackgrounds, setMutedBackgroundsVisibility] =
 		createSignal(false);
 	const [selectOpen, setSelectOpen] = createSignal(false);
+
+	onMount(() => {
+		// load from local storage (if any)
+		const lastPreview = localStorage.getItem("lastPreview");
+		if (lastPreview) setPreview(lastPreview);
+		const lastColorPreview = localStorage.getItem("lastColorPreview");
+		if (lastColorPreview) setColorPreview(lastColorPreview);
+		const persistedVisibility = localStorage.getItem("cmdVis");
+		if (persistedVisibility)
+			setCommandPaletteVisibility(Boolean(persistedVisibility));
+		const showMuted = localStorage.getItem("mutedVis");
+		if (showMuted) setMutedBackgroundsVisibility(Boolean(showMuted));
+
+		// sync local storage from now on
+		createEffect(() => {
+			localStorage.setItem("lastPreview", currentPreview());
+		});
+		createEffect(() => {
+			localStorage.setItem("lastColorPreview", currentColorPreview());
+		});
+		createEffect(() => {
+			localStorage.setItem("cmdVis", String(showCommandPalette()));
+		});
+		createEffect(() => {
+			localStorage.setItem("mutedVis", String(showMutedBackgrounds()));
+		});
+	});
 
 	createEffect(() => {
 		if (selectOpen())

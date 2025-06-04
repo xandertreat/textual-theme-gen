@@ -124,8 +124,10 @@ export function calcAutoText({
 	base,
 	bg,
 }: { base: ColorT | ColorLike; bg?: ColorT | ColorLike }): ColorT {
-	const coerced = coerceToColor(base);
-	return getContrastText(bg ? tint(coerceToColor(bg), coerced) : coerced);
+	const coercedBase = coerceToColor(base);
+	return getContrastText(
+		bg ? tint(coerceToColor(bg), coercedBase) : coercedBase,
+	);
 }
 
 // MAIN //
