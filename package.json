@@ -15,10 +15,12 @@
 		"lint:fix": "bun check:fix",
 		"test": "vitest",
 		"test:watch": "vitest --watch",
-		"test:coverage": "vitest run --coverage"
+		"test:coverage": "vitest run --coverage",
+		"ci": "bun biome ci; bun tsc --noEmit; bun test; bun run build;"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
+		"@vitest/coverage-v8": "3.1.4",
 		"daisyui": "^5.0.35",
 		"tailwindcss": "^4.1.7",
 		"tailwindcss-motion": "1.1.0",

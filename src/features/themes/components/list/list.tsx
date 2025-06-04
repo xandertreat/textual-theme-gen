@@ -14,10 +14,10 @@ import { useTheme } from "~/features/themes/context/theme";
 import ClearThemes from "./clear";
 import ExportThemes from "./export";
 import ImportThemes from "./import";
+import NewTheme from "./new";
 import ThemeOption from "./option";
 import RandomTheme from "./random";
 import ThemeReset from "./reset";
-import NewTheme from "./new";
 
 // TODO: add export / import options (either from a textual code config or json files from app)
 interface ThemeListOptionsProps extends JSX.HTMLAttributes<HTMLDivElement> {}
