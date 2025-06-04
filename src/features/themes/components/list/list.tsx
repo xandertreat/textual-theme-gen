@@ -119,6 +119,7 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 					<span class="flex select-none items-center justify-between">
 						My themes
 						<button
+							aria-label="Toggle Visibility"
 							class="btn btn-xs btn-ghost btn-circle"
 							onClick={() => setVisibility(visibility() ^ userVisibility)}
 							type="button"
@@ -149,6 +150,7 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 					<span class="flex select-none items-center justify-between">
 						Included themes
 						<button
+							aria-label="Toggle Visibility"
 							class="btn btn-xs btn-ghost btn-circle"
 							onClick={() => setVisibility(visibility() ^ includedVisibility)}
 							type="button"
@@ -178,6 +180,7 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 					<span class="flex select-none items-center justify-between">
 						Presets
 						<button
+							aria-label="Toggle Visibility"
 							class="btn btn-xs btn-ghost btn-circle"
 							onClick={() => setVisibility(visibility() ^ presetVisibility)}
 							type="button"

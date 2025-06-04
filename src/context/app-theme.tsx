@@ -118,7 +118,9 @@ const AppThemeController: Component<
 	return (
 		<button
 			{...props}
-			class="btn btn-ghost btn-circle motion-duration-500 motion-ease-in-out -motion-translate-x-in-[200%] motion-delay-500 fixed inset-1 z-1 fhd:size-11 size-6 translate-x-full p-0.5 md:size-9"
+			aria-label={`Switch theme (current: ${appTheme() || "system"})`}
+			class="tooltip tooltip-right btn btn-ghost btn-circle motion-duration-500 motion-ease-in-out -motion-translate-x-in-[200%] motion-delay-500 fixed inset-1 z-1 fhd:size-11 size-6 translate-x-full p-0.5 md:size-9"
+			data-tip={appTheme()[0].toLocaleUpperCase() + appTheme().slice(1)}
 			onClick={() => setAppTheme(cycle[nextThemeIdx()])}
 			type="button"
 		>

@@ -153,6 +153,7 @@ const RenameTheme: Component<RenameThemeProps> = (props) => {
 								tabIndex={-1}
 							>
 								<button
+									aria-label={submission.pending ? "..." : "Rename"}
 									class="btn btn-success size-full"
 									disabled={submission.pending || !isValid()}
 									type="submit"

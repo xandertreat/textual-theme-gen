@@ -43,6 +43,7 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 	const DesktopButton = () => {
 		return (
 			<button
+				aria-label="Clone Theme"
 				class="btn tooltip tooltip-bottom m-2 mx-4 hidden w-40 border-2 border-primary bg-primary/15 xl:flex"
 				classList={{
 					"after:opacity-0!": phase() !== "ready",
@@ -131,6 +132,7 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 
 	const MobileButton = () => (
 		<button
+			aria-label="Clone Theme"
 			class="btn btn-primary btn-sm m-2 mx-4 bg-bottom xl:hidden"
 			type="button"
 			{...props}

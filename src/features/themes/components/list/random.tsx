@@ -14,6 +14,7 @@ const RandomTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 
 	return (
 		<button
+			aria-label="Generate Random Theme"
 			class="btn btn-circle tooltip tooltip-top"
 			data-tip="Random"
 			onClick={() => {

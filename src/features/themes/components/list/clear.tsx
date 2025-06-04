@@ -41,6 +41,7 @@ const ClearThemes: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 						<form action={clearThemes} method="post">
 							<ActionDialog.Close class="" tabIndex={-1}>
 								<button
+									aria-label={submission.pending ? "..." : "DELETE"}
 									class="btn btn-error btn-lg size-full"
 									disabled={submission.pending}
 									type="submit"

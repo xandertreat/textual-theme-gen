@@ -158,6 +158,7 @@ const NewTheme: Component<NewThemeProps> = (props) => {
 								/>
 							</label>
 							<button
+								aria-label={submission.pending ? "..." : "Create"}
 								class="btn btn-success size-full"
 								disabled={submission.pending || !isValid()}
 								onClick={() => setTimeout(() => dialogClose.click())}

@@ -107,10 +107,10 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 			id={`theme-${local.theme}-option`}
 			{...rest}
 		>
-			<a
+			<button
+				aria-label={`Theme: ${local.theme}`}
 				class="btn btn-ghost group flex h-fit justify-between gap-1 rounded-sm p-0 px-1 py-0 font-light"
 				classList={{ "btn-active": selectedThemeName() === local.theme }}
-				// biome-ignore lint/a11y/useValidAnchor: <explanation>
 				onClick={() => selectTheme(local.theme)}
 				type="button"
 			>
@@ -153,7 +153,7 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 						</li>
 					</Show>
 				</ThemeOptionMenu>
-			</a>
+			</button>
 		</li>
 	);
 };

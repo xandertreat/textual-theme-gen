@@ -185,8 +185,9 @@ const HexCodeField: Component<JSX.HTMLAttributes<HTMLDivElement>> = ({
 				/>
 				<div class=" -translate-y-1/2 absolute top-1/2 right-2 flex h-6 w-fit justify-between gap-2">
 					<button
+						aria-label={isEditingHex() ? "Done" : "Edit"}
 						class="tooltip tooltip-bottom btn btn-circle btn-ghost btn-xs aspect-square h-full"
-						data-tip="Done"
+						data-tip={isEditingHex() ? "Done" : "Edit"}
 						onClick={() => {
 							const editing = isEditingHex();
 							if (editing)
