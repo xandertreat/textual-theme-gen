@@ -4,7 +4,6 @@ import { FileRoutes } from "@solidjs/start/router";
 import { Suspense } from "solid-js";
 
 // Styles
-import "highlight.js/styles/tokyo-night-dark.min.css";
 import "~/assets/styles/app.css";
 
 // Iconify configuration
