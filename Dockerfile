@@ -2,6 +2,7 @@
 
 ARG NODE_VERSION=20
 ARG BUN_VERSION=1.2.15
+ARG BUN_RELEASE=bun-linux-x64-baseline
 
 FROM node:${NODE_VERSION}-alpine
 ENV NODE_ENV=production
@@ -15,10 +16,11 @@ RUN apk add --no-cache \
 
 # Bun
 ENV BUN_INSTALL=/usr/local
-RUN wget -q "https://github.com/oven-sh/bun/releases/download/bun-v${BUN_VERSION}/bun-linux-x64-baseline.zip" \
-        -O /tmp/bun.zip && \
+RUN set -euxo pipefail; \
+    wget -L "https://github.com/oven-sh/bun/releases/download/bun-v${BUN_VERSION}/${BUN_RELEASE}.zip" \
+    -O /tmp/bun.zip && \
     unzip /tmp/bun.zip -d /tmp && \
-    mv /tmp/bun-linux-x64-baseline ${BUN_INSTALL}/bin/bun && \
+    mv /tmp/${BUN_RELEASE}/bun ${BUN_INSTALL}/bin/bun && \
     chmod +x ${BUN_INSTALL}/bin/bun && \
     bun --version && \
     rm /tmp/bun.zip
