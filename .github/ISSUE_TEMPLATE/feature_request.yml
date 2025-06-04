@@ -1,0 +1,38 @@
+name: "✨ Feature Request"
+description: "Suggest an idea or improvement."
+title: "[Feature] "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for helping improve Textual Theme Generator!
+  - type: input
+    id: summary
+    attributes:
+      label: "Short summary"
+      description: "Briefly describe your idea."
+      placeholder: "e.g. Add support for exporting themes as CSS variables."
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: "Motivation & use case"
+      description: "Why would this be useful? Who would benefit?"
+    validations:
+      required: true
+  - type: textarea
+    id: details
+    attributes:
+      label: "Proposed solution or details"
+      description: "How do you imagine this working? Any specific requirements?"
+    validations:
+      required: false
+  - type: textarea
+    id: extra
+    attributes:
+      label: "Additional context"
+      description: "(Optional) Anything else we should know?"
+    validations:
+      required: false
