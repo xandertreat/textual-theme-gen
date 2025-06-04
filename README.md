@@ -26,7 +26,7 @@ A modern, highly interactive theme generator and playground for [Textual](https:
 
 ## 📺 Demo
 
-A quick look at Textual Theme Generator in action:
+A quick look at the app in action:
 
 ![Demo GIF](./public/demo.gif)
 
