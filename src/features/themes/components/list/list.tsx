@@ -72,24 +72,15 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 
 	// theme state
 	const { data } = useTheme();
-	const userThemes = createMemo(() => [
-		...data
-			.values()
-			.filter((t) => t.source === "user")
-			.map((t) => t.name),
-	]);
-	const textualThemes = createMemo(() => [
-		...data
-			.values()
-			.filter((t) => t.source === "textual")
-			.map((t) => t.name),
-	]);
-	const presetThemes = createMemo(() => [
-		...data
-			.values()
-			.filter((t) => t.source === "preset")
-			.map((t) => t.name),
-	]);
+	const userThemes = createMemo(() =>
+		[...data.values()].filter((t) => t.source === "user").map((t) => t.name),
+	);
+	const textualThemes = createMemo(() =>
+		[...data.values()].filter((t) => t.source === "textual").map((t) => t.name),
+	);
+	const presetThemes = createMemo(() =>
+		[...data.values()].filter((t) => t.source === "preset").map((t) => t.name),
+	);
 
 	// state
 	const userVisibility = 1 << 0;

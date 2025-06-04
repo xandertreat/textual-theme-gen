@@ -9,7 +9,7 @@ const ExportThemes: Component<JSX.AnchorHTMLAttributes<HTMLAnchorElement>> = (
 	const { data } = useTheme();
 
 	const exportUri = createMemo(() => {
-		const userThemes = [...data.values().filter((t) => t.source === "user")];
+		const userThemes = [...data.values()].filter((t) => t.source === "user");
 		if (userThemes.length === 0) return undefined;
 
 		const json = JSON.stringify(userThemes);

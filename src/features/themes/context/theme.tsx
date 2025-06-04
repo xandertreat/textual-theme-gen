@@ -60,10 +60,7 @@ export const ThemeProvider: Component<{ children: JSX.Element }> = (props) => {
 
 		// sync local storage from now on
 		createEffect(() => {
-			localStorage.setItem(
-				STORAGE_KEY,
-				JSON.stringify(Array.from(data.values())),
-			);
+			localStorage.setItem(STORAGE_KEY, JSON.stringify([...data.values()]));
 		});
 		createEffect(() => {
 			localStorage.setItem(LAST_SELECTED_KEY, selectedTheme().name);
