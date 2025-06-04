@@ -40,7 +40,8 @@ COPY . .
 RUN bun run build
 
 # Non‑root user for security
-RUN addgroup -S app && adduser -S app -G app
+RUN addgroup --system app \
+    && adduser --system --ingroup app app
 USER app
 
 EXPOSE 3010
