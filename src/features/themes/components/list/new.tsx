@@ -58,7 +58,7 @@ const NewTheme: Component<NewThemeProps> = (props) => {
 			}}
 		>
 			<li class="motion-duration-1000/opacity motion-ease-in-out motion-duration-300 motion-opacity-in-0 -motion-translate-x-in-50 ">
-				<ActionDialog.Trigger class="btn btn-ghost group flex h-fit w-full justify-normal gap-3.5 rounded-sm p-0 px-1 py-0 pl-2 font-semibold text-green-600">
+				<ActionDialog.Trigger class="btn btn-ghost group flex size-full justify-normal gap-3.5 rounded-sm p-0 px-1 py-0 pl-2 font-semibold text-green-600">
 					<Icon icon="mdi:plus" />
 					New theme
 				</ActionDialog.Trigger>

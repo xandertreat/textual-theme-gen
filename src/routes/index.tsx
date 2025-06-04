@@ -1,4 +1,4 @@
-import { A } from "@solidjs/router";
+import Credit from "~/components/credit";
 import GitHub from "~/components/github";
 import AppThemeController, { AppThemeProvider } from "~/context/app-theme";
 import ThemeManagement from "~/features/themes/components/management";
@@ -15,16 +15,7 @@ const Index = () => {
 		<AppThemeProvider>
 			<div class="flex max-h-fit min-h-screen w-full flex-col items-center gap-2 bg-base-100 px-10 py-5 text-center">
 				<span class="mb-7 text-shadow-2xs">
-					<h1 class="font-bold text-5xl">Textual Theme Generator</h1>
-					<sub class="text-base">
-						by{" "}
-						<A
-							class="text-blue-400 underline"
-							href="https://github.com/xandertreat"
-						>
-							Xander Treat
-						</A>
-					</sub>
+					<h1 class="font-bold text-6xl">Textual Theme Generator</h1>
 					<AppThemeController />
 					<GitHub />
 				</span>
@@ -47,6 +38,7 @@ const Index = () => {
 					</div>
 				</ThemeProvider>
 			</div>
+			<Credit />
 		</AppThemeProvider>
 	);
 };
