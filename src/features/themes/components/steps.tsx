@@ -24,7 +24,7 @@ const ImportStep: StepProps = (props) => (
  */
 export const getThemeCode = (theme: TextualTheme) => {
 	const pythonFormattedName = theme.name.replaceAll(/-/g, "_");
-	return `${pythonFormattedName}_theme = Theme(
+	return `${pythonFormattedName} = Theme(
 	name="${theme.name}",
 	primary="${theme.palette.primary.base.color}",
 	secondary="${theme.palette.secondary.base.color}",
@@ -70,10 +70,10 @@ export const getThemeRegistrationCode = (name: string) => {
 class MyApp(App):
     def on_mount(self) -> None:
         # Register the theme
-        self.register_theme(${pythonFormattedName}_theme)
+        self.register_theme(${pythonFormattedName})
 
         # Set the app's theme (optional!)
-        self.theme = "${pythonFormattedName}"
+        self.theme = "${name}"
 `;
 };
 
