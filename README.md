@@ -2,7 +2,7 @@
 
 A modern, highly interactive theme generator and playground for [Textual](https://textual.textualize.io/) <br /> and other UI frameworks, built with [SolidJS](https://www.solidjs.com/), [SolidStart](https://start.solidjs.com/), [Tailwind CSS](https://tailwindcss.com/), and [DaisyUI](https://daisyui.com/).
 
-[![Node.js](https://img.shields.io/badge/node-%3E=22.x-green?logo=node.js&logoColor=white)](https://nodejs.org/)
+[![Node.js](https://img.shields.io/badge/node-%3E=20.x-green?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Bun](https://img.shields.io/badge/bun-%3E=1.x-blue?logo=bun&logoColor=white)](https://bun.sh/)
 [![Demo](https://img.shields.io/badge/demo-online-blue)](https://ttg.xtreat.dev/)
 
