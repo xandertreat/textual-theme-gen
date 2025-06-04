@@ -25,7 +25,7 @@ const Todos: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 		>
 			{"╱".repeat(300).concat("\n").repeat(100)}
 			<main
-				class="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 flex h-80 hd:h-2/3 w-11/20 flex-col gap-2 px-9 py-7 hd:text-lg tracking-normal md:text-xs"
+				class="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 flex size-full xs:size-9/10 hd:h-2/3 flex-col gap-2 px-9 py-7 hd:text-lg text-xs tracking-normal md:h-80 md:w-11/20"
 				style={{
 					"background-color": bg(),
 				}}
@@ -33,7 +33,7 @@ const Todos: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 			>
 				<div class="mb-4 flex justify-between">
 					<span
-						class="tooltip tooltip-info font-bold"
+						class="tooltip-info tooltip font-bold"
 						style={{
 							color: selectedTheme().palette.foreground.base.color,
 						}}

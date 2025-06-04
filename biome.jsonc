@@ -42,9 +42,6 @@
 			},
 			"style": {
 				"noNonNullAssertion": "off" // we need to sometimes
-			},
-			"a11y": {
-				"useAltText": "off" // not working properly but we have <Image /> to take care of this anyways.
 			}
 		}
 	},
