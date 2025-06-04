@@ -1,6 +1,6 @@
 // @refresh reload
 import { StartServer, createHandler } from "@solidjs/start/server";
-import { DEFAULT_APP_THEME } from "./context/app-theme";
+import { DEFAULT_APP_THEME } from "./components/app-theme";
 
 export const LIVE_URL = "https://ttg.xtreat.dev";
 

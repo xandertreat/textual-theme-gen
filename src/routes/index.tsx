@@ -1,6 +1,6 @@
+import AppThemeSwitcher from "~/components/app-theme";
 import Credit from "~/components/credit";
 import GitHub from "~/components/github";
-import AppThemeController, { AppThemeProvider } from "~/context/app-theme";
 import ThemeManagement from "~/features/themes/components/management";
 import {
 	Congratulations,
@@ -12,11 +12,11 @@ import { ThemeProvider } from "~/features/themes/context/theme";
 
 const Index = () => {
 	return (
-		<AppThemeProvider>
+		<>
 			<div class="flex max-h-fit min-h-screen w-full flex-col items-center gap-2 bg-base-100 px-10 py-5 text-center">
 				<span class="mb-7 text-shadow-2xs">
+					<AppThemeSwitcher />
 					<h1 class="font-bold text-6xl">Textual Theme Generator</h1>
-					<AppThemeController />
 					<GitHub />
 				</span>
 				<h2 class="font-bold text-3xl md:text-4xl">How-to</h2>
@@ -39,7 +39,7 @@ const Index = () => {
 				</ThemeProvider>
 			</div>
 			<Credit />
-		</AppThemeProvider>
+		</>
 	);
 };
 

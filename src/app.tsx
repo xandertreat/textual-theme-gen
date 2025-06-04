@@ -3,9 +3,6 @@ import { Router } from "@solidjs/router";
 import { FileRoutes } from "@solidjs/start/router";
 import { Suspense } from "solid-js";
 
-// Styles
-import "~/assets/styles/app.css";
-
 // Iconify configuration
 import { configureIconify } from "./components/ui/icon";
 configureIconify({

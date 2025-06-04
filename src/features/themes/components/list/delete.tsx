@@ -59,14 +59,21 @@ const DeleteTheme: Component<DeleteThemeProps> = (props) => {
 										contentRef()?.classList.add("opacity-0");
 										const el = document.querySelector(
 											`#theme-${props.theme}-option`,
-										)!;
+										);
+										if (!el) return;
+										el.classList.remove(
+											"motion-opacity-in-0",
+											"max-hd:motion-translate-y-in-100",
+											"hd:-motion-translate-x-in-50",
+										);
+										el.classList.add(
+											"pointer-events-none",
+											"motion-opacity-out-0",
+											"max-hd:-motion-translate-y-out-100",
+											"hd:motion-translate-x-out-50",
+										);
 										el.setAttribute("disabled", "");
-										el.classList.add("pointer-events-none");
-										el.classList.remove("motion-duration-1000/opacity");
-										el.classList.add("motion-opacity-out-0");
-										el.classList.add("motion-translate-x-out-50");
 									}}
-									type="submit"
 								>
 									DELETE
 								</button>

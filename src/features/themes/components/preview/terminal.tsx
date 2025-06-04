@@ -18,7 +18,7 @@ const TerminalWindow: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 				Terminal
 			</h2>
 		</div>
-		<div
+		<main
 			class="relative row-span-12 flex h-96 w-full items-center justify-center rounded-br rounded-bl bg-primary/5 font-mono text-neutral-content xl:h-170"
 			style={{
 				"background-color":
@@ -26,7 +26,7 @@ const TerminalWindow: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 			}}
 		>
 			{props.children}
-		</div>
+		</main>
 	</div>
 );
 

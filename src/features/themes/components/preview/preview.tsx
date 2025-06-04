@@ -103,20 +103,20 @@ const PaletteColorPreview: Component<
 			>
 				"{props.paletteKey}"
 			</h2>
-			<main class="flex w-full flex-col max-hd:mb-12">
+			<div class="flex w-full flex-col max-hd:mb-12">
 				<For each={sortedDarkPaletteColors()}>
 					{([variant, data]) => <ColorPreview data={data} variant={variant} />}
 				</For>
 				<For each={sortedNonDarkPaletteColors()}>
 					{([variant, data]) => <ColorPreview data={data} variant={variant} />}
 				</For>
-			</main>
+			</div>
 		</div>
 	);
 };
 
 const TextColorsPreview: Component<
-	JSX.HTMLAttributes<HTMLElement> & { showMutedBackgrounds: boolean }
+	JSX.HTMLAttributes<HTMLDivElement> & { showMutedBackgrounds: boolean }
 > = (props) => {
 	const { selectedTheme } = useTheme();
 	const paletteColors = [
@@ -129,7 +129,7 @@ const TextColorsPreview: Component<
 	];
 
 	return (
-		<main
+		<div
 			class="flex size-full flex-col items-start justify-start pt-2 pl-2 text-3xl"
 			style={{
 				"background-color": selectedTheme().palette.background.base.color,
@@ -149,7 +149,7 @@ const TextColorsPreview: Component<
 					>{`$text-${paletteColor}`}</h3>
 				)}
 			</For>
-		</main>
+		</div>
 	);
 };
 

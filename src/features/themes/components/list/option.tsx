@@ -14,7 +14,7 @@ import { CloneThemeOption } from "./clone";
 import DeleteTheme from "./delete";
 import RenameTheme from "./rename";
 
-interface ThemeOptionPreviewProps extends JSX.HTMLAttributes<HTMLDivElement> {
+interface ThemeOptionPreviewProps extends JSX.HTMLAttributes<HTMLSpanElement> {
 	theme: string;
 }
 
@@ -25,17 +25,19 @@ const ThemeOptionPreview: Component<ThemeOptionPreviewProps> = (props) => {
 	const paletteKeys = ["primary", "secondary", "accent", "foreground"];
 
 	return (
-		<div
+		<span
 			{...props}
 			class="ml-0 grid size-6 shrink-0 grid-cols-2 grid-rows-2 gap-0.75 rounded-lg p-1 shadow *:rounded"
 			style={{ background: bgColor() }}
 		>
 			<For each={paletteKeys}>
 				{(paletteKey) => (
-					<div style={{ background: theme().palette[paletteKey].base.color }} />
+					<span
+						style={{ background: theme().palette[paletteKey].base.color }}
+					/>
 				)}
 			</For>
-		</div>
+		</span>
 	);
 };
 
@@ -54,12 +56,14 @@ const ThemeOptionMenu: Component<ThemeOptionMenuProps> = (props) => {
 		<Popover>
 			<Popover.Anchor class="aspect-square size-6">
 				<Popover.Trigger
+					as="div"
 					class="tooltip xl:tooltip-right size-full cursor-pointer p-0.5 transition-opacity duration-200 group-hover:opacity-100"
 					classList={{
 						"opacity-0": !isOptionSelected(),
 						"opacity-100 xl:opacity-20": isOptionSelected(),
 					}}
-					type="button"
+					// biome-ignore lint/a11y/useSemanticElements: <explanation>
+					role="button"
 				>
 					<span class="tooltip-content">Options</span>
 					<Icon
@@ -74,7 +78,7 @@ const ThemeOptionMenu: Component<ThemeOptionMenuProps> = (props) => {
 					class="motion-duration-150 motion-scale-in-95 motion-opacity-in-0 data-closed:motion-scale-out-95 data-closed:motion-opacity-out-0 mt-1 w-fit min-w-40 rounded-md border border-neutral-content/20 bg-base-200"
 					{...rest}
 				>
-					<ul class="menu size-full">{local.children}</ul>
+					<menu class="menu size-full">{local.children}</menu>
 				</Popover.Content>
 			</Popover.Portal>
 		</Popover>
@@ -99,22 +103,22 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 
 	return (
 		<li
-			class="motion-duration-1000/opacity motion-ease-in-out motion-duration-300 motion-opacity-in-0 -motion-translate-x-in-50 "
+			{...rest}
+			class="motion-duration-300/opacity motion-ease-in-out motion-duration-300 motion-opacity-in-0 max-hd:motion-translate-y-in-100 hd:-motion-translate-x-in-50"
 			classList={{
 				"tooltip tooltip-open": needsTooltip() && hoveringLabel(),
 			}}
 			data-tip={local.theme}
 			id={`theme-${local.theme}-option`}
-			{...rest}
 		>
 			<button
 				aria-label={`Theme: ${local.theme}`}
-				class="btn btn-ghost group flex h-fit justify-between gap-1 rounded-sm p-0 px-1 py-0 font-light"
+				class="btn btn-ghost group flex h-max w-full justify-between gap-1 rounded-sm p-0 px-1 py-0 font-light"
 				classList={{ "btn-active": selectedThemeName() === local.theme }}
 				onClick={() => selectTheme(local.theme)}
 				type="button"
 			>
-				<span class="flex max-w-5/6 items-center">
+				<div class="flex max-w-5/6 items-center">
 					<ThemeOptionPreview theme={local.theme} />
 					<p
 						class="overflow-hidden text-ellipsis whitespace-nowrap text-nowrap pl-2 text-left"
@@ -132,7 +136,7 @@ const ThemeOption: Component<ThemeOptionProps> = (props) => {
 					>
 						{local.theme}
 					</p>
-				</span>
+				</div>
 				<ThemeOptionMenu theme={local.theme}>
 					<Show
 						fallback={

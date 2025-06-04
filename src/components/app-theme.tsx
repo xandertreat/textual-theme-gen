@@ -1,19 +1,14 @@
 import { cookieStorage, makePersisted } from "@solid-primitives/storage";
 import {
-	type Accessor,
 	type Component,
 	type JSX,
 	Match,
-	type Setter,
 	Show,
 	Switch,
-	createContext,
 	createEffect,
 	createMemo,
 	createSignal,
-	useContext,
 } from "solid-js";
-import { isServer } from "solid-js/web";
 import Icon from "~/components/ui/icon";
 
 type AppTheme = "system" | "light" | "dark";
@@ -42,34 +37,15 @@ const APP_THEME_TRANSITION_STYLES = `
 }
 `;
 
-type ThemeContextValue = {
-	appTheme: Accessor<AppTheme>;
-	setAppTheme: Setter<AppTheme>;
-};
-const ThemeContext = createContext<ThemeContextValue>();
-
-export const useAppTheme = () => {
-	const context = useContext(ThemeContext);
-	if (!context)
-		throw new Error(
-			"useThemeContext must be used within a <ThemeProvider> component",
-		);
-	return context;
-};
-
-export const AppThemeProvider: Component<{ children: JSX.Element }> = (
-	props,
-) => {
+// TODO: fix weird bug where starting theme icon disappears? (sometimes) and it is always set to system icon? (context / storage off)
+const AppThemeSwitcher: Component<
+	JSX.ButtonHTMLAttributes<HTMLButtonElement>
+> = (props) => {
 	let transitioningTheme = false;
 	const [appTheme, setAppTheme] = makePersisted(
-		createSignal<AppTheme>(
-			!isServer
-				? (localStorage.getItem("theme") as AppTheme)
-				: DEFAULT_APP_THEME,
-		),
+		createSignal<AppTheme>(DEFAULT_APP_THEME),
 		PERSISTENCE_OPTIONS,
 	);
-	createEffect(() => localStorage.setItem("theme", appTheme()));
 
 	createEffect(async () => {
 		if (transitioningTheme) {
@@ -97,18 +73,6 @@ export const AppThemeProvider: Component<{ children: JSX.Element }> = (
 		}
 	});
 
-	return (
-		<ThemeContext.Provider value={{ appTheme, setAppTheme }}>
-			{props.children}
-		</ThemeContext.Provider>
-	);
-};
-
-// TODO: fix weird bug where starting theme icon disappears? (sometimes) and it is always set to system icon? (context / storage off)
-const AppThemeController: Component<
-	JSX.ButtonHTMLAttributes<HTMLButtonElement>
-> = (props) => {
-	const { appTheme, setAppTheme } = useAppTheme();
 	const cycle = ["system", "light", "dark"] as const;
 	const nextThemeIdx = createMemo(() => {
 		const current = cycle.indexOf(appTheme());
@@ -167,4 +131,4 @@ const AppThemeController: Component<
 	);
 };
 
-export default AppThemeController;
+export default AppThemeSwitcher;
