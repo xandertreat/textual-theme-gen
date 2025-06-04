@@ -1,18 +1,22 @@
 import { cn } from "@util";
-import rehypeHighlight from "rehype-highlight";
 import type { JSX } from "solid-js";
 import { type Component, Show, splitProps } from "solid-js";
-import { SolidMarkdown, type SolidMarkdownOptions } from "solid-markdown";
 import CopyButton from "./copy";
 import Icon from "./icon";
 
-interface CodeBlockProps extends JSX.HTMLAttributes<HTMLDivElement> {
+// highlight.js configuration
+// the component is flexible but the imports are not.
+import hljs from "highlight.js/lib/core";
+import python from "highlight.js/lib/languages/python";
+hljs.registerLanguage("python", python);
+import "highlight.js/styles/github-dark.min.css";
+
+interface CodeBlockProps extends JSX.HTMLAttributes<HTMLElement> {
 	lang: string;
 	code: string;
 	copy?: boolean;
 	details?: boolean;
 	langIcon?: string;
-	markdownProps?: Partial<SolidMarkdownOptions>;
 }
 
 const CodeBlock: Component<CodeBlockProps> = (props) => {
@@ -24,40 +28,44 @@ const CodeBlock: Component<CodeBlockProps> = (props) => {
 		"lang",
 		"langIcon",
 		"code",
-		"markdownProps",
 	]);
 	// DEFAULTS
 	local.copy ??= true;
 	local.details ??= true;
 	local.langIcon ??= `logos:${local.lang}`;
-	const raw = `\`\`\`${local.lang}\n${local.code}\n\`\`\``;
 
-	const Markdown = () => (
-		<div
-			class="overflow-hidden"
-			classList={{
-				"rounded-md": !local.details,
-				"rounded-br-md rounded-bl-md": local.details,
-			}}
-		>
-			<Show when={!local.details && local.copy}>
-				<CopyButton code={local.code} />
-			</Show>
-			<SolidMarkdown {...local.markdownProps} rehypePlugins={[rehypeHighlight]}>
-				{raw}
-			</SolidMarkdown>
-		</div>
-	);
+	const Code = () => {
+		return (
+			<div
+				class="overflow-scroll bg-[#151B23] p-2 font-mono!"
+				classList={{
+					"rounded-md": !local.details,
+					"rounded-br-md rounded-bl-md": local.details,
+				}}
+			>
+				<Show when={!local.details && local.copy}>
+					<CopyButton code={local.code} />
+				</Show>
+				<pre>
+					<code
+						{...rest}
+						innerHTML={
+							hljs.highlight(local.code, { language: local.lang }).value
+						}
+					/>
+				</pre>
+			</div>
+		);
+	};
 
 	return (
-		<Show fallback={<Markdown />} when={local.details}>
+		<Show fallback={<Code />} when={local.details}>
 			<div
 				class={cn(
-					"group relative rounded-md border-2 border-transparent bg-neutral text-left text-neutral-content",
+					"group relative rounded-md border-2 border-transparent bg-[#0d1117] text-left text-neutral-content",
 					local.class,
 					local.classList,
 				)}
-				{...rest}
 			>
 				<Show when={local.copy}>
 					<CopyButton code={local.code} />
@@ -66,7 +74,7 @@ const CodeBlock: Component<CodeBlockProps> = (props) => {
 					<Icon class="size-6" icon={local.langIcon} />
 					<p aria-label={`Language: ${local.lang}`}>{local.lang}</p>
 				</span>
-				<Markdown />
+				<Code />
 			</div>
 		</Show>
 	);

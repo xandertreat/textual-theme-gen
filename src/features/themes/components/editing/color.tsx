@@ -152,11 +152,11 @@ const HexCodeField: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 
 	return (
 		<ColorField
-			onChange={(val) =>
+			onChange={(val: string) => {
 				setInputVal(
 					`${val.length > 0 ? "#" : ""}${val.replace(/#/g, "").trim().normalize().slice(0, 6)}`,
-				)
-			}
+				);
+			}}
 			readOnly={!isEditingHex()}
 			required={true}
 			value={currentCode()}

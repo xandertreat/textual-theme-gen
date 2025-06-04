@@ -25,10 +25,6 @@
       scroll-behavior: smooth;
     }
   }
-
-  .hljs {
-    @apply !bg-blue-400/5 !font-mono;
-  }
 }
 
 /* daisyUI */

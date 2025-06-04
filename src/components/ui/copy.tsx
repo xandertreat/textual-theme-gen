@@ -61,7 +61,7 @@ const CopyButton: Component<CopyButtonProps> = (passed) => {
 
 	return (
 		<button
-			class="tooltip tooltip-right absolute right-2 h-6 w-fit translate-y-1/4 transition duration-200 ease-in-out hover:cursor-pointer"
+			class="tooltip tooltip-bottom absolute right-2 h-6 w-fit translate-y-1/4 transition duration-200 ease-in-out hover:cursor-pointer"
 			type="button"
 			{...rest}
 			classList={{
@@ -70,9 +70,10 @@ const CopyButton: Component<CopyButtonProps> = (passed) => {
 				"tooltip-open tooltip-success text-success": status() === "success",
 				"tooltip-open tooltip-error text-error": status() === "error",
 			}}
-			data-tip={CopyStatusLabel[status()]}
 			onClick={handleClick}
 		>
+			{/* Tooltip */}
+			<span class="tooltip-content z-999">{CopyStatusLabel[status()]}</span>
 			{/* Button icon */}
 			<Icon
 				class="-scale-100 active:-scale-90 motion-duration-300 motion-ease-in motion-opacity-out-100 size-full rotate-180 opacity-0 transition-[scale] duration-150 ease-in-out"
