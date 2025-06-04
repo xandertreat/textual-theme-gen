@@ -134,7 +134,10 @@ const ColorSwatch: Component<
 	);
 };
 
-const HexCodeField: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
+const HexCodeField: Component<JSX.HTMLAttributes<HTMLDivElement>> = ({
+	onChange,
+	...rest
+}) => {
 	const { setColor, hexCode } = useColorContext();
 	const [isEditingHex, setEditingHex] = createSignal(false);
 	const [inputVal, setInputVal] = createSignal(
@@ -151,17 +154,7 @@ const HexCodeField: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 	let inputEl!: HTMLInputElement;
 
 	return (
-		<ColorField
-			onChange={(val: string) => {
-				setInputVal(
-					`${val.length > 0 ? "#" : ""}${val.replace(/#/g, "").trim().normalize().slice(0, 6)}`,
-				);
-			}}
-			readOnly={!isEditingHex()}
-			required={true}
-			value={currentCode()}
-			{...props}
-		>
+		<ColorField {...rest} readOnly={!isEditingHex()} required={true}>
 			<ColorField.Label class="input validator group text-primary">
 				<span class="label pointer-events-none select-none" tabIndex={-1}>
 					Hex Code
@@ -169,17 +162,26 @@ const HexCodeField: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 				<ColorField.Input
 					class="pointer-events-none select-none"
 					id="colorInput"
+					onChange={(e) => {
+						const inputEl = e.target as HTMLInputElement;
+						const val = inputEl.value
+							.replace(/#/g, "")
+							.trim()
+							.normalize()
+							.slice(0, 6);
+						setInputVal(`${val.length === 0 ? "" : "#"}${val}`);
+					}}
 					onKeyPress={(e) => {
 						if (isEditingHex() && e.key === "Enter") {
-							const inputBox = e.target as HTMLInputElement;
-							inputBox.blur();
-							inputBox.closest("div")?.querySelector("button")?.click();
+							inputEl.blur();
+							inputEl.closest("div")?.querySelector("button")?.click();
 						}
 					}}
 					ref={(el) => {
 						inputEl = el;
 						setTimeout(() => el.focus(), 100);
 					}}
+					value={currentCode()}
 				/>
 				<div class=" -translate-y-1/2 absolute top-1/2 right-2 flex h-6 w-fit justify-between gap-2">
 					<button
