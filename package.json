@@ -7,8 +7,9 @@
 		"build": "vinxi build",
 		"start": "vinxi start",
 		"preview": "bun run build; bun start",
-		"check": "biome check",
-		"check:fix": "biome check --write",
+		"ts-lint": "bun tsc --noEmit",
+		"check": "biome check; bun ts-lint",
+		"check:fix": "biome check --write; bun ts-lint",
 		"format": "biome format --write",
 		"format:check": "biome format",
 		"lint": "bun check",
@@ -16,7 +17,7 @@
 		"test": "vitest",
 		"test:watch": "vitest --watch",
 		"test:coverage": "vitest run --coverage",
-		"ci": "bun biome ci; bun tsc --noEmit; bun test; bun run build;"
+		"ci": "bun biome ci; bun ts-lint; bun test; bun run build;"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",

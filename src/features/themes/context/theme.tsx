@@ -33,7 +33,6 @@ export const useTheme = () => {
 	return context;
 };
 
-// TODO: refactor for stores
 export const ThemeProvider: Component<{ children: JSX.Element }> = (props) => {
 	// state
 	const data = new ReactiveMap<string, TextualTheme>(
