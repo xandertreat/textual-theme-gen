@@ -5,7 +5,7 @@ const TerminalWindow: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	props,
 ) => (
 	<div
-		class="flex size-full grow-0 flex-col rounded border border-primary bg-neutral shadow-md"
+		class="flex size-full grow-0 flex-col rounded border border-neutral bg-neutral shadow-md"
 		{...props}
 	>
 		<div class="relative flex w-full items-center px-4 py-2">
