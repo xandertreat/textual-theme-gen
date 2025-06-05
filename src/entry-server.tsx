@@ -76,18 +76,12 @@ export default createHandler(() => (
 						rel="apple-touch-icon"
 						sizes="180x180"
 					/>
-					<link
-						crossorigin={"anonymous"}
-						href="https://fonts.gstatic.com"
-						rel="preconnect"
-					/>
-					<link href="//fonts.googleapis.com" rel="dns-prefetch" />
-					<link href="" rel="canonical" />
 					{assets}
 					<script
 						innerText={`document.documentElement.dataset.theme =
       localStorage.getItem("theme") ?? "${DEFAULT_APP_THEME}"`}
 					/>
+					{assets}
 				</head>
 
 				<body>

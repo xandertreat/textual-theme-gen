@@ -6,6 +6,7 @@ import {
 	createEffect,
 	createMemo,
 	createSignal,
+	lazy,
 	mergeProps,
 	onMount,
 } from "solid-js";
@@ -15,11 +16,11 @@ import ClearThemes from "./clear";
 import ExportThemes from "./export";
 import ImportThemes from "./import";
 import NewTheme from "./new";
-import ThemeOption from "./option";
 import RandomTheme from "./random";
 import ThemeReset from "./reset";
 
-// TODO: add export / import options (either from a textual code config or json files from app)
+const ThemeOption = lazy(() => import("./option"));
+
 interface ThemeListOptionsProps extends JSX.HTMLAttributes<HTMLDivElement> {}
 
 const ThemeListOptions: Component<ThemeListOptionsProps> = (passed) => {

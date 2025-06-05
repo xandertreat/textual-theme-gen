@@ -1,7 +1,8 @@
-import type { Component, JSX } from "solid-js";
+import { type Component, type JSX, lazy } from "solid-js";
 import ThemeCreation from "./editing/creation";
 import ThemeList from "./list/list";
-import Preview from "./preview/preview";
+
+const Preview = lazy(() => import("./preview/preview"));
 
 const ThemeManagement: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	passed,

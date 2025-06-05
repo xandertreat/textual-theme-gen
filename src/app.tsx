@@ -9,6 +9,9 @@ configureIconify({
 	SANITIZE: false,
 });
 
+// Styles
+import "~/assets/styles/app.css";
+
 export default function App() {
 	return (
 		<Router root={(props) => <Suspense>{props.children}</Suspense>}>

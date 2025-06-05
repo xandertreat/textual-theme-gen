@@ -1,9 +1,8 @@
-@import url("@fontsource-variable/roboto");
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Roboto Variable", "Roboto", -apple-system, BlinkMacSystemFont,
-    "Segoe UI", "Helvetica Neue", Arial, "Liberation Sans", "Nimbus Sans L",
+  --font-sans: "Roboto Variable", "Roboto", "Segoe UI", -apple-system, BlinkMacSystemFont,
+     "Helvetica Neue", Arial, "Liberation Sans", "Nimbus Sans L",
     sans-serif;
   --font-mono: Consolas, "SFMono-Regular", Menlo,
     Monaco, "Liberation Mono", "Courier New", monospace;

@@ -1,9 +1,8 @@
-import { type Component, type JSX, createMemo } from "solid-js";
-import CodeBlock from "~/components/ui/codeblock";
+import { type Component, type JSX, createMemo, lazy } from "solid-js";
 import { useTheme } from "../context/theme";
 import type { TextualTheme } from "../types";
 
-// TODO: maybe force underscores for less confusion?
+const CodeBlock = lazy(() => import("~/components/ui/codeblock"));
 
 interface StepProps extends Component<JSX.HTMLAttributes<HTMLSpanElement>> {}
 

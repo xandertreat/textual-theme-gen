@@ -1,8 +1,9 @@
-import { type Component, For, type JSX } from "solid-js";
+import { type Component, For, type JSX, lazy } from "solid-js";
 import Icon from "~/components/ui/icon";
 import { useTheme } from "~/features/themes/context/theme";
-import EditColor from "./color";
 import ThemeOptions from "./theme-options";
+
+const EditColor = lazy(() => import("./color"));
 
 const ThemeCreation: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	props,

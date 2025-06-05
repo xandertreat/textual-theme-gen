@@ -4,7 +4,9 @@ import { MUTED_ALPHA, getContrastText } from "~/features/themes/lib/color";
 
 const StylingTooltip: Component<JSX.HTMLAttributes<HTMLSpanElement>> = (
 	props,
-) => <span class="tooltip-content rounded-none text-justify" {...props} />;
+) => (
+	<span class="tooltip-content z-999 rounded-none text-justify" {...props} />
+);
 
 const Todos: Component<JSX.HTMLAttributes<HTMLElement>> = (props) => {
 	const { selectedTheme } = useTheme();
