@@ -13,7 +13,7 @@
         "@solidjs/router": "^0.15.3",
         "@solidjs/start": "^1.1.4",
         "@tailwindcss/vite": "^4.1.8",
-        "@xtreat/solid-iconify": "^0.0.2",
+        "@xtreat/solid-iconify": "^0.1.0",
         "clsx": "^2.1.1",
         "color": "^5.0.0",
         "gsap": "^3.13.0",
@@ -23,7 +23,6 @@
         "tailwind-merge": "^3.3.0",
         "vinxi": "^0.5.6",
         "vite-tsconfig-paths": "^5.1.4",
-        "xss": "^1.0.15",
         "zod": "^3.25.56",
       },
       "devDependencies": {
@@ -845,7 +844,7 @@
 
     "@xmldom/xmldom": ["@xmldom/xmldom@0.8.10", "", {}, "sha512-2WALfTl4xo2SkGCYRt6rDTFfk9R1czmBvUQy12gK2KuRKIpWEhcbbzy8EZXtz/jkRqHX8bFEc6FC1HjX4TUWYw=="],
 
-    "@xtreat/solid-iconify": ["@xtreat/solid-iconify@0.0.2", "", { "dependencies": { "xss": "^1.0.15" }, "peerDependencies": { "solid-js": ">=1.9.0" } }, "sha512-Jh3T3iK+3urYNtx2N7grDSy3AZTI1laq0uq5OanvIGabTqHqmMmZXl2d8C9OT0h5AjC88qaFQCrvqVHoucY+PA=="],
+    "@xtreat/solid-iconify": ["@xtreat/solid-iconify@0.1.0", "", { "dependencies": { "xss": "^1.0.15" }, "peerDependencies": { "solid-js": ">=1.9.0" } }, "sha512-OPV55hd3B2VsOMXjpgKEyWYUeGuFdEazf0OCqhIdR4uD7S9/X332NmwHJ71seeaV+WiVoWWCxz/pga5Kz6pb7w=="],
 
     "abbrev": ["abbrev@3.0.1", "", {}, "sha512-AO2ac6pjRB3SJmGJo+v5/aK6Omggp6fsLrs6wN9bd35ulu4cCwaAU9+7ZhXjeqHVkaHThLuzH0nZr0YpCDhygg=="],
 
