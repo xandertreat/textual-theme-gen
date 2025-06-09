@@ -61,8 +61,8 @@ No technical knowledge required—just let us know what you think!
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) v20+
-- [Bun](https://bun.sh/) (for project management)
+- [Node.js](https://nodejs.org/) 20.x.x
+- [Bun](https://bun.sh/) 1.x.x (for project management)
 
 ### Installation
 
@@ -165,17 +165,7 @@ public/                  # Static assets, icons, manifest
 
 ## 🤝 Contributing
 
-- Fork and clone the repo
-- Create a new branch (`(feat/fix)/descriptive-name`)
-- Run `bun run dev` and hack away!
-- Add/modify tests as needed
-- Open a PR with a clear description of the implementation and purpose
-
-### Code Style
-
-- Use Biome for linting/formatting
-- Follow existing component and file structure
-- Prefer functional, composable components
+See `CONTRIBUTING.md`
 
 ---
 
@@ -200,12 +190,6 @@ public/                  # Static assets, icons, manifest
 
 ---
 
-## 📝 License
-
-[MIT](LICENSE)
-
----
-
 ## 🙏 Acknowledgements
 
 - [SolidJS](https://www.solidjs.com/)
@@ -220,5 +204,12 @@ public/                  # Static assets, icons, manifest
 - [Vitest](https://vitest.dev/) (testing)
 - [Biome](https://biomejs.dev/) (lint/format)
 - [GSAP](https://gsap.com/) (animation)
+
+
+---
+
+## 📝 License
+
+[MIT](LICENSE)
 
 ---
