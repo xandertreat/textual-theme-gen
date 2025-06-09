@@ -21,11 +21,9 @@ const VariablesManagement: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 			<ActionDialog.Portal>
 				<ActionDialog.Overlay />
 				<ActionDialog.Content
-					// {class="flex flex-col items-center border-0 bg-primary text-center text-primary-content "}
 					{...props}
 					class="pointer-events-none select-none border-0 bg-transparent text-center shadow-none"
 				>
-					{/* <ActionDialog.Close /> */}
 					Coming soon...
 				</ActionDialog.Content>
 			</ActionDialog.Portal>

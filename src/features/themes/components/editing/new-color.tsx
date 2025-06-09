@@ -18,7 +18,12 @@ const NewColor: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 			</ActionDialog.Trigger>
 			<ActionDialog.Portal>
 				<ActionDialog.Overlay />
-				<ActionDialog.Content {...props} />
+				<ActionDialog.Content
+					{...props}
+					class="pointer-events-none select-none border-0 bg-transparent text-center shadow-none"
+				>
+					Coming soon...
+				</ActionDialog.Content>
 			</ActionDialog.Portal>
 		</ActionDialog>
 	);
