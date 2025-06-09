@@ -1,9 +1,9 @@
 import { useDialogContext } from "@corvu/popover";
 import { action } from "@solidjs/router";
+import Icon from "@xtreat/solid-iconify";
 import type { Component, JSX } from "solid-js";
-import { batch, splitProps } from "solid-js";
+import { splitProps } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
-import Icon from "~/components/ui/icon";
 import { useTheme } from "~/features/themes/context/theme";
 import type { TextualTheme } from "~/features/themes/types";
 
@@ -16,16 +16,10 @@ const DeleteTheme: Component<DeleteThemeProps> = (props) => {
 	const { data, selectTheme } = useTheme();
 	const deleteTheme = action(async (theme: TextualTheme | string) => {
 		const name = typeof theme === "string" ? theme : theme.name;
-		await Promise.resolve(
-			setTimeout(() => {
-				const names = [...data.keys()];
-				const nextSelected = (names.indexOf(local.theme) + 1) % names.length;
-				batch(() => {
-					selectTheme(names[nextSelected]);
-					data.delete(name);
-				});
-			}, 300),
-		);
+		const names = [...data.keys()];
+		const nextSelected = (names.indexOf(local.theme) - 1) % names.length;
+		selectTheme(names[nextSelected]);
+		await Promise.resolve(setTimeout(() => data.delete(name), 300));
 	}, "deleteTheme");
 	const { contentRef } = useDialogContext();
 

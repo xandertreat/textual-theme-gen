@@ -1,4 +1,5 @@
 import { Select } from "@kobalte/core/select";
+import Icon from "@xtreat/solid-iconify";
 import {
 	type Component,
 	For,
@@ -11,7 +12,6 @@ import {
 	createSignal,
 	onMount,
 } from "solid-js";
-import Icon from "~/components/ui/icon";
 import { DEFAULTS, useTheme } from "~/features/themes/context/theme";
 import {
 	DISABLED_ALPHA,
@@ -317,7 +317,7 @@ const Preview = () => {
 							<Select.Value<string>>
 								{(state) => state.selectedOption()}
 							</Select.Value>
-							<Icon icon="mdi:chevron-up-down" />
+							<Icon class="size-4" icon="mdi:chevron-up-down" />
 						</Select.Trigger>
 						<Select.Portal>
 							<Select.Content class="motion-duration-200 motion-opacity-in motion-scale-in-95 data-[closed]:motion-opacity-out data-[closed]:motion-scale-out-95">
@@ -362,7 +362,7 @@ const Preview = () => {
 								<Select.Value<string>>
 									{(state) => state.selectedOption()}
 								</Select.Value>
-								<Icon icon="mdi:chevron-up-down" />
+								<Icon class="size-4" icon="mdi:chevron-up-down" />
 							</Select.Trigger>
 							<Select.Portal>
 								<Select.Content class="motion-duration-200 motion-opacity-in motion-scale-in-95 data-[closed]:motion-opacity-out data-[closed]:motion-scale-out-95">

@@ -1,6 +1,6 @@
 import { A } from "@solidjs/router";
+import Icon from "@xtreat/solid-iconify";
 import type { Component, JSX } from "solid-js";
-import Icon from "./ui/icon";
 
 const AUTHOR = "xandertreat";
 const REPOSITORY_NAME = "textual-theme-gen";

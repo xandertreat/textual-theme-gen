@@ -1,5 +1,5 @@
+import Icon from "@xtreat/solid-iconify";
 import { type Component, type JSX, createMemo, onCleanup } from "solid-js";
-import Icon from "~/components/ui/icon";
 import { useTheme } from "~/features/themes/context/theme";
 import { VERSION_KEY } from "~/features/themes/data/themes";
 

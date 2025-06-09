@@ -1,8 +1,8 @@
 import { cn } from "@util";
+import Icon from "@xtreat/solid-iconify";
 import type { JSX } from "solid-js";
 import { type Component, Show, createMemo, splitProps } from "solid-js";
 import CopyButton from "./copy";
-import Icon from "./icon";
 
 // highlight.js configuration
 // the component is flexible but the imports are not.

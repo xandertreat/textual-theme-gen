@@ -1,4 +1,5 @@
 import { cookieStorage, makePersisted } from "@solid-primitives/storage";
+import Icon from "@xtreat/solid-iconify";
 import {
 	type Component,
 	type JSX,
@@ -9,7 +10,6 @@ import {
 	createMemo,
 	createSignal,
 } from "solid-js";
-import Icon from "~/components/ui/icon";
 
 type AppTheme = "system" | "light" | "dark";
 export const DEFAULT_APP_THEME: AppTheme = "system";

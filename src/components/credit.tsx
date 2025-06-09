@@ -7,7 +7,7 @@ const Credit: Component<JSX.HTMLAttributes<HTMLSpanElement>> = (props) => (
 		{...props}
 	>
 		<p class="pointer-events-none select-none opacity-50">created by </p>
-		<A class="link link-hover opacity-80" href="https://github.com/xandertreat">
+		<A class="link link-hover opacity-80" href="https://xtreat.dev">
 			Xander Treat
 		</A>
 	</span>

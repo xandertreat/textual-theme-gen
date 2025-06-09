@@ -4,7 +4,7 @@ import { FileRoutes } from "@solidjs/start/router";
 import { Suspense } from "solid-js";
 
 // Iconify configuration
-import { configureIconify } from "./components/ui/icon";
+import { configureIconify } from "@xtreat/solid-iconify";
 configureIconify({
 	SANITIZE: false,
 });

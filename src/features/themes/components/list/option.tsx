@@ -1,4 +1,5 @@
 import Popover from "@corvu/popover";
+import Icon from "@xtreat/solid-iconify";
 import type { Component, JSX } from "solid-js";
 import {
 	For,
@@ -8,7 +9,6 @@ import {
 	onMount,
 	splitProps,
 } from "solid-js";
-import Icon from "../../../../components/ui/icon";
 import { useTheme } from "../../context/theme";
 import { CloneThemeOption } from "./clone";
 import DeleteTheme from "./delete";

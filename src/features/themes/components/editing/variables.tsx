@@ -1,6 +1,6 @@
+import Icon from "@xtreat/solid-iconify";
 import { type Component, type JSX, createMemo } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
-import Icon from "~/components/ui/icon";
 import { useTheme } from "~/features/themes/context/theme";
 
 const VariablesManagement: Component<JSX.HTMLAttributes<HTMLDivElement>> = (

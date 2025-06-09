@@ -1,7 +1,7 @@
+import Icon from "@xtreat/solid-iconify";
 import gsap from "gsap";
 import type { Component, JSX } from "solid-js";
 import { batch } from "solid-js";
-import Icon from "~/components/ui/icon";
 import { useTheme } from "~/features/themes/context/theme";
 import { genRandomTheme } from "~/features/themes/lib/color";
 
@@ -24,10 +24,7 @@ const RandomTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 					data.set(newName, randomTheme);
 					selectTheme(newName);
 				});
-				if (old) {
-					old.kill();
-					old = undefined;
-				}
+				if (old) old.kill();
 				old = gsap.to(die, {
 					rotate: "+=random(360,3600)",
 					ease: "expo.out",

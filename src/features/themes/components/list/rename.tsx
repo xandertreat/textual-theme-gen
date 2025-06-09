@@ -1,4 +1,5 @@
 import { action, useSubmission } from "@solidjs/router";
+import Icon from "@xtreat/solid-iconify";
 import {
 	type Component,
 	type JSX,
@@ -10,7 +11,6 @@ import {
 	splitProps,
 } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
-import Icon from "~/components/ui/icon";
 import { useTheme } from "~/features/themes/context/theme";
 
 type InvalidReason = "malformed" | "source" | "nodiff";

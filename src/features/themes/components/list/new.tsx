@@ -1,4 +1,5 @@
 import { action, useSubmission } from "@solidjs/router";
+import Icon from "@xtreat/solid-iconify";
 import {
 	type Component,
 	type JSX,
@@ -10,7 +11,6 @@ import {
 	createSignal,
 } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
-import Icon from "~/components/ui/icon";
 import { useTheme } from "~/features/themes/context/theme";
 import { genRandomTheme } from "../../lib/color";
 
@@ -57,7 +57,7 @@ const NewTheme: Component<NewThemeProps> = (props) => {
 				if (!open) setInvalidReason("empty");
 			}}
 		>
-			<li class="motion-duration-1000/opacity motion-ease-in-out motion-duration-300 motion-opacity-in-0 -motion-translate-x-in-50 ">
+			<li class="motion-duration-300/opacity motion-ease-in-out motion-duration-300 motion-opacity-in-0 max-hd:motion-translate-y-in-100 hd:-motion-translate-x-in-50">
 				<ActionDialog.Trigger class="btn btn-ghost group flex size-full justify-normal gap-3.5 rounded-sm p-0 px-1 py-0 pl-2 font-semibold text-green-600">
 					<Icon icon="mdi:plus" />
 					New theme

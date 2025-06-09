@@ -21,22 +21,23 @@
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
 		"@vitest/coverage-v8": "3.1.4",
-		"daisyui": "^5.0.35",
-		"tailwindcss": "^4.1.7",
+		"daisyui": "^5.0.43",
+		"tailwindcss": "^4.1.8",
 		"tailwindcss-motion": "1.1.0",
 		"tsx": "^4.19.4",
-		"vitest": "^3.1.4"
+		"vitest": "^3.2.2"
 	},
 	"dependencies": {
-		"@tailwindcss/vite": "^4.1.7",
-		"@fontsource-variable/roboto": "^5.2.5",
-		"@kobalte/core": "^0.13.9",
 		"@corvu/dialog": "^0.2.4",
 		"@corvu/popover": "^0.2.0",
-		"@solidjs/router": "^0.15.3",
-		"@solidjs/start": "^1.1.4",
+		"@fontsource-variable/roboto": "^5.2.6",
+		"@kobalte/core": "^0.13.10",
 		"@solid-primitives/map": "^0.7.1",
 		"@solid-primitives/storage": "^4.3.2",
+		"@solidjs/router": "^0.15.3",
+		"@solidjs/start": "^1.1.4",
+		"@tailwindcss/vite": "^4.1.8",
+		"@xtreat/solid-iconify": "^0.0.2",
 		"clsx": "^2.1.1",
 		"color": "^5.0.0",
 		"gsap": "^3.13.0",
@@ -47,7 +48,7 @@
 		"vinxi": "^0.5.6",
 		"vite-tsconfig-paths": "^5.1.4",
 		"xss": "^1.0.15",
-		"zod": "^3.25.7"
+		"zod": "^3.25.56"
 	},
 	"engines": {
 		"node": ">=20"

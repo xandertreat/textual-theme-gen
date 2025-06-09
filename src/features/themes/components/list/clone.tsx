@@ -1,6 +1,6 @@
 import { useDialogContext } from "@corvu/popover";
+import Icon from "@xtreat/solid-iconify";
 import { type Component, type JSX, batch } from "solid-js";
-import Icon from "~/components/ui/icon";
 import { useTheme } from "~/features/themes/context/theme";
 import { randomName } from "~/features/themes/lib/utils";
 import type { TextualTheme } from "~/features/themes/types";

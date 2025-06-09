@@ -7,6 +7,7 @@ import type {
 	RootProps,
 	TriggerProps,
 } from "@corvu/dialog";
+import Icon from "@xtreat/solid-iconify";
 import {
 	type Component,
 	type ComponentProps,
@@ -15,7 +16,6 @@ import {
 } from "solid-js";
 import type { Portal } from "solid-js/web";
 import { cn } from "~/lib/util";
-import Icon from "./icon";
 
 const Root: Component<RootProps> = (props) => <Dialog {...props} />;
 type ActionTriggerProps = TriggerProps &

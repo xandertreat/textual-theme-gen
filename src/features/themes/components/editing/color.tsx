@@ -6,10 +6,12 @@ import {
 	type Color as ColorT,
 	parseColor,
 } from "@kobalte/core/colors";
+import Icon from "@xtreat/solid-iconify";
 import {
 	type Accessor,
 	type Component,
 	type JSX,
+	Show,
 	createContext,
 	createEffect,
 	createMemo,
@@ -19,7 +21,6 @@ import {
 } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import CopyButton from "~/components/ui/copy";
-import Icon from "~/components/ui/icon";
 import { useTheme } from "~/features/themes/context/theme";
 import {
 	TEXT_ALPHA,
@@ -203,15 +204,17 @@ const HexCodeField: Component<JSX.HTMLAttributes<HTMLDivElement>> = ({
 						}}
 						type="button"
 					>
-						<Icon
-							class="size-full"
-							classList={{ "text-green-600": isEditingHex() }}
-							icon={
-								isEditingHex()
-									? "mdi:pencil-circle"
-									: "mdi:pencil-circle-outline"
+						<Show
+							fallback={
+								<Icon class="size-full" icon={"mdi:pencil-circle-outline"} />
 							}
-						/>
+							when={isEditingHex()}
+						>
+							<Icon
+								class="size-full text-green-600"
+								icon={"mdi:pencil-circle"}
+							/>
+						</Show>
 					</button>
 					<CopyButton
 						class="tooltip tooltip-bottom tooltip-info size-full transition duration-200 ease-in-out hover:cursor-pointer"
