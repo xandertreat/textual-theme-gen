@@ -21,6 +21,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
 		"@iconify-json/charm": "^1.2.2",
+		"@iconify-json/devicon": "^1.2.28",
 		"@iconify-json/mdi": "^1.2.3",
 		"@iconify-json/tabler": "^1.2.19",
 		"@vitest/coverage-v8": "3.1.4",

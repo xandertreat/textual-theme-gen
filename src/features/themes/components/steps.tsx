@@ -51,7 +51,7 @@ const DefinitionStep: StepProps = (props) => {
 				<b>#3. </b>
 				Define theme
 			</h3>
-			<CodeBlock code={code()} lang="python" />
+			<CodeBlock code={code()} />
 		</span>
 	);
 };
@@ -86,7 +86,7 @@ const RegistrationStep: StepProps = (props) => {
 				<b>#4. </b>
 				Register theme
 			</h3>
-			<CodeBlock class="text-xs" code={code()} lang="python" />
+			<CodeBlock class="text-xs" code={code()} />
 		</span>
 	);
 };

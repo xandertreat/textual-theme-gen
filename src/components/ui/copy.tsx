@@ -40,33 +40,31 @@ const CopyButton: Component<CopyButtonProps> = (passed) => {
 	]);
 	const [status, setStatus] = createSignal<CopyStatus>("ready");
 
-	let el!: HTMLButtonElement;
+	let curPath!: SVGPathElement;
+	let copyPath!: SVGPathElement;
+	let successPath!: SVGPathElement;
+	let errorPath!: SVGPathElement;
 
 	const handleClick = async () => {
 		if (status() !== "ready") return;
-		const curPath = el.querySelector<SVGPathElement>(`#cur ${QUERY_SELECTOR}`)!;
 		try {
 			await navigator.clipboard.writeText(local.code);
 			setStatus("success");
 			gsap.to(curPath, {
 				duration: 0.2,
-				morphSVG: el.querySelector<SVGPathElement>(
-					`#success ${QUERY_SELECTOR}`,
-				)!,
+				morphSVG: successPath,
 			});
 		} catch {
 			setStatus("error");
 			gsap.to(curPath, {
 				duration: 0.2,
-				morphSVG: el.querySelector<SVGPathElement>(`#error ${QUERY_SELECTOR}`)!,
+				morphSVG: errorPath,
 			});
 		} finally {
 			setTimeout(() => {
 				gsap.to(curPath, {
 					duration: 0.2,
-					morphSVG: el.querySelector<SVGPathElement>(
-						`#copy ${QUERY_SELECTOR}`,
-					)!,
+					morphSVG: copyPath,
 				});
 				setStatus("ready");
 			}, 1500);
@@ -85,7 +83,6 @@ const CopyButton: Component<CopyButtonProps> = (passed) => {
 				"tooltip-open tooltip-error text-error": status() === "error",
 			}}
 			onClick={handleClick}
-			ref={el}
 			type="button"
 		>
 			{/* Tooltip */}
@@ -93,12 +90,29 @@ const CopyButton: Component<CopyButtonProps> = (passed) => {
 			{/* Button icon */}
 			<IconSectionCopy
 				class="-scale-100 active:-scale-90 motion-duration-300 motion-ease-in motion-opacity-out-100 size-full rotate-180 opacity-0 transition-[scale] duration-150 ease-in-out"
-				id="cur"
+				ref={(el) => {
+					curPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
+				}}
 			/>
 			{/* Morph targets */}
-			<IconSectionCopy class="hidden" id="copy" />
-			<IconCheckRounded class="hidden" id="success" />
-			<IconCross class="hidden" id="error" />
+			<IconSectionCopy
+				class="hidden"
+				ref={(el) => {
+					copyPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
+				}}
+			/>
+			<IconCheckRounded
+				class="hidden"
+				ref={(el) => {
+					successPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
+				}}
+			/>
+			<IconCross
+				class="hidden"
+				ref={(el) => {
+					errorPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
+				}}
+			/>
 		</button>
 	);
 };

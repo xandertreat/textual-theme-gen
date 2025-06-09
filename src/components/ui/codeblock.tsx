@@ -1,6 +1,7 @@
 import { cn } from "@util";
 import type { JSX } from "solid-js";
 import { type Component, Show, createMemo, splitProps } from "solid-js";
+import IconPythonLang from "~icons/devicon/python";
 import CopyButton from "./copy";
 
 // highlight.js configuration
@@ -11,11 +12,9 @@ hljs.registerLanguage("python", python);
 import "highlight.js/styles/github-dark.min.css";
 
 interface CodeBlockProps extends JSX.HTMLAttributes<HTMLElement> {
-	lang: string;
 	code: string;
 	copy?: boolean;
 	details?: boolean;
-	langIcon?: string;
 }
 
 const CodeBlock: Component<CodeBlockProps> = (props) => {
@@ -24,18 +23,15 @@ const CodeBlock: Component<CodeBlockProps> = (props) => {
 		"classList",
 		"copy",
 		"details",
-		"lang",
-		"langIcon",
 		"code",
 	]);
 	// DEFAULTS
 	local.copy ??= true;
 	local.details ??= true;
-	local.langIcon ??= `logos:${local.lang}`;
 
 	const Code = () => {
 		const highlightedCode = createMemo(
-			() => hljs.highlight(local.code, { language: local.lang }).value,
+			() => hljs.highlight(local.code, { language: "python" }).value,
 		);
 
 		return (
@@ -68,8 +64,9 @@ const CodeBlock: Component<CodeBlockProps> = (props) => {
 				<Show when={local.copy}>
 					<CopyButton code={local.code} />
 				</Show>
-				<span class="inline-flex items-center justify-center gap-1.5 p-2 text-center align-middle">
-					<p aria-label={`Language: ${local.lang}`}>{local.lang}</p>
+				<span class="inline-flex items-center justify-center gap-1.5 p-2 text-center align-middle text-base">
+					<IconPythonLang />
+					<p aria-label={"Language: python"}>python</p>
 				</span>
 				<Code />
 			</div>
