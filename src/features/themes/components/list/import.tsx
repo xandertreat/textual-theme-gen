@@ -7,7 +7,7 @@ import IconFileImportOutline from "~icons/mdi/file-import-outline";
 const ImportThemes: Component<JSX.HTMLAttributes<HTMLLabelElement>> = (
 	props,
 ) => {
-	const { data } = useTheme();
+	const { data, selectTheme } = useTheme();
 
 	async function handleFileImport(e: Event) {
 		const inputEl = e.target as EventTarget & HTMLInputElement;
@@ -24,6 +24,7 @@ const ImportThemes: Component<JSX.HTMLAttributes<HTMLLabelElement>> = (
 				for (const exported of exportedFiles) {
 					const themes = JSON.parse(exported) as TextualTheme[];
 					for (const theme of themes) data.set(theme.name, theme);
+					if (themes.length === 1) selectTheme(themes[0].name);
 				}
 			}
 		} catch (e) {
