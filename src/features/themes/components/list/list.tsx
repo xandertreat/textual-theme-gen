@@ -114,7 +114,7 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 				</Show>
 			</div>
 			<ol class="hd:flex grid hd:w-56 grid-cols-1 xs:grid-cols-2 hd:flex-col gap-2 rounded-box p-0 px-1 md:grid-cols-3">
-				<li class="menu-title col-span-full mt-5 py-0 text-left max-xl:mb-1 max-xl:px-1">
+				<li class="col-span-full mt-5 py-0 text-left font-semibold text-sm opacity-80 max-xl:mb-1 max-xl:px-1">
 					<span class="flex select-none items-center justify-between">
 						My themes
 						<button
@@ -143,7 +143,7 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 					</Show>
 					<NewTheme />
 				</Show>
-				<li class="menu-title col-span-full mt-5 py-0 text-left max-xl:mb-1 max-xl:px-1">
+				<li class="col-span-full mt-5 py-0 text-left font-semibold text-sm opacity-80 max-xl:mb-1 max-xl:px-1">
 					<span class="flex select-none items-center justify-between">
 						Included themes
 						<button
@@ -171,7 +171,7 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 						</For>
 					</Show>
 				</Show>
-				<li class="menu-title col-span-full mt-5 py-0 text-left max-xl:mb-1 max-xl:px-1">
+				<li class="col-span-full mt-5 py-0 text-left font-semibold text-sm opacity-80 max-xl:mb-1 max-xl:px-1">
 					<span class="flex select-none items-center justify-between">
 						Presets
 						<button

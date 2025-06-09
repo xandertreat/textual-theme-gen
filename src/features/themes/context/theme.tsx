@@ -38,7 +38,9 @@ export const ThemeProvider: Component<{ children: JSX.Element }> = (props) => {
 	const data = new ReactiveMap<string, TextualTheme>(
 		DEFAULTS.map((t) => [t.name, t]),
 	);
-	const firstThemeName = [...data.keys()][0];
+	const keys = data.keys().toArray();
+
+	const firstThemeName = [...keys][keys.indexOf("textual-light")];
 	const [selectedName, selectTheme] = createSignal<string>(firstThemeName);
 	const [selectedTheme, modifySelected] = [
 		() => data.get(selectedName())!,

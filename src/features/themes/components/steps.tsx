@@ -12,7 +12,7 @@ const ImportStep: StepProps = (props) => (
 			<b class="text-3xl">#1. </b>
 			Import required dependencies
 		</h3>
-		<CodeBlock code={"from textual import theme"} lang="python" />
+		<CodeBlock code={"from textual import theme"} />
 	</span>
 );
 

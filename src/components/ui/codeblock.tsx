@@ -36,7 +36,7 @@ const CodeBlock: Component<CodeBlockProps> = (props) => {
 
 		return (
 			<div
-				class="overflow-scroll bg-[#151B23] px-2 pt-2 pb-0.5 font-mono!"
+				class="overflow-auto bg-[#151B23] p-2 font-mono!"
 				classList={{
 					"rounded-md": !local.details,
 					"rounded-br-md rounded-bl-md": local.details,
