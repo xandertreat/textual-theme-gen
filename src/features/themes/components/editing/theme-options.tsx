@@ -1,6 +1,6 @@
-import Icon from "@xtreat/solid-iconify";
 import { type Component, type JSX, createMemo } from "solid-js";
 import { useTheme } from "~/features/themes/context/theme";
+import IconCog from "~icons/mdi/cog";
 import CloneTheme from "./clone";
 import NewColor from "./new-color";
 import VariablesManagement from "./variables";
@@ -32,7 +32,7 @@ const ThemeOptions: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 			{...props}
 		>
 			<span class="inline-flex gap-2">
-				<Icon class="size-9" icon="mdi:cog" />
+				<IconCog class="size-9" />
 				<h2 class="font-bold text-3xl">Options</h2>
 			</span>
 			<div class="flex qhd:flex-row flex-col">

@@ -1,7 +1,7 @@
-import Icon from "@xtreat/solid-iconify";
 import { type Component, type JSX, createMemo } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import { useTheme } from "~/features/themes/context/theme";
+import IconPlusCircle from "~icons/mdi/plus-circle";
 
 const NewColor: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 	const { selectedTheme } = useTheme();
@@ -13,19 +13,12 @@ const NewColor: Component<JSX.HTMLAttributes<HTMLDivElement>> = (props) => {
 				class="btn m-2 mx-4 hd:w-40 border-2 border-green-600 text-green-600 disabled:border-green-600/30 disabled:text-green-600/30"
 				disabled={!canModify()}
 			>
-				<Icon class="size-5 " icon="mdi:plus-circle" />
+				<IconPlusCircle class="size-5" />
 				<p>Create Color</p>
 			</ActionDialog.Trigger>
 			<ActionDialog.Portal>
 				<ActionDialog.Overlay />
-				<ActionDialog.Content
-					// {class="flex flex-col items-center border-0 bg-primary text-center text-primary-content "}
-					{...props}
-					class="pointer-events-none select-none border-0 bg-transparent text-center shadow-none"
-				>
-					{/* <ActionDialog.Close /> */}
-					Coming soon...
-				</ActionDialog.Content>
+				<ActionDialog.Content {...props} />
 			</ActionDialog.Portal>
 		</ActionDialog>
 	);

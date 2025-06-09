@@ -1,5 +1,4 @@
 import { cookieStorage, makePersisted } from "@solid-primitives/storage";
-import Icon from "@xtreat/solid-iconify";
 import {
 	type Component,
 	type JSX,
@@ -10,6 +9,9 @@ import {
 	createMemo,
 	createSignal,
 } from "solid-js";
+import IconThemeLightDark from "~icons/mdi/theme-light-dark";
+import IconMoonFilled from "~icons/tabler/moon-filled";
+import IconSunFilled from "~icons/tabler/sun-filled";
 
 type AppTheme = "system" | "light" | "dark";
 export const DEFAULT_APP_THEME: AppTheme = "system";
@@ -90,39 +92,24 @@ const AppThemeSwitcher: Component<
 		>
 			<Show
 				fallback={
-					<Icon
-						class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full"
-						icon="mdi:theme-light-dark"
-					/>
+					<IconThemeLightDark class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full" />
 				}
 				when={appTheme()}
 			>
 				{(theme) => (
 					<Switch
 						fallback={
-							<Icon
-								class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full"
-								icon="mdi:theme-light-dark"
-							/>
+							<IconThemeLightDark class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full" />
 						}
 					>
 						<Match when={theme() === "system"}>
-							<Icon
-								class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full"
-								icon="mdi:theme-light-dark"
-							/>
+							<IconThemeLightDark class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full" />
 						</Match>
 						<Match when={theme() === "light"}>
-							<Icon
-								class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full"
-								icon="tabler:sun-filled"
-							/>
+							<IconSunFilled class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full" />
 						</Match>
 						<Match when={theme() === "dark"}>
-							<Icon
-								class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full"
-								icon="tabler:moon-filled"
-							/>
+							<IconMoonFilled class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full" />
 						</Match>
 					</Switch>
 				)}

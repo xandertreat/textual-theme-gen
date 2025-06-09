@@ -1,9 +1,9 @@
 import { useDialogContext } from "@corvu/popover";
-import Icon from "@xtreat/solid-iconify";
 import { type Component, type JSX, batch } from "solid-js";
 import { useTheme } from "~/features/themes/context/theme";
 import { randomName } from "~/features/themes/lib/utils";
 import type { TextualTheme } from "~/features/themes/types";
+import IconContentCopy from "~icons/mdi/content-copy";
 
 interface CloneThemeOptionProps
 	extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {}
@@ -34,7 +34,7 @@ export const CloneThemeOption: Component<CloneThemeOptionProps> = (props) => {
 			{...props}
 			onClick={handleCloning}
 		>
-			<Icon icon="mdi:content-copy" />
+			<IconContentCopy />
 			Clone
 		</button>
 	);

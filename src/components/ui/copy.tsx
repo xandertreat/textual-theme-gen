@@ -1,6 +1,8 @@
-import Icon from "@xtreat/solid-iconify";
 import type { JSX } from "solid-js";
 import { type Component, createSignal, mergeProps, splitProps } from "solid-js";
+import IconCross from "~icons/charm/cross";
+import IconCheckRounded from "~icons/material-symbols/check-rounded";
+import IconSectionCopy from "~icons/pixelarticons/section-copy";
 
 import { gsap } from "gsap";
 import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
@@ -89,39 +91,14 @@ const CopyButton: Component<CopyButtonProps> = (passed) => {
 			{/* Tooltip */}
 			<span class="tooltip-content z-999">{CopyStatusLabel[status()]}</span>
 			{/* Button icon */}
-			<Icon
+			<IconSectionCopy
 				class="-scale-100 active:-scale-90 motion-duration-300 motion-ease-in motion-opacity-out-100 size-full rotate-180 opacity-0 transition-[scale] duration-150 ease-in-out"
-				icon={local.copyIcon}
 				id="cur"
-				// ref={(el) => {
-				// 	curPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
-				// }}
 			/>
 			{/* Morph targets */}
-			<Icon
-				class="hidden"
-				icon={local.copyIcon}
-				id="copy"
-				// ref={(el) => {
-				// 	copyPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
-				// }}
-			/>
-			<Icon
-				class="hidden"
-				icon={local.successIcon}
-				id="success"
-				// ref={(el) => {
-				// 	successPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
-				// }}
-			/>
-			<Icon
-				class="hidden"
-				icon={local.errorIcon}
-				id="error"
-				// ref={(el) => {
-				// 	errorPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
-				// }}
-			/>
+			<IconSectionCopy class="hidden" id="copy" />
+			<IconCheckRounded class="hidden" id="success" />
+			<IconCross class="hidden" id="error" />
 		</button>
 	);
 };

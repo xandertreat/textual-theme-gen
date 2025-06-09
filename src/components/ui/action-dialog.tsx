@@ -7,7 +7,6 @@ import type {
 	RootProps,
 	TriggerProps,
 } from "@corvu/dialog";
-import Icon from "@xtreat/solid-iconify";
 import {
 	type Component,
 	type ComponentProps,
@@ -16,6 +15,7 @@ import {
 } from "solid-js";
 import type { Portal } from "solid-js/web";
 import { cn } from "~/lib/util";
+import IconClose from "~icons/mdi/close";
 
 const Root: Component<RootProps> = (props) => <Dialog {...props} />;
 type ActionTriggerProps = TriggerProps &
@@ -75,7 +75,7 @@ const Close: Component<ActionCloseProps> = (props) => (
 		{...mergeProps(
 			{
 				class: "absolute top-2 right-2 btn btn-circle btn-ghost btn-xs",
-				children: <Icon class="size-full" icon="mdi:close" />,
+				children: <IconClose class="size-full" />,
 			},
 			props,
 		)}

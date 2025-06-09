@@ -1,5 +1,4 @@
 import Popover from "@corvu/popover";
-import Icon from "@xtreat/solid-iconify";
 import type { Component, JSX } from "solid-js";
 import {
 	For,
@@ -12,6 +11,9 @@ import {
 	onMount,
 } from "solid-js";
 import { useTheme } from "~/features/themes/context/theme";
+import IconDotsHorizontal from "~icons/mdi/dots-horizontal";
+import IconEyeOffOutline from "~icons/mdi/eye-off-outline";
+import IconEyeOutline from "~icons/mdi/eye-outline";
 import ClearThemes from "./clear";
 import ExportThemes from "./export";
 import ImportThemes from "./import";
@@ -32,11 +34,7 @@ const ThemeListOptions: Component<ThemeListOptionsProps> = (passed) => {
 					data-tip={"Options"}
 					type="button"
 				>
-					<Icon
-						aria-label="Theme Options"
-						class="size-full"
-						icon="mdi:dots-horizontal"
-					/>
+					<IconDotsHorizontal aria-label="Theme Options" class="size-full" />
 				</Popover.Trigger>
 			</Popover.Anchor>
 			<Popover.Portal>
@@ -126,12 +124,10 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 							type="button"
 						>
 							<Show
-								fallback={
-									<Icon class="size-5/6" icon={"mdi:eye-off-outline"} />
-								}
+								fallback={<IconEyeOffOutline class="size-5/6" />}
 								when={isVisible(userVisibility)}
 							>
-								<Icon class="size-5/6" icon={"mdi:eye-outline"} />
+								<IconEyeOutline class="size-5/6" />
 							</Show>
 						</button>
 					</span>
@@ -157,12 +153,10 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 							type="button"
 						>
 							<Show
-								fallback={
-									<Icon class="size-5/6" icon={"mdi:eye-off-outline"} />
-								}
+								fallback={<IconEyeOffOutline class="size-5/6" />}
 								when={isVisible(includedVisibility)}
 							>
-								<Icon class="size-5/6" icon={"mdi:eye-outline"} />
+								<IconEyeOutline class="size-5/6" />
 							</Show>
 						</button>
 					</span>
@@ -187,12 +181,10 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 							type="button"
 						>
 							<Show
-								fallback={
-									<Icon class="size-5/6" icon={"mdi:eye-off-outline"} />
-								}
+								fallback={<IconEyeOffOutline class="size-5/6" />}
 								when={isVisible(presetVisibility)}
 							>
-								<Icon class="size-5/6" icon={"mdi:eye-outline"} />
+								<IconEyeOutline class="size-5/6" />
 							</Show>
 						</button>
 					</span>

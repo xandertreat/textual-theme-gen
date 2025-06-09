@@ -1,5 +1,4 @@
 import Popover from "@corvu/popover";
-import Icon from "@xtreat/solid-iconify";
 import type { Component, JSX } from "solid-js";
 import {
 	For,
@@ -9,6 +8,7 @@ import {
 	onMount,
 	splitProps,
 } from "solid-js";
+import IconDotsHorizontal from "~icons/mdi/dots-horizontal";
 import { useTheme } from "../../context/theme";
 import { CloneThemeOption } from "./clone";
 import DeleteTheme from "./delete";
@@ -66,11 +66,7 @@ const ThemeOptionMenu: Component<ThemeOptionMenuProps> = (props) => {
 					role="button"
 				>
 					<span class="tooltip-content">Options</span>
-					<Icon
-						aria-label="Theme Options"
-						class="size-full"
-						icon="mdi:dots-horizontal"
-					/>
+					<IconDotsHorizontal aria-label="Theme Options" class="size-full" />
 				</Popover.Trigger>
 			</Popover.Anchor>
 			<Popover.Portal>

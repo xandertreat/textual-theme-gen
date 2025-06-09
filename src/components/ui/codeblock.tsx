@@ -1,5 +1,4 @@
 import { cn } from "@util";
-import Icon from "@xtreat/solid-iconify";
 import type { JSX } from "solid-js";
 import { type Component, Show, createMemo, splitProps } from "solid-js";
 import CopyButton from "./copy";
@@ -70,7 +69,6 @@ const CodeBlock: Component<CodeBlockProps> = (props) => {
 					<CopyButton code={local.code} />
 				</Show>
 				<span class="inline-flex items-center justify-center gap-1.5 p-2 text-center align-middle">
-					<Icon class="size-6" icon={local.langIcon} />
 					<p aria-label={`Language: ${local.lang}`}>{local.lang}</p>
 				</span>
 				<Code />

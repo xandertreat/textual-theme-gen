@@ -6,7 +6,6 @@ import {
 	type Color as ColorT,
 	parseColor,
 } from "@kobalte/core/colors";
-import Icon from "@xtreat/solid-iconify";
 import {
 	type Accessor,
 	type Component,
@@ -29,6 +28,8 @@ import {
 } from "~/features/themes/lib/color";
 import type { HexColorCode } from "~/features/themes/types";
 import debounce from "~/lib/debounce";
+import IconPencilCircle from "~icons/mdi/pencil-circle";
+import IconPencilCircleOutline from "~icons/mdi/pencil-circle-outline";
 
 const DEBOUNCE_DELAY = 2.5; // ms (found through manual testing to be best responsive / performance tradeoff)
 
@@ -205,15 +206,10 @@ const HexCodeField: Component<JSX.HTMLAttributes<HTMLDivElement>> = ({
 						type="button"
 					>
 						<Show
-							fallback={
-								<Icon class="size-full" icon={"mdi:pencil-circle-outline"} />
-							}
+							fallback={<IconPencilCircleOutline class="size-full" />}
 							when={isEditingHex()}
 						>
-							<Icon
-								class="size-full text-green-600"
-								icon={"mdi:pencil-circle"}
-							/>
+							<IconPencilCircle class="size-full text-green-600" />
 						</Show>
 					</button>
 					<CopyButton

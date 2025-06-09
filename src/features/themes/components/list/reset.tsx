@@ -1,9 +1,9 @@
 import { action, useSubmission } from "@solidjs/router";
-import Icon from "@xtreat/solid-iconify";
 import type { Component, JSX } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import { useTheme } from "~/features/themes/context/theme";
 import { DEFAULT_THEMES } from "~/features/themes/data/themes";
+import IconAlert from "~icons/mdi/alert";
 
 const ThemeReset: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 	props,
@@ -23,7 +23,7 @@ const ThemeReset: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 				class="inline-flex size-full items-center rounded text-center font-bold text-error"
 				{...props}
 			>
-				<Icon icon="mdi:alert" />
+				<IconAlert />
 				Reset data
 			</ActionDialog.Trigger>
 			<ActionDialog.Portal>

@@ -1,4 +1,3 @@
-import Icon from "@xtreat/solid-iconify";
 import {
 	type Component,
 	type JSX,
@@ -10,6 +9,10 @@ import {
 import { useTheme } from "~/features/themes/context/theme";
 import { randomName } from "~/features/themes/lib/utils";
 import type { TextualTheme } from "~/features/themes/types";
+import IconCross from "~icons/charm/cross";
+import IconCheckRounded from "~icons/material-symbols/check-rounded";
+import IconContentCopy from "~icons/mdi/content-copy";
+import IconSpinnersBlocksWave from "~icons/svg-spinners/blocks-wave";
 
 type CloneState = "ready" | "cloning" | "cloned" | "error";
 const CLONE_HOLD_TIME = 1000; // milliseconds
@@ -85,37 +88,26 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 					(hold)
 				</span>
 				<span class="relative size-6">
-					<Icon
-						class="motion-duration-150 motion-ease-in absolute inset-0 size-full scale-100"
-						classList={{
-							"motion-scale-in-0": phase() === "ready",
-							"motion-scale-out-0": phase() !== "ready",
-						}}
-						icon="pixelarticons:section-copy"
-					/>
-					<Icon
+					<IconSpinnersBlocksWave
 						class="motion-duration-150 motion-ease-in absolute inset-0 size-full scale-0"
 						classList={{
 							"motion-scale-in-0": phase() === "cloning",
 							"motion-scale-out-0": phase() !== "cloning",
 						}}
-						icon="svg-spinners:blocks-wave"
 					/>
-					<Icon
+					<IconCheckRounded
 						class="motion-duration-150 motion-ease-in absolute inset-0 size-full scale-0"
 						classList={{
 							"motion-scale-in-0": phase() === "cloned",
 							"motion-scale-out-0": phase() !== "cloned",
 						}}
-						icon="material-symbols:check-rounded"
 					/>
-					<Icon
+					<IconCross
 						class="motion-duration-150 motion-ease-in absolute inset-0 size-full scale-0"
 						classList={{
 							"motion-scale-in-0": phase() === "error",
 							"motion-scale-out-0": phase() !== "error",
 						}}
-						icon="charm:cross"
 					/>
 				</span>
 				<p>
@@ -138,7 +130,7 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 			{...props}
 			onClick={handleCloning}
 		>
-			<Icon class="size-6" icon="mdi:content-copy" />
+			<IconContentCopy class="size-6" />
 			Clone Theme
 		</button>
 	);

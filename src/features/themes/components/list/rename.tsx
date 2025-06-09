@@ -1,5 +1,4 @@
 import { action, useSubmission } from "@solidjs/router";
-import Icon from "@xtreat/solid-iconify";
 import {
 	type Component,
 	type JSX,
@@ -12,6 +11,9 @@ import {
 } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import { useTheme } from "~/features/themes/context/theme";
+import IconAlert from "~icons/mdi/alert";
+import IconCheck from "~icons/mdi/check";
+import IconPencilOutline from "~icons/mdi/pencil-outline";
 
 type InvalidReason = "malformed" | "source" | "nodiff";
 interface RenameThemeProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -58,7 +60,7 @@ const RenameTheme: Component<RenameThemeProps> = (props) => {
 				class="inline-flex size-full items-center rounded text-center font-bold text-sm"
 				{...rest}
 			>
-				<Icon icon="mdi:pencil-outline" />
+				<IconPencilOutline />
 				Rename theme
 			</ActionDialog.Trigger>
 			<ActionDialog.Portal>
@@ -110,21 +112,19 @@ const RenameTheme: Component<RenameThemeProps> = (props) => {
 									type="text"
 									value={local.theme}
 								/>
-								<Icon
+								<IconAlert
 									class="size-6 cursor-default text-error text-sm"
 									classList={{
 										hidden: isValid(),
 										block: !isValid(),
 									}}
-									icon="mdi:alert"
 								/>
-								<Icon
+								<IconCheck
 									class="size-6 cursor-default text-sm text-success"
 									classList={{
 										hidden: !isValid(),
 										block: isValid(),
 									}}
-									icon="mdi:check"
 								/>
 							</label>
 							<Show when={!isValid()}>
