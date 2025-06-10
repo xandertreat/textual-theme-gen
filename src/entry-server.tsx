@@ -77,13 +77,7 @@ export default createHandler(() => (
 						sizes="180x180"
 					/>
 					{assets}
-					<script
-						innerText={`document.documentElement.dataset.theme =
-      localStorage.getItem("theme") ?? "${DEFAULT_APP_THEME}"`}
-					/>
-					{assets}
 				</head>
-
 				<body>
 					<div id="app">{children}</div>
 					{scripts}
