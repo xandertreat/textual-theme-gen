@@ -62,7 +62,10 @@ const CodeBlock: Component<CodeBlockProps> = (props) => {
 				)}
 			>
 				<Show when={local.copy}>
-					<CopyButton code={local.code} />
+					<CopyButton
+						class="tooltip tooltip-bottom absolute right-2 h-6 w-fit translate-y-1/4 transition duration-200 ease-in-out hover:cursor-pointer"
+						code={local.code}
+					/>
 				</Show>
 				<span class="inline-flex items-center justify-center gap-1.5 p-2 text-center align-middle text-base">
 					<IconPythonLang />

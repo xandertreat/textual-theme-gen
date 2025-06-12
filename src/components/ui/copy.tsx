@@ -73,9 +73,7 @@ const CopyButton: Component<CopyButtonProps> = (passed) => {
 
 	return (
 		<button
-			{...rest}
 			aria-label={CopyStatusLabel[status()]}
-			class="tooltip tooltip-bottom absolute right-2 h-6 w-fit translate-y-1/4 transition duration-200 ease-in-out hover:cursor-pointer"
 			classList={{
 				"tooltip-info opacity-10 hover:text-info hover:opacity-100 group-hover:opacity-70":
 					status() === "ready",
@@ -84,6 +82,7 @@ const CopyButton: Component<CopyButtonProps> = (passed) => {
 			}}
 			onClick={handleClick}
 			type="button"
+			{...rest}
 		>
 			{/* Tooltip */}
 			<span class="tooltip-content z-999">{CopyStatusLabel[status()]}</span>

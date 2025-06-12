@@ -185,7 +185,7 @@ const HexCodeField: Component<JSX.HTMLAttributes<HTMLDivElement>> = ({
 					}}
 					value={currentCode()}
 				/>
-				<div class=" -translate-y-1/2 absolute top-1/2 right-2 flex h-6 w-fit justify-between gap-2">
+				<div class="-translate-y-1/2 absolute top-1/2 right-2 inline-flex h-6 w-fit justify-center gap-1">
 					<button
 						aria-label={isEditingHex() ? "Done" : "Edit"}
 						class="tooltip tooltip-bottom btn btn-circle btn-ghost btn-xs aspect-square h-full"
@@ -213,7 +213,8 @@ const HexCodeField: Component<JSX.HTMLAttributes<HTMLDivElement>> = ({
 						</Show>
 					</button>
 					<CopyButton
-						class="tooltip tooltip-bottom tooltip-info size-full transition duration-200 ease-in-out hover:cursor-pointer"
+						class="tooltip tooltip-bottom aspect-square h-full transition duration-200 ease-in-out hover:cursor-pointer"
+						classList={{}}
 						code={`#${currentCode()
 							.replace(/#/g, "")
 							.trim()
