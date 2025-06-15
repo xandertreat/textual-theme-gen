@@ -36,6 +36,9 @@ RUN --mount=type=cache,target=/root/.bun \
 
 COPY . .
 
+# CI pipeline for safety
+RUN bun ci
+
 # Build
 RUN bun run build
 
