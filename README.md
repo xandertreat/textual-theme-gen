@@ -187,6 +187,7 @@ See `CONTRIBUTING.md`
 - [ ] Localization / Internationalization
 - [ ] Icon package / refactor
 - [ ] Pre-packaged colors to pick from (from textual's built in colors)
+- [ ] Pagination for theme lists
 
 ---
 
@@ -204,7 +205,6 @@ See `CONTRIBUTING.md`
 - [Vitest](https://vitest.dev/) (testing)
 - [Biome](https://biomejs.dev/) (lint/format)
 - [GSAP](https://gsap.com/) (animation)
-
 
 ---
 

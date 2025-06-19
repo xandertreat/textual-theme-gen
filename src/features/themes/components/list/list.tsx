@@ -5,11 +5,10 @@ import {
 	Show,
 	createEffect,
 	createMemo,
-	createSignal,
-	lazy,
 	mergeProps,
 	onMount,
 } from "solid-js";
+import { createStore } from "solid-js/store";
 import { useTheme } from "~/features/themes/context/theme";
 import IconDotsHorizontal from "~icons/mdi/dots-horizontal";
 import IconEyeOffOutline from "~icons/mdi/eye-off-outline";
@@ -20,8 +19,7 @@ import ImportThemes from "./import";
 import NewTheme from "./new";
 import RandomTheme from "./random";
 import ThemeReset from "./reset";
-
-const ThemeOption = lazy(() => import("./option"));
+import ThemeOption from "./option";
 
 interface ThemeListOptionsProps extends JSX.HTMLAttributes<HTMLDivElement> {}
 
@@ -30,11 +28,12 @@ const ThemeListOptions: Component<ThemeListOptionsProps> = (passed) => {
 		<Popover>
 			<Popover.Anchor>
 				<Popover.Trigger
+					aria-label="Open theme options menu"
 					class="btn btn-circle btn-ghost btn-neutral-content tooltip"
-					data-tip={"Options"}
+					data-tip={"Theme Options"}
 					type="button"
 				>
-					<IconDotsHorizontal aria-label="Theme Options" class="size-full" />
+					<IconDotsHorizontal aria-hidden="true" class="size-full" />
 				</Popover.Trigger>
 			</Popover.Anchor>
 			<Popover.Portal>
@@ -66,40 +65,54 @@ interface ThemeListProps extends JSX.HTMLAttributes<HTMLDivElement> {
 	showOptions?: boolean;
 }
 
+interface ListVisibility {
+	user: boolean;
+	builtIn: boolean;
+	preset: boolean;
+}
+
 const ThemeList: Component<ThemeListProps> = (passed) => {
 	const props = mergeProps({ showOptions: true }, passed);
 
 	// theme state
 	const { data } = useTheme();
+	const vals = createMemo(() => [...data.values()]);
 	const userThemes = createMemo(() =>
-		[...data.values()].filter((t) => t.source === "user").map((t) => t.name),
+		vals()
+			.filter((t) => t.source === "user")
+			.map((t) => t.name),
 	);
-	const textualThemes = createMemo(() =>
-		[...data.values()].filter((t) => t.source === "textual").map((t) => t.name),
+	const builtInThemes = createMemo(() =>
+		vals()
+			.filter((t) => t.source === "textual")
+			.map((t) => t.name),
 	);
 	const presetThemes = createMemo(() =>
-		[...data.values()].filter((t) => t.source === "preset").map((t) => t.name),
+		vals()
+			.filter((t) => t.source === "preset")
+			.map((t) => t.name),
 	);
 
 	// state
-	const userVisibility = 1 << 0;
-	const includedVisibility = 1 << 1;
-	const presetVisibility = 1 << 2;
-
-	const STORAGE_KEY = "listVisibility";
-	const initialVisibility = userVisibility | includedVisibility;
-	const [visibility, setVisibility] = createSignal(initialVisibility);
-	const isVisible = (flag: number) => (visibility() & flag) !== 0;
+	const [listVisibility, setVisibility] = createStore<ListVisibility>({
+		user: true,
+		builtIn: true,
+		preset: false,
+	});
 
 	onMount(() => {
-		// load from local storage (if any)
-		const localData = localStorage.getItem(STORAGE_KEY);
-		if (localData) setVisibility(Number(localData));
-
-		// sync local storage from now on
-		createEffect(() => {
-			localStorage.setItem(STORAGE_KEY, String(visibility()));
-		});
+		try {
+			const localData = localStorage.getItem("listVisibility");
+			if (localData) setVisibility(JSON.parse(localData));
+		} catch (e) {
+			console.error(
+				"[ERROR] - Failed to load list visibility from local storage!",
+			);
+			localStorage.removeItem("listVisibility");
+		}
+		createEffect(() =>
+			localStorage.setItem("listVisibility", JSON.stringify(listVisibility)),
+		);
 	});
 
 	return (
@@ -115,26 +128,41 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 			</div>
 			<ol class="hd:flex grid hd:w-56 grid-cols-1 xs:grid-cols-2 hd:flex-col gap-2 rounded-box p-0 px-1 md:grid-cols-3">
 				<li class="col-span-full mt-5 py-0 text-left font-semibold text-sm opacity-80 max-xl:mb-1 max-xl:px-1">
-					<span class="flex select-none items-center justify-between">
+					<button
+						aria-controls="user-themes-list"
+						aria-expanded={listVisibility.user}
+						aria-label={
+							listVisibility.user ? "Hide My Themes" : "Show My Themes"
+						}
+						aria-pressed={!listVisibility.user}
+						class="inline-flex w-full select-none items-center justify-between text-nowrap transition-opacity duration-150 ease-in-out *:size-5"
+						classList={{
+							"opacity-80": !listVisibility.user,
+							"opacity-100": listVisibility.user,
+						}}
+						onClick={() => setVisibility("user", !listVisibility.user)}
+						type="button"
+					>
 						My themes
-						<button
-							aria-label="Toggle Visibility"
-							class="btn btn-xs btn-ghost btn-circle"
-							onClick={() => setVisibility(visibility() ^ userVisibility)}
-							type="button"
+						<Show
+							fallback={
+								<IconEyeOffOutline
+									aria-hidden="true"
+									class="btn btn-xs btn-ghost btn-circle"
+								/>
+							}
+							when={listVisibility.user}
 						>
-							<Show
-								fallback={<IconEyeOffOutline class="size-5/6" />}
-								when={isVisible(userVisibility)}
-							>
-								<IconEyeOutline class="size-5/6" />
-							</Show>
-						</button>
-					</span>
+							<IconEyeOutline
+								aria-hidden="true"
+								class="btn btn-xs btn-ghost btn-circle"
+							/>
+						</Show>
+					</button>
 				</li>
-				<Show when={isVisible(userVisibility)}>
+				<Show when={listVisibility.user}>
 					<Show
-						fallback={<li>No themes made yet!</li>}
+						fallback={<li aria-live="polite">No themes made yet!</li>}
 						when={userThemes().length > 0}
 					>
 						<For each={userThemes()}>
@@ -144,52 +172,86 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 					<NewTheme />
 				</Show>
 				<li class="col-span-full mt-5 py-0 text-left font-semibold text-sm opacity-80 max-xl:mb-1 max-xl:px-1">
-					<span class="flex select-none items-center justify-between">
-						Included themes
-						<button
-							aria-label="Toggle Visibility"
-							class="btn btn-xs btn-ghost btn-circle"
-							onClick={() => setVisibility(visibility() ^ includedVisibility)}
-							type="button"
+					<button
+						aria-controls="built-in-themes-list"
+						aria-expanded={listVisibility.builtIn}
+						aria-label={
+							listVisibility.builtIn
+								? "Hide Built-in Themes"
+								: "Show Built-in Themes"
+						}
+						aria-pressed={!listVisibility.builtIn}
+						class="inline-flex w-full select-none items-center justify-between text-nowrap transition-opacity duration-150 ease-in-out *:size-5"
+						classList={{
+							"opacity-80": !listVisibility.builtIn,
+							"opacity-100": listVisibility.builtIn,
+						}}
+						onClick={() => setVisibility("builtIn", !listVisibility.builtIn)}
+						type="button"
+					>
+						Built-in themes
+						<Show
+							fallback={
+								<IconEyeOffOutline
+									aria-hidden="true"
+									class="btn btn-xs btn-ghost btn-circle"
+								/>
+							}
+							when={listVisibility.builtIn}
 						>
-							<Show
-								fallback={<IconEyeOffOutline class="size-5/6" />}
-								when={isVisible(includedVisibility)}
-							>
-								<IconEyeOutline class="size-5/6" />
-							</Show>
-						</button>
-					</span>
+							<IconEyeOutline
+								aria-hidden="true"
+								class="btn btn-xs btn-ghost btn-circle"
+							/>
+						</Show>
+					</button>
 				</li>
-				<Show when={isVisible(includedVisibility)}>
+				<Show when={listVisibility.builtIn}>
 					<Show
 						fallback={<li>No textual themes found</li>}
-						when={textualThemes().length > 0}
+						when={builtInThemes().length > 0}
 					>
-						<For each={textualThemes()}>
+						<For each={builtInThemes()}>
 							{(theme) => <ThemeOption theme={theme} />}
 						</For>
 					</Show>
 				</Show>
 				<li class="col-span-full mt-5 py-0 text-left font-semibold text-sm opacity-80 max-xl:mb-1 max-xl:px-1">
-					<span class="flex select-none items-center justify-between">
+					<button
+						aria-controls="preset-themes-list"
+						aria-expanded={listVisibility.preset}
+						aria-label={
+							listVisibility.preset
+								? "Hide Preset Themes"
+								: "Show Preset Themes"
+						}
+						aria-pressed={!listVisibility.preset}
+						class="inline-flex w-full select-none items-center justify-between text-nowrap transition-opacity duration-150 ease-in-out *:size-5"
+						classList={{
+							"opacity-80": !listVisibility.preset,
+							"opacity-100": listVisibility.preset,
+						}}
+						onClick={() => setVisibility("preset", !listVisibility.preset)}
+						type="button"
+					>
 						Presets
-						<button
-							aria-label="Toggle Visibility"
-							class="btn btn-xs btn-ghost btn-circle"
-							onClick={() => setVisibility(visibility() ^ presetVisibility)}
-							type="button"
+						<Show
+							fallback={
+								<IconEyeOffOutline
+									aria-hidden="true"
+									class="btn btn-xs btn-ghost btn-circle"
+								/>
+							}
+							when={listVisibility.preset}
 						>
-							<Show
-								fallback={<IconEyeOffOutline class="size-5/6" />}
-								when={isVisible(presetVisibility)}
-							>
-								<IconEyeOutline class="size-5/6" />
-							</Show>
-						</button>
-					</span>
+							<IconEyeOutline
+								aria-hidden="true"
+								class="btn btn-xs btn-ghost btn-circle"
+							/>
+						</Show>
+					</button>
 				</li>
-				<Show when={isVisible(presetVisibility)}>
+				<Show when={listVisibility.preset}>
 					<Show
 						fallback={<li>No presets found</li>}
 						when={presetThemes().length > 0}
