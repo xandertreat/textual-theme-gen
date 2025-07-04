@@ -21,10 +21,9 @@ jobs:
       - name: Install dependencies
         run: bun install
 
-      - name: Lint and format
+      - name: Lint and check formatting
         run: |
-          bun check
-          bun format:check
+          bun lint
 
       - name: Type check
         run: bun tsc
