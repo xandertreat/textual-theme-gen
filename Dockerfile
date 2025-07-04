@@ -1,5 +1,5 @@
 # Build
-FROM oven/bun:canary-alpine AS build
+FROM oven/bun:alpine AS build
 WORKDIR /app
 COPY bun.lock* package.json ./
 RUN --mount=type=cache,target=/root/.bun \
