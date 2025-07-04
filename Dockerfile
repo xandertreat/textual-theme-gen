@@ -11,4 +11,4 @@ RUN bun run build
 FROM gcr.io/distroless/nodejs20-debian12
 ENV NODE_ENV=production
 COPY --from=build /app/.output .
-CMD ["node", ".output/server/index.mjs"]
+CMD [".output/server/index.mjs"]
