@@ -17,9 +17,9 @@ import ClearThemes from "./clear";
 import ExportThemes from "./export";
 import ImportThemes from "./import";
 import NewTheme from "./new";
+import ThemeOption from "./option";
 import RandomTheme from "./random";
 import ThemeReset from "./reset";
-import ThemeOption from "./option";
 
 interface ThemeListOptionsProps extends JSX.HTMLAttributes<HTMLDivElement> {}
 
