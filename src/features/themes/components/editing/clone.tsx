@@ -9,11 +9,6 @@ import {
 import { useTheme } from "~/features/themes/context/theme";
 import { randomName } from "~/features/themes/lib/utils";
 import type { TextualTheme } from "~/features/themes/types";
-import IconCross from "~icons/charm/cross";
-import IconCheckRounded from "~icons/material-symbols/check-rounded";
-import IconContentCopy from "~icons/mdi/content-copy";
-import IconClone from "~icons/pixelarticons/section-copy";
-import IconSpinnersBlocksWave from "~icons/svg-spinners/blocks-wave";
 
 type CloneState = "ready" | "cloning" | "cloned" | "error";
 const CLONE_HOLD_TIME = 1000; // milliseconds
@@ -89,28 +84,28 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 					(hold)
 				</span>
 				<span class="relative size-6">
-					<IconClone
+					<IconPixelarticonsSectionCopy
 						class="motion-duration-150 motion-ease-in absolute inset-0 size-full scale-100"
 						classList={{
 							"motion-scale-in-0": phase() === "ready",
 							"motion-scale-out-0": phase() !== "ready",
 						}}
 					/>
-					<IconSpinnersBlocksWave
+					<IconSvgSpinnersBlocksWave
 						class="motion-duration-150 motion-ease-in absolute inset-0 size-full scale-0"
 						classList={{
 							"motion-scale-in-0": phase() === "cloning",
 							"motion-scale-out-0": phase() !== "cloning",
 						}}
 					/>
-					<IconCheckRounded
+					<IconMaterialSymbolsCheckRounded
 						class="motion-duration-150 motion-ease-in absolute inset-0 size-full scale-0"
 						classList={{
 							"motion-scale-in-0": phase() === "cloned",
 							"motion-scale-out-0": phase() !== "cloned",
 						}}
 					/>
-					<IconCross
+					<IconCharmCross
 						class="motion-duration-150 motion-ease-in absolute inset-0 size-full scale-0"
 						classList={{
 							"motion-scale-in-0": phase() === "error",
@@ -138,7 +133,7 @@ const CloneTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 			{...props}
 			onClick={handleCloning}
 		>
-			<IconContentCopy class="size-6" />
+			<IconMdiContentCopy class="size-6" />
 			Clone Theme
 		</button>
 	);

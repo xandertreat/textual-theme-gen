@@ -19,7 +19,6 @@ import {
 	calcAutoText,
 } from "~/features/themes/lib/color";
 import type { TextualColor } from "~/features/themes/types";
-import IconChevronUpDown from "~icons/mdi/chevron-up-down";
 import CommandPalette from "./command-palette";
 import TerminalWindow from "./terminal";
 import Todos from "./todos";
@@ -317,7 +316,7 @@ const Preview = () => {
 							<Select.Value<string>>
 								{(state) => state.selectedOption()}
 							</Select.Value>
-							<IconChevronUpDown class="size-4" />
+							<IconMdiChevronUpDown class="size-4" />
 						</Select.Trigger>
 						<Select.Portal>
 							<Select.Content class="motion-duration-200 motion-opacity-in motion-scale-in-95 data-[closed]:motion-opacity-out data-[closed]:motion-scale-out-95">
@@ -362,7 +361,7 @@ const Preview = () => {
 								<Select.Value<string>>
 									{(state) => state.selectedOption()}
 								</Select.Value>
-								<IconChevronUpDown class="size-4" />
+								<IconMdiChevronUpDown class="size-4" />
 							</Select.Trigger>
 							<Select.Portal>
 								<Select.Content class="motion-duration-200 motion-opacity-in motion-scale-in-95 data-[closed]:motion-opacity-out data-[closed]:motion-scale-out-95">

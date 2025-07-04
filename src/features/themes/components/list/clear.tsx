@@ -2,7 +2,6 @@ import { action, useSubmission } from "@solidjs/router";
 import type { Component, JSX } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import { useTheme } from "~/features/themes/context/theme";
-import IconTrashCanOutline from "~icons/mdi/trash-can-outline";
 
 const ClearThemes: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 	props,
@@ -23,7 +22,7 @@ const ClearThemes: Component<JSX.HTMLAttributes<HTMLButtonElement>> = (
 				class="inline-flex size-full items-center rounded text-center font-bold text-error"
 				{...props}
 			>
-				<IconTrashCanOutline />
+				<IconMdiTrashCanOutline />
 				Trash themes
 			</ActionDialog.Trigger>
 			<ActionDialog.Portal>

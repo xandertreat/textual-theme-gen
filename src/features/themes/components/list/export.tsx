@@ -1,7 +1,6 @@
 import { type Component, type JSX, createMemo, onCleanup } from "solid-js";
 import { useTheme } from "~/features/themes/context/theme";
 import { VERSION_KEY } from "~/features/themes/data/themes";
-import IconFileExportOutline from "~icons/mdi/file-export-outline";
 
 const ExportThemes: Component<JSX.AnchorHTMLAttributes<HTMLAnchorElement>> = (
 	props,
@@ -34,7 +33,7 @@ const ExportThemes: Component<JSX.AnchorHTMLAttributes<HTMLAnchorElement>> = (
 			href={exportUri()}
 			{...props}
 		>
-			<IconFileExportOutline />
+			<IconMdiFileExportOutline />
 			Export
 		</a>
 	);

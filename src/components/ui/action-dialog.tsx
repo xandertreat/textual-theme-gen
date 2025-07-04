@@ -15,7 +15,6 @@ import {
 } from "solid-js";
 import type { Portal } from "solid-js/web";
 import { cn } from "~/lib/util";
-import IconClose from "~icons/mdi/close";
 
 const Root: Component<RootProps> = (props) => <Dialog {...props} />;
 type ActionTriggerProps = TriggerProps &
@@ -75,7 +74,7 @@ const Close: Component<ActionCloseProps> = (props) => (
 		{...mergeProps(
 			{
 				class: "absolute top-2 right-2 btn btn-circle btn-ghost btn-xs",
-				children: <IconClose class="size-full" />,
+				children: <IconMdiClose class="size-full" />,
 			},
 			props,
 		)}

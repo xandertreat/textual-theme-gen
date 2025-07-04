@@ -1,7 +1,6 @@
 import { type Component, type JSX, createMemo } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import { useTheme } from "~/features/themes/context/theme";
-import IconMixerSettings from "~icons/mdi/mixer-settings";
 
 const VariablesManagement: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 	props,
@@ -15,7 +14,7 @@ const VariablesManagement: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 				class="btn m-2 mx-4 hd:w-40 border-2"
 				disabled={!canModify()}
 			>
-				<IconMixerSettings class="size-5" />
+				<IconMdiMixerSettings class="size-5" />
 				<p>Variables</p>
 			</ActionDialog.Trigger>
 			<ActionDialog.Portal>

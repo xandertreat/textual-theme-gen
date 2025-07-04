@@ -10,9 +10,6 @@ import {
 } from "solid-js";
 import { createStore } from "solid-js/store";
 import { useTheme } from "~/features/themes/context/theme";
-import IconDotsHorizontal from "~icons/mdi/dots-horizontal";
-import IconEyeOffOutline from "~icons/mdi/eye-off-outline";
-import IconEyeOutline from "~icons/mdi/eye-outline";
 import ClearThemes from "./clear";
 import ExportThemes from "./export";
 import ImportThemes from "./import";
@@ -33,7 +30,7 @@ const ThemeListOptions: Component<ThemeListOptionsProps> = (passed) => {
 					data-tip={"Theme Options"}
 					type="button"
 				>
-					<IconDotsHorizontal aria-hidden="true" class="size-full" />
+					<IconMdiDotsHorizontal aria-hidden="true" class="size-full" />
 				</Popover.Trigger>
 			</Popover.Anchor>
 			<Popover.Portal>
@@ -146,14 +143,14 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 						My themes
 						<Show
 							fallback={
-								<IconEyeOffOutline
+								<IconMdiEyeOffOutline
 									aria-hidden="true"
 									class="btn btn-xs btn-ghost btn-circle"
 								/>
 							}
 							when={listVisibility.user}
 						>
-							<IconEyeOutline
+							<IconMdiEyeOutline
 								aria-hidden="true"
 								class="btn btn-xs btn-ghost btn-circle"
 							/>
@@ -192,14 +189,14 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 						Built-in themes
 						<Show
 							fallback={
-								<IconEyeOffOutline
+								<IconMdiEyeOffOutline
 									aria-hidden="true"
 									class="btn btn-xs btn-ghost btn-circle"
 								/>
 							}
 							when={listVisibility.builtIn}
 						>
-							<IconEyeOutline
+							<IconMdiEyeOutline
 								aria-hidden="true"
 								class="btn btn-xs btn-ghost btn-circle"
 							/>
@@ -237,14 +234,14 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 						Presets
 						<Show
 							fallback={
-								<IconEyeOffOutline
+								<IconMdiEyeOffOutline
 									aria-hidden="true"
 									class="btn btn-xs btn-ghost btn-circle"
 								/>
 							}
 							when={listVisibility.preset}
 						>
-							<IconEyeOutline
+							<IconMdiEyeOutline
 								aria-hidden="true"
 								class="btn btn-xs btn-ghost btn-circle"
 							/>

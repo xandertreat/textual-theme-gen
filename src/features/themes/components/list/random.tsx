@@ -3,7 +3,6 @@ import type { Component, JSX } from "solid-js";
 import { batch } from "solid-js";
 import { useTheme } from "~/features/themes/context/theme";
 import { genRandomTheme } from "~/features/themes/lib/color";
-import IconDice from "~icons/mdi/dice";
 
 const RandomTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 	props,
@@ -33,7 +32,7 @@ const RandomTheme: Component<JSX.ButtonHTMLAttributes<HTMLButtonElement>> = (
 			}}
 			type="button"
 		>
-			<IconDice class="motion-ease-out-cubic size-6" ref={die} />
+			<IconMdiDice class="motion-ease-out-cubic size-6" ref={die} />
 		</button>
 	);
 };

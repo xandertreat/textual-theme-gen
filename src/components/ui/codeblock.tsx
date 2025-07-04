@@ -1,7 +1,6 @@
 import { cn } from "@util";
 import type { JSX } from "solid-js";
 import { type Component, Show, createMemo, splitProps } from "solid-js";
-import IconPythonLang from "~icons/devicon/python";
 import CopyButton from "./copy";
 
 // highlight.js configuration
@@ -68,7 +67,7 @@ const CodeBlock: Component<CodeBlockProps> = (props) => {
 					/>
 				</Show>
 				<span class="inline-flex items-center justify-center gap-1.5 p-2 text-center align-middle text-base">
-					<IconPythonLang />
+					<IconDeviconPython />
 					<p aria-label={"Language: python"}>python</p>
 				</span>
 				<Code />

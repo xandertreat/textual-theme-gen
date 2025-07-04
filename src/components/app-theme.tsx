@@ -9,9 +9,6 @@ import {
 	createMemo,
 	createSignal,
 } from "solid-js";
-import IconThemeLightDark from "~icons/mdi/theme-light-dark";
-import IconMoonFilled from "~icons/tabler/moon-filled";
-import IconSunFilled from "~icons/tabler/sun-filled";
 
 type AppTheme = "system" | "light" | "dark";
 export const DEFAULT_APP_THEME: AppTheme = "system";
@@ -92,24 +89,24 @@ const AppThemeSwitcher: Component<
 		>
 			<Show
 				fallback={
-					<IconThemeLightDark class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full" />
+					<IconMdiThemeLightDark class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full" />
 				}
 				when={appTheme()}
 			>
 				{(theme) => (
 					<Switch
 						fallback={
-							<IconThemeLightDark class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full" />
+							<IconMdiThemeLightDark class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full" />
 						}
 					>
 						<Match when={theme() === "system"}>
-							<IconThemeLightDark class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full" />
+							<IconMdiThemeLightDark class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full" />
 						</Match>
 						<Match when={theme() === "light"}>
-							<IconSunFilled class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full" />
+							<IconTablerSunFilled class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full" />
 						</Match>
 						<Match when={theme() === "dark"}>
-							<IconMoonFilled class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full" />
+							<IconTablerMoonFilled class="motion-duration-200 motion-rotate-in-[-135deg] motion-opacity-in-0 motion-ease-in-out size-full" />
 						</Match>
 					</Switch>
 				)}

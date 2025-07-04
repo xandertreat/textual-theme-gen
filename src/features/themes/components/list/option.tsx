@@ -8,7 +8,6 @@ import {
 	onMount,
 	splitProps,
 } from "solid-js";
-import IconDotsHorizontal from "~icons/mdi/dots-horizontal";
 import { useTheme } from "../../context/theme";
 import { CloneThemeOption } from "./clone";
 import DeleteTheme from "./delete";
@@ -66,7 +65,7 @@ const ThemeOptionMenu: Component<ThemeOptionMenuProps> = (props) => {
 					role="button"
 				>
 					<span class="tooltip-content">Options</span>
-					<IconDotsHorizontal aria-label="Theme Options" class="size-full" />
+					<IconMdiDotsHorizontal aria-label="Theme Options" class="size-full" />
 				</Popover.Trigger>
 			</Popover.Anchor>
 			<Popover.Portal>

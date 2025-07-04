@@ -5,7 +5,6 @@ import { splitProps } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import { useTheme } from "~/features/themes/context/theme";
 import type { TextualTheme } from "~/features/themes/types";
-import IconTrashCanOutline from "~icons/mdi/trash-can-outline";
 
 interface DeleteThemeProps extends JSX.HTMLAttributes<HTMLButtonElement> {
 	theme: string;
@@ -29,7 +28,7 @@ const DeleteTheme: Component<DeleteThemeProps> = (props) => {
 				class="inline-flex size-full items-center rounded text-center font-bold text-error text-sm"
 				{...props}
 			>
-				<IconTrashCanOutline />
+				<IconMdiTrashCanOutline />
 				Delete theme
 			</ActionDialog.Trigger>
 			<ActionDialog.Portal>

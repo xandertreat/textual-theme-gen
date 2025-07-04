@@ -28,8 +28,6 @@ import {
 } from "~/features/themes/lib/color";
 import type { HexColorCode } from "~/features/themes/types";
 import debounce from "~/lib/debounce";
-import IconPencilCircle from "~icons/mdi/pencil-circle";
-import IconPencilCircleOutline from "~icons/mdi/pencil-circle-outline";
 
 const DEBOUNCE_DELAY = 2.5; // ms (found through manual testing to be best responsive / performance tradeoff)
 
@@ -206,10 +204,10 @@ const HexCodeField: Component<JSX.HTMLAttributes<HTMLDivElement>> = ({
 						type="button"
 					>
 						<Show
-							fallback={<IconPencilCircleOutline class="size-full" />}
+							fallback={<IconMdiPencilCircleOutline class="size-full" />}
 							when={isEditingHex()}
 						>
-							<IconPencilCircle class="size-full text-green-600" />
+							<IconMdiPencilCircle class="size-full text-green-600" />
 						</Show>
 					</button>
 					<CopyButton
@@ -220,7 +218,6 @@ const HexCodeField: Component<JSX.HTMLAttributes<HTMLDivElement>> = ({
 							.trim()
 							.normalize()
 							.slice(0, 6)}`}
-						copyIcon="mdi:content-copy"
 					/>
 				</div>
 			</ColorField.Label>

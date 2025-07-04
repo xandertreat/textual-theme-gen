@@ -11,9 +11,6 @@ import {
 } from "solid-js";
 import ActionDialog from "~/components/ui/action-dialog";
 import { useTheme } from "~/features/themes/context/theme";
-import IconAlert from "~icons/mdi/alert";
-import IconCheck from "~icons/mdi/check";
-import IconPlus from "~icons/mdi/plus";
 import { genRandomTheme } from "../../lib/color";
 
 type InvalidReason = "malformed" | "empty" | "exists" | undefined;
@@ -61,7 +58,7 @@ const NewTheme: Component<NewThemeProps> = (props) => {
 		>
 			<li class="motion-duration-300/opacity motion-ease-in-out motion-duration-300 motion-opacity-in-0 max-hd:motion-translate-y-in-100 hd:-motion-translate-x-in-50">
 				<ActionDialog.Trigger class="btn btn-ghost group flex size-full justify-normal gap-3.5 rounded-sm p-0 px-1 py-0 pl-2 font-semibold text-green-600">
-					<IconPlus />
+					<IconMdiPlus />
 					New theme
 				</ActionDialog.Trigger>
 			</li>
@@ -119,14 +116,14 @@ const NewTheme: Component<NewThemeProps> = (props) => {
 									title="Only letters, separated by single spaces, underscores or hyphens."
 									type="text"
 								/>
-								<IconAlert
+								<IconMdiAlert
 									class="size-6 cursor-default text-error text-sm"
 									classList={{
 										hidden: isValid(),
 										block: !isValid(),
 									}}
 								/>
-								<IconCheck
+								<IconMdiCheck
 									class="size-6 cursor-default text-sm text-success"
 									classList={{
 										hidden: !isValid(),

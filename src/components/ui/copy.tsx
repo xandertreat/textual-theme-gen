@@ -1,8 +1,5 @@
 import type { JSX } from "solid-js";
-import { type Component, createSignal, mergeProps, splitProps } from "solid-js";
-import IconCross from "~icons/charm/cross";
-import IconCheckRounded from "~icons/material-symbols/check-rounded";
-import IconSectionCopy from "~icons/pixelarticons/section-copy";
+import { type Component, createSignal, splitProps } from "solid-js";
 
 import { gsap } from "gsap";
 import { MorphSVGPlugin } from "gsap/MorphSVGPlugin";
@@ -15,29 +12,14 @@ enum CopyStatusLabel {
 	error = "Failed.",
 }
 
-const DEFAULT_ICONS = {
-	copyIcon: "pixelarticons:section-copy",
-	successIcon: "material-symbols:check-rounded",
-	errorIcon: "charm:cross",
-};
-
 const QUERY_SELECTOR = "path";
 
 interface CopyButtonProps extends JSX.HTMLAttributes<HTMLButtonElement> {
 	code: string;
-	copyIcon?: string;
-	successIcon?: string;
-	errorIcon?: string;
 }
 
-const CopyButton: Component<CopyButtonProps> = (passed) => {
-	const props = mergeProps(DEFAULT_ICONS, passed);
-	const [local, rest] = splitProps(props, [
-		"code",
-		"copyIcon",
-		"successIcon",
-		"errorIcon",
-	]);
+const CopyButton: Component<CopyButtonProps> = (props) => {
+	const [local, rest] = splitProps(props, ["code"]);
 	const [status, setStatus] = createSignal<CopyStatus>("ready");
 
 	let curPath!: SVGPathElement;
@@ -86,26 +68,26 @@ const CopyButton: Component<CopyButtonProps> = (passed) => {
 			type="button"
 		>
 			{/* Button icon */}
-			<IconSectionCopy
+			<IconPixelarticonsSectionCopy
 				class="-scale-100 active:-scale-90 motion-duration-300 motion-ease-in motion-opacity-out-100 size-full rotate-180 opacity-0 transition-[scale] duration-150 ease-in-out"
 				ref={(el) => {
 					curPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
 				}}
 			/>
 			{/* Morph targets */}
-			<IconSectionCopy
+			<IconPixelarticonsSectionCopy
 				class="hidden"
 				ref={(el) => {
 					copyPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
 				}}
 			/>
-			<IconCheckRounded
+			<IconMaterialSymbolsCheckRounded
 				class="hidden"
 				ref={(el) => {
 					successPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;
 				}}
 			/>
-			<IconCross
+			<IconMdiClose
 				class="hidden"
 				ref={(el) => {
 					errorPath = el.querySelector<SVGPathElement>(QUERY_SELECTOR)!;

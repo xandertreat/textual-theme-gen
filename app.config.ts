@@ -1,8 +1,10 @@
 import { defineConfig } from "@solidjs/start/config";
-import Icons from "unplugin-icons/vite";
 
 // Plugins
 import tailwindcss from "@tailwindcss/vite";
+import AutoImport from "unplugin-auto-import/vite";
+import IconsResolver from "unplugin-icons/resolver";
+import Icons from "unplugin-icons/vite";
 // import tsconfigPaths from "vite-tsconfig-paths";
 
 import path from "node:path";
@@ -13,12 +15,26 @@ const __dirname = path.dirname(__filename);
 export default defineConfig({
 	ssr: false,
 	server: {
+		node: true,
+		preset: "node-server",
 		prerender: {
 			crawlLinks: true,
 		},
 	},
 	vite: {
-		plugins: [tailwindcss(), Icons({ compiler: "solid", autoInstall: true })],
+		plugins: [
+			tailwindcss(),
+			AutoImport({
+				dts: "./src/auto-imports.d.ts",
+				resolvers: [
+					IconsResolver({
+						prefix: "Icon",
+						extension: "jsx",
+					}),
+				],
+			}),
+			Icons({ compiler: "solid", autoInstall: true }),
+		],
 		server: {
 			allowedHosts: ["127.0.0.1", "localhost", "0.0.0.0"],
 		},

@@ -2,7 +2,6 @@ import type { Component, JSX } from "solid-js";
 import { useTheme } from "~/features/themes/context/theme";
 import { VERSION_KEY } from "~/features/themes/data/themes";
 import type { TextualTheme } from "~/features/themes/types";
-import IconFileImportOutline from "~icons/mdi/file-import-outline";
 
 const ImportThemes: Component<JSX.HTMLAttributes<HTMLLabelElement>> = (
 	props,
@@ -44,7 +43,7 @@ const ImportThemes: Component<JSX.HTMLAttributes<HTMLLabelElement>> = (
 				onChange={handleFileImport}
 				type="file"
 			/>
-			<IconFileImportOutline />
+			<IconMdiFileImportOutline />
 			Import
 		</label>
 	);

@@ -1,6 +1,5 @@
 import { A } from "@solidjs/router";
 import type { Component, JSX } from "solid-js";
-import IconGithub from "~icons/mdi/github";
 
 const AUTHOR = "xandertreat";
 const REPOSITORY_NAME = "textual-theme-gen";
@@ -14,7 +13,7 @@ const GitHub: Component<JSX.HTMLAttributes<HTMLAnchorElement>> = (props) => (
 		target="_blank"
 		{...props}
 	>
-		<IconGithub class="size-full" />
+		<IconMdiGithub class="size-full" />
 	</A>
 );
 

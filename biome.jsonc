@@ -7,7 +7,13 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"ignore": ["app.config.*.js", ".output", "node_modules", ".vinxi"]
+		"ignore": [
+			"app.config.*.js",
+			".output",
+			"node_modules",
+			".vinxi",
+			"auto-imports.d.ts"
+		]
 	},
 	"formatter": {
 		"enabled": true,
