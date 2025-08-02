@@ -1,160 +1,24 @@
 import { Select } from "@kobalte/core/select";
 import {
-	type Component,
 	For,
-	type JSX,
 	Match,
 	Show,
 	Switch,
 	createEffect,
-	createMemo,
 	createSignal,
 	onMount,
 } from "solid-js";
-import { DEFAULTS, useTheme } from "~/features/themes/context/theme";
-import {
-	DISABLED_ALPHA,
-	MUTED_ALPHA,
-	TEXT_ALPHA,
-	calcAutoText,
-} from "~/features/themes/lib/color";
-import type { TextualColor } from "~/features/themes/types";
+import { DEFAULTS } from "~/features/themes/context/theme";
 import CommandPalette from "./command-palette";
 import TerminalWindow from "./terminal";
-import Todos from "./todos";
-
-const PaletteColorPreview: Component<
-	JSX.HTMLAttributes<HTMLDivElement> & { paletteKey: string }
-> = (props) => {
-	const { selectedTheme } = useTheme();
-	const paletteColors = createMemo(() =>
-		Object.entries(selectedTheme().palette[props.paletteKey]),
-	);
-	const sortedNonDarkPaletteColors = createMemo(() =>
-		paletteColors().filter(([v]) => !v.includes("darken")),
-	);
-	const sortedDarkPaletteColors = createMemo(() =>
-		paletteColors()
-			.filter(([v]) => v.includes("darken"))
-			.sort(([a], [b]) => Number(a.charAt(-1)) - Number(b.charAt(-1))),
-	);
-
-	const ColorPreview: Component<
-		JSX.HTMLAttributes<HTMLSpanElement> & {
-			variant: string;
-			data: TextualColor;
-		}
-	> = (passed) => {
-		const contrast = createMemo(() =>
-			calcAutoText({
-				base: passed.data.color,
-				bg: selectedTheme().palette.background.base.color,
-			}),
-		);
-		return (
-			<span
-				class="flex fhd:h-16 h-13 min-w-max items-center justify-between gap-8 text-nowrap px-2 py-2 pr-8 pl-16 text-center text-sm md:w-auto"
-				style={{
-					"background-color": passed.data.color,
-				}}
-			>
-				<p
-					class="mr-8 w-40"
-					style={{
-						color: contrast().alpha(TEXT_ALPHA).hexa(),
-					}}
-				>
-					${props.paletteKey}
-					{passed.variant !== "base" ? `-${passed.variant}` : undefined}
-				</p>
-				<p
-					style={{
-						color: contrast().alpha(MUTED_ALPHA).hexa(),
-					}}
-				>
-					$text-muted
-				</p>
-				<p
-					style={{
-						color: contrast().alpha(DISABLED_ALPHA).hexa(),
-					}}
-				>
-					$text-disabled
-				</p>
-			</span>
-		);
-	};
-
-	return (
-		<div
-			class="mb-3 grid h-fit max-h-9/10 w-9/10 overflow-scroll border-2 px-10 hd:pb-10 md:max-h-5/6 md:w-5/6"
-			style={{
-				"background-color": selectedTheme().palette.surface.base.color,
-				"border-color": selectedTheme().palette.primary.base.color,
-			}}
-			{...props}
-		>
-			<h2
-				class="mt-2 mb-4 self-center font-bold"
-				style={{
-					color: selectedTheme().palette.foreground.base.text,
-				}}
-			>
-				"{props.paletteKey}"
-			</h2>
-			<div class="flex w-full flex-col max-hd:mb-12">
-				<For each={sortedDarkPaletteColors()}>
-					{([variant, data]) => <ColorPreview data={data} variant={variant} />}
-				</For>
-				<For each={sortedNonDarkPaletteColors()}>
-					{([variant, data]) => <ColorPreview data={data} variant={variant} />}
-				</For>
-			</div>
-		</div>
-	);
-};
-
-const TextColorsPreview: Component<
-	JSX.HTMLAttributes<HTMLDivElement> & { showMutedBackgrounds: boolean }
-> = (props) => {
-	const { selectedTheme } = useTheme();
-	const paletteColors = [
-		"primary",
-		"secondary",
-		"warning",
-		"error",
-		"success",
-		"accent",
-	];
-
-	return (
-		<div
-			class="flex size-full flex-col items-start justify-start pt-2 pl-2 text-3xl"
-			style={{
-				"background-color": selectedTheme().palette.background.base.color,
-			}}
-			{...props}
-		>
-			<For each={paletteColors}>
-				{(paletteColor) => (
-					<h3
-						class="px-1 py-0.25"
-						style={{
-							color: selectedTheme().palette[paletteColor].base.text,
-							"background-color": props.showMutedBackgrounds
-								? selectedTheme().palette[paletteColor].base.muted
-								: undefined,
-						}}
-					>{`$text-${paletteColor}`}</h3>
-				)}
-			</For>
-		</div>
-	);
-};
+import Todos from "./windows/todos";
+import PaletteColorPreview from "./windows/colors";
+import TextColorsPreview from "./windows/text";
 
 const paletteKeys = Object.keys(DEFAULTS[0].palette).map(
 	(k) => `${k[0].toUpperCase()}${k.slice(1)}`,
 );
+
 const Preview = () => {
 	const previewOptions = ["Todos App", "Colors", "Text"];
 	const [currentPreview, setPreview] = createSignal(previewOptions[0]);
@@ -224,7 +88,7 @@ const Preview = () => {
 	});
 
 	return (
-		<div class="flex h-fit w-full hd:min-w-2/3 qhd:min-w-3/5 hd:max-w-2/3 qhd:max-w-3/5 flex-col items-center gap-2 overflow-clip">
+		<div class="flex flex-col flex-nowrap items-center gap-2 overflow-clip">
 			<TerminalWindow>
 				<Switch>
 					<Match when={currentPreview() === "Todos App"}>

@@ -18,7 +18,7 @@ export const DEFAULT_DARK_SURFACE = "#1e1e1e";
 export const DEFAULT_LIGHT_BG = "#efefef";
 export const DEFAULT_LIGHT_SURFACE = "#f5f5f5";
 
-export const TEXT_ALPHA = 0.87 * 0.95;
+export const TEXT_ALPHA = 0.87;
 export const MUTED_ALPHA = 0.6;
 export const DISABLED_ALPHA = 0.38;
 

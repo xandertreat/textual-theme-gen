@@ -124,7 +124,7 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 				</Show>
 			</div>
 			<ol class="hd:flex grid hd:w-56 grid-cols-1 xs:grid-cols-2 hd:flex-col gap-2 rounded-box p-0 px-1 md:grid-cols-3">
-				<li class="col-span-full mt-5 py-0 text-left font-semibold text-sm opacity-80 max-xl:mb-1 max-xl:px-1">
+				<li class="col-span-full mt-5 py-0 text-left font-semibold text-sm max-xl:mb-1 max-xl:px-1">
 					<button
 						aria-controls="user-themes-list"
 						aria-expanded={listVisibility.user}
@@ -168,7 +168,7 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 					</Show>
 					<NewTheme />
 				</Show>
-				<li class="col-span-full mt-5 py-0 text-left font-semibold text-sm opacity-80 max-xl:mb-1 max-xl:px-1">
+				<li class="col-span-full mt-5 py-0 text-left font-semibold text-sm max-xl:mb-1 max-xl:px-1">
 					<button
 						aria-controls="built-in-themes-list"
 						aria-expanded={listVisibility.builtIn}
@@ -213,7 +213,7 @@ const ThemeList: Component<ThemeListProps> = (passed) => {
 						</For>
 					</Show>
 				</Show>
-				<li class="col-span-full mt-5 py-0 text-left font-semibold text-sm opacity-80 max-xl:mb-1 max-xl:px-1">
+				<li class="col-span-full mt-5 py-0 text-left font-semibold text-sm max-xl:mb-1 max-xl:px-1">
 					<button
 						aria-controls="preset-themes-list"
 						aria-expanded={listVisibility.preset}

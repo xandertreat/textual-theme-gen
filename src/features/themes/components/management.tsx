@@ -1,6 +1,7 @@
 import { type Component, type JSX, lazy } from "solid-js";
 import ThemeCreation from "./editing/creation";
 import ThemeList from "./list/list";
+import { Congratulations, DefinitionStep, RegistrationStep } from "./steps";
 
 const Preview = lazy(() => import("./preview/preview"));
 
@@ -16,7 +17,16 @@ const ThemeManagement: Component<JSX.HTMLAttributes<HTMLDivElement>> = (
 				<ThemeList />
 				<ThemeCreation class="hd:mr-5 qhd:mr-0 flex h-full flex-col gap-2" />
 			</main>
-			<Preview />
+			<div>
+				<Preview />
+				<div class="-translate-x-1/2 ml-[25vw] flex w-[25vw] flex-col flex-nowrap items-center gap-5 lg:flex-row lg:items-start">
+					<DefinitionStep />
+					<span class="flex flex-col items-center">
+						<RegistrationStep />
+						<Congratulations />
+					</span>
+				</div>
+			</div>
 		</div>
 	);
 };
