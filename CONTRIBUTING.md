@@ -67,6 +67,85 @@ This project follows the [Contributor Covenant Code of Conduct](https://www.cont
 - Please search for existing issues before opening a new one.
 - Provide as much detail as possible, including steps to reproduce bugs.
 
-## Acknowledgements
+## 📦 Getting Started
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) 20.x.x
+- [Bun](https://bun.sh/) 1.x.x (for project management)
+
+### Installation
+
+```sh
+bun install # or npm install, pnpm install, yarn install
+```
+
+### Development
+
+```sh
+bun run dev # or npm run dev
+```
+
+### Building for Production
+
+```sh
+bun run build # or npm run build
+```
+
+### Running Tests
+
+```sh
+bun test # or npm test
+```
+
+### Linting & Formatting
+
+```sh
+bun check      # Lint everything
+bun format     # Format all files
+bun format:check # Check formatting
+bun lint:fix      # Automatically fix linting issues
+```
+
+---
+
+## 🗺️ Project Structure
+
+```plaintext
+src/
+  app.tsx                # App entry
+  assets/styles/app.css  # Tailwind, DaisyUI, custom styles
+  components/            # UI primitives (Icon, Dialog, CodeBlock, etc.)
+  context/               # App/theme context providers
+  features/themes/       # Theme management, editing, preview, etc.
+  lib/                   # Utilities (debounce, lru, etc.)
+  routes/                # SolidStart routes
+  ...
+public/                  # Static assets, icons, manifest
+```
+
+---
+
+## 🏛️ Architecture & Dependencies
+
+- **SolidJS** for fine-grained reactivity and composable UI
+- **Context Providers** for scoped shared state
+- **Tailwind CSS** for atomic inline styling
+- **DaisyUI** for accessible, beautiful UI components
+- **LocalStorage** for user data storage
+- **Color manipulation** via `color` package
+- **Kobalte/Corvu** Solid.js component libraries
+
+---
+
+## 🧪 Testing & Quality
+
+- Unit tests: `tests/unit/`
+- Integration tests: `tests/integration/`
+- Linting: Biome (& tsc)
+- Formatting: Biome
+- CI: See `package.json` scripts
+
+---
 
 Thanks for helping make Textual Theme Generator better! See [README.md](README.md#acknowledgements) for a list of major dependencies and contributors.
